@@ -24,7 +24,7 @@ ul.us_menu .us_brand {
 
 ul.us_menu li.dropdown .caret::after {
   /* content: "\f0d7";
-  font-family: FontAwesome; */
+    font-family: FontAwesome; */
   font-size: inherit;
   color: inherit;
   display: inline-block;
@@ -40,11 +40,11 @@ ul.us_menu .dropdown-divider {
   height: 0;
   margin: 0.5rem 0;
   overflow: hidden;
-  border-top: 1px solid rgba(0,0,0,.15);
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
   background-color: transparent;
 }
 
-ul.us_menu li > a{
+ul.us_menu li > a {
   padding: 5px 18px;
   text-decoration: none;
   display: block;
@@ -53,8 +53,7 @@ ul.us_menu li > a{
 }
 
 ul.us_menu li a i,
-ul.us_menu li a span:first-child /* hopeful that span can be used for icons going forward */
-{
+  ul.us_menu li a span:first-child /* hopeful that span can be used for icons going forward */ {
   display: inline-block;
   margin-right: 10px;
 }
@@ -94,10 +93,17 @@ ul.us_sub-menu {
 .us_brand.full_screen {
   padding: 5px 18px;
 }
-
-.us_menu_mobile_control i{
-  font-size: 1.5rem;
+/* Lineage Logo Sizing */
+.us_brand.full_screen > a > img {
+  width: 70%;
 }
+
+@media screen and (max-width: 500px) {
+  div.us_menu_mobile_wrapper > div > a > img {
+    width: 60%;
+  }
+}
+
 /* //////////////////// Horizontal ////////////////////*/
 
 ul.us_menu.horizontal {
@@ -125,7 +131,7 @@ ul.us_menu.horizontal .us_menu_mobile_wrapper {
 }
 
 /*/////////////// Accordion /////////////*/
-ul.us_menu.accordion .us_sub-menu{
+ul.us_menu.accordion .us_sub-menu {
   position: relative;
   top: unset;
   left: unset;
@@ -134,44 +140,55 @@ ul.us_menu.accordion .us_sub-menu{
   padding-left: 16px;
 }
 
-ul.us_sub-menu.show, ul.us_menu.accordion .us_sub-menu.show {
+ul.us_sub-menu.show,
+ul.us_menu.accordion .us_sub-menu.show {
   display: block;
 }
 
 /*/////////////// Theme  ////////////////*/
-ul.us_menu.dark, ul.us_menu.dark .us_sub-menu li, ul.us_menu.dark li:hover,
-ul.us_menu.dark ul.us_sub-menu
-{
-  background-color: #212529;
+ul.us_menu.dark,
+ul.us_menu.dark .us_sub-menu li,
+ul.us_menu.dark li:hover,
+ul.us_menu.dark ul.us_sub-menu {
+  background-color: hsl(36, 28%, 55%);
+  /* background-color: #212529; */
 }
 
-ul.us_menu.dark a, ul.us_menu.dark .us_menu_mobile_control {
-  color: rgba(255, 255, 255, .55);
+ul.us_menu.dark a,
+ul.us_menu.dark .us_menu_mobile_control {
+  color: rgba(0, 0, 0, 0.55);
   border-radius: 4px;
 }
 
 ul.us_menu.dark li:hover > a {
-  color: rgba(255, 255, 255, .75); /* fallback */
-  color: var(--menu-text-hover-color, rgba(255,255,255,0.75)); /* will be used if it exists, or default */
-  background-color: #494e53; /* fallback */
-  background-color: var(--bs-secondary, #494e53);
+  color: rgba(255, 255, 255, 0.75); /* fallback */
+  color: var(
+    --menu-text-hover-color,
+    rgba(0, 0, 0, 0.75)
+  ); /* will be used if it exists, or default */
+  /* hsl(28, 100%, 97%) */
+  background-color: hsl(28, 100%, 97%);
+  /* background-color: #494e53; fallback */
+  /* background-color: var(--bs-secondary, #494e53); */
 }
 
 ul.us_menu.dark li.active-style > a {
-  color: white; /* fallback */
-  color: var(--menu-text-active-color, white); /* will be used if it exists, or default */
+  color: rgb(255, 255, 255); /* fallback */
+  color: var(
+    --menu-text-active-color,
+    white
+  ); /* will be used if it exists, or default */
   background-color: #334f6b; /* fallback */
   background-color: var(--bs-primary, #334f6b);
 }
 
-ul.us_menu.dark  .us_sub-menu,
+ul.us_menu.dark .us_sub-menu,
 ul.us_menu.accordion .us_sub-menu {
   border-color: transparent;
 }
-ul.us_menu.dark .dropdown-divider{
+ul.us_menu.dark .dropdown-divider {
   border-color: rgba(255, 255, 255, 0.55);
 }
-
 
 @media screen and (max-width: 992px) {
   .us_menu_mobile_wrapper {
@@ -193,7 +210,7 @@ ul.us_menu.dark .dropdown-divider{
   }
 
   ul.us_menu.horizontal .us_sub-menu,
-  ul.us_menu.horizontal .us_sub-menu.us_deep-sub-menu{
+  ul.us_menu.horizontal .us_sub-menu.us_deep-sub-menu {
     width: 100%;
     left: 0;
     top: 100%;
@@ -207,29 +224,28 @@ ul.us_menu.dark .dropdown-divider{
   }
 
   /* .us_menu:not(.horizontal):not(.expanded) .us_menu_mobile_wrapper {
-
-  } */
+  
+    } */
 
   ul.us_menu:not(.horizontal):not(.expanded) .us_menu_mobile_wrapper {
     padding-left: 5px;
   }
 
-  ul.us_menu:not(.horizontal):not(.expanded) .us_brand{
+  ul.us_menu:not(.horizontal):not(.expanded) .us_brand {
     display: none;
   }
 
-  ul.us_menu:not(.horizontal):not(.expanded) .labelText{
+  ul.us_menu:not(.horizontal):not(.expanded) .labelText {
     display: none;
   }
 
-  ul.us_menu:not(.horizontal):not(.expanded) i{
+  ul.us_menu:not(.horizontal):not(.expanded) i {
     font-size: 1.25rem;
-    padding-left:2px;
+    padding-left: 2px;
   }
 
   ul.us_menu:not(.horizontal) .us_sub-menu,
-  ul.us_menu:not(.horizontal) .us_deep-sub-menu
-  {
+  ul.us_menu:not(.horizontal) .us_deep-sub-menu {
     position: relative;
     border: none;
     left: unset;
@@ -241,8 +257,7 @@ ul.us_menu.dark .dropdown-divider{
     transition: all 750ms ease-in-out;
   }
 
-
-  ul.us_menu:not(.horizontal):not(.expanded) > li a{
+  ul.us_menu:not(.horizontal):not(.expanded) > li a {
     padding-left: 5px;
     font-size: 28px;
   }
@@ -250,14 +265,13 @@ ul.us_menu.dark .dropdown-divider{
   ul.us_menu.expanded:not(.horizontal) {
     width: 280px;
   }
-
 }
 
-.caret{
-  margin-left:.25rem;
+.caret {
+  margin-left: 0.25rem;
 }
 
 .additional-mobile-icons {
   position: absolute;
-  right: 3.0rem;
+  right: 3rem;
 }
