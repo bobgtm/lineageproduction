@@ -46,62 +46,74 @@ if($to == "") {
     <div class="text-center">
         <h4 class="mb-2 me-2">View/Hide Inventory:</h4>  
         <div class="d-flex justify-content-center align-items-center mt-1">   
-        
             <button id="show1" class="btn btn-primary me-2">East End</button>
             <button id="show2" class="btn btn-primary me-2">Mills</button>
             <button id="show3" class="btn btn-primary me-2">UCF</button>
         </div>
     </div>
 </div>
-<!-- <div class="row col-lg-12 mt-1 mb-3">
-   <p class="fw-bold mb-1">Filter entries by date</p>
-   <form class="mt-0" action="" method="get">
-      <div class="row col-lg-5 col-sm-4">
-         <div class="col col-lg-5">
-            <label class="form-label" for="from">From:</label>
-            <input type="date" name="from" value="<?= $from ?>">
-         </div>    
-         <div class="col col-lg-5">
-            <label class="form-label" for="to">To:</label>
-            <input type="date" name="to" value="<?= $to ?>">
-         </div>
-      </div>
-      <div class="row d-flex mt-1">
-         <div class="col col-lg-2"><input type="submit" name="filter" value="Filter" class="text-center btn btn-primary"></div>
-         <div class="col col-lg-2"><input type="submit" name="clear" value="Clear Filter" class="btn btn-primary"></div>
-      </div>
-   </form>
-</div> -->
 
-
+<div class="d-flex flex-column flex-md-row justify-content-evenly mt-4">
 <?php foreach($shop as $s) { ?>
-   <div class="table-responsive mt-4">
-    <h3 id="shopName<?= $s->id?>"  class="vertical-align-center"><?= $s->name ?></h3>
-    <table id="tab<?= $s->id?>"  class="table table-striped table-light table-sm table-bordered table-hover align-middle"> 
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th class="p-0 text-center">CB Black</th>
-                <th class="p-0 text-center">CB White</th>
-                <th class="p-0 text-center">CB Vegan</th>
-            </tr>
-        </thead>
-
-        <tbody class="table-striped mb-3 align-middle">
-            <?php foreach($cb_stock as $q => $r) { ?>
-                <?php if ($s->id == $r->store_id) { ?>
-                <tr class="">
-                    <td class="" scope="row" ><?= cleanDate($r->entry_date) ?></td>
-                    <td class="p-0 text-center"><?= $r->cbb_stock?></td>
-                    <td class="p-0 text-center"><?= $r->cbw_stock?></td>
-                    <td class="p-0 text-center"><?= $r->cbv_stock?></td>
+    <div class="card flex-grow-1 mx-2 my-2"  id="tab<?= $s->id?>">
+        <div class="card-header"><h3 id="shopName<?= $s->id?>"  class=""><?= $s->name ?></h3></div>
+        <div class="card-body">
+        <table class="table table-light table-sm"> 
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col" class="">CB Black</th>
+                    <th scope="col" class="">CB White</th>
+                    <th scope="col" class="">CB Vegan</th>
                 </tr>
-            <?php } ?>
-            <?php } ?>
-        </tbody>
-    </table>
-</div>
+            </thead>
+
+            <tbody class="table-striped mb-3 ">
+                <?php foreach($cb_stock as $q => $r) { ?>
+                    <?php if ($s->id == $r->store_id) { ?>
+                    <tr class="">
+                        <td class="" scope="" ><?= cleanDate($r->entry_date) ?></td>
+                        <td class=""><?= $r->cbb_stock?></td>
+                        <td class=""><?= $r->cbw_stock?></td>
+                        <td class=""><?= $r->cbv_stock?></td>
+                    </tr>
+                <?php } ?>
+                <?php } ?>
+            </tbody>
+        </table>
+        </div>
+    </div>
 <?php } ?>
+</div>
+
+
+<div class="row my-3">
+    <div class="text-center">
+        <h4 class="mb-2 me-2">View/Hide Cold Brew Par:</h4>  
+        <div class="d-flex justify-content-center align-items-center mt-1">   
+            <button id="show1" class="btn btn-primary me-2">East End</button>
+            <button id="show2" class="btn btn-primary me-2">Mills</button>
+            <button id="show3" class="btn btn-primary me-2">UCF</button>
+        </div>
+    </div>
+</div>
+<div class="d-flex flex-column flex-md-row justify-content-evenly mt-4">
+<?php foreach($shop as $s) { ?>
+    <div class="card flex-grow-1 mx-2 my-2"  id="tab<?= $s->id?>">
+        <div class="card-header"><h3 id="shopName<?= $s->id?>"  class=""><?= $s->name ?></h3></div>
+        <div class="card-body">
+            <form action="" method="post">
+                <label for="">Cold Brew Black</label>
+                <input class="form-control" type="text" name="" id="">
+                <label for="">Cold Brew White</label>
+                <input class="form-control" type="text" name="" id="">
+                <label for="">Cold Vegan</label>
+                <input class="form-control" type="text" name="" id="">
+            </form>
+        </div>
+    </div>
+<?php } ?>
+</div>
 <div class="row mt-4 mb-4">
     <div class="text-center ">
         <a href="../inventory/keg_home.php" class="btn btn-primary">Back to Keg Form</a>

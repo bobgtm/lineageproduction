@@ -11,8 +11,43 @@ function getCB() {
 }
 
 
+
+$details = $user->data()->permissions;
+dump($details);
+// Grabs Par Information from form
+if(!empty($_POST['cbpar'])){
+    $storeid = Input::get('location');
+    $fields = [
+     'store_id' => $storeid
+    ];
+    // Associative array of store_ids to quantities
+    $ids = Input::get('cbid');    
+    // Need to check whether there are entries in the db for the store already,
+    $check = $db->query("SELECT * FROM product_par WHERE store_id = ? AND product_id BETWEEN 4 AND 6", [$storeid])->count();
+    dump($check);
+    // If not, then we add the first entry
+    if($check < 1) {
+        foreach($ids as $i => $par) {
+            $fields["product_id"] = $i; 
+            $fields["par"] = $par; 
+            $db->insert("product_par", $fields);
+        }
+    } 
+    // If so, then we delete the previous entry and replace it with a new entry
+    if($check >= 1){
+        foreach($ids as $i => $par) {
+            $db->delete("product_par", ["and", ["product_id", "=", $i], ["store_id", "=", $storeid]]);   
+        }
+        foreach($ids as $i => $par) {
+            $fields["product_id"] = $i; 
+            $fields["par"] = $par; 
+            $db->insert("product_par", $fields);
+        }
+    }
+}
 // $fields = [];
-if(!empty($_POST)){
+if(!empty($_POST['cbinv'])){
+    
    $cbs = Input::get('cb');
     
         
@@ -48,22 +83,20 @@ if(!empty($_POST)){
 ?>
 
 
-<div class="row mt-3 text-center">
-    <form  action="" method="post">
-        <h4 class="text-center">Cold Brew Inventory</h4>
-            
-        <div class="col col-lg-3 col-md-6 col-sm-12 mx-auto text-center">
-            <label for="" class="form-label">Shop Location</label>
-            <select name="location" class="form-select mb-1" id="" required>
-                <option selected disabled value="">Where ya at?</option>
-
-                <option value="1">East End</option>
-                <option value="2">Mills</option>
-                <option value="3">UCF</option>
-            </select>
-        </div>
-             
-        <div class="col col-lg-3 mb-3 mx-auto">
+<div class="row row-cols-2 d-flex flex-row justify-content-center mx-3 mt-3">
+    <div class="col col-sm-12 col-md-8 col-lg-4 mx-auto text-center">    
+        <form  action="" method="post">
+            <h4 class="text-center">Cold Brew Inventory</h4>
+                
+            <div class="form-group">
+                <label for="" class="form-label">Shop Location</label>
+                <select name="location" class="form-select mb-1" id="" required>
+                    <option selected disabled value="">Where ya at?</option>
+                    <option value="1">East End</option>
+                    <option value="2">Mills</option>
+                    <option value="3">UCF</option>
+                </select>
+            </div>
             <div class="form-group">
                 <!-- Kegs -->
                 <?php 
@@ -73,13 +106,44 @@ if(!empty($_POST)){
                 <input type="number" class="form-control mt-2" name="cb[<?= $c->product_name ?>]" id="" value="">
                 <?php } ?>
             </div>
-        </div>
-        <input type="submit" name="cbinv" value="Save" class="btn btn-sm btn-success mb-3">                
-    </form>
-    <div class="text-center">
-            <a class="text-center" href="_keg.php"><button class="btn btn-success btn-sm mx-auto px-3 mb-5">View Current Keg Inventory</button></a>
+            <div class="item ">
+                <input type="submit" name="cbinv" value="Save" class="btn btn btn-success mt-2">
+            </div>        
+        </form>
     </div>
+    <?php if((isset($user) && $user->isLoggedIn()) && $user->data()->id == 1 || $user->data()->id == 6) { ?>
+    <div class="col col-sm-12 col-md-8 col-lg-4 mx-auto text-center">
+        <form  action="" method="post">
+            <h4 class="text-center">Cold Brew Par</h4>
+                
+            <div class="form-group">
+                <label for="" class="form-label">Shop Location</label>
+                <select name="location" class="form-select mb-1" id="" required>
+                    <option selected disabled value="">Set Cold Brew Par For...</option>
+                    <option value="1">East End</option>
+                    <option value="2">Mills</option>
+                    <option value="3">UCF</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <!-- Kegs -->
+                <?php 
+                $cb = getCB();
+                foreach($cb as $c) { ?>
+                <label for="cb" class="mt-2"><?= $c->product_name ?></label>
+                <input type="number" class="form-control mt-2" name="cbid[<?= $c->id ?>]" id="" value="">
+                <?php } ?>
+            </div>
+            <div class="item ">
+                <input type="submit" name="cbpar" value="Save" class="btn btn btn-success mt-2">
+            </div>
+        </form>
+    </div>
+    <?php } ?>
+    
 </div>
-
+<div class="text-center">
+        <a class="text-center mx-auto" href="_keg.php"><button class="btn btn-success btn-sm px-3 mt-3 mb-5">View Current Keg Inventory</button></a>
+</div>
 
 <?php require_once $abs_us_root . $us_url_root . 'users/includes/html_footer.php'; ?>
