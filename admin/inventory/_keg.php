@@ -7,6 +7,12 @@ $cb_stock = $db->query("SELECT * FROM inventory_cold_brew_entry WHERE entry_date
 
 $shop = $db->query("SELECT * FROM shops")->results();
 
+$par = $db->query("SELECT pp.*, p.* FROM product_par as pp
+LEFT OUTER JOIN products as p on pp.product_id=p.id
+WHERE pp.product_id BETWEEN 4 AND 6")->results();
+dump($db->errorString());
+dump($par);
+
 
 
 $rec = $db->query("SELECT * from shops RIGHT JOIN inventory_cold_brew_entry as icbe ON shops.id = icbe.store_id")->results();
@@ -91,26 +97,40 @@ if($to == "") {
     <div class="text-center">
         <h4 class="mb-2 me-2">View/Hide Cold Brew Par:</h4>  
         <div class="d-flex justify-content-center align-items-center mt-1">   
-            <button id="show1" class="btn btn-primary me-2">East End</button>
-            <button id="show2" class="btn btn-primary me-2">Mills</button>
-            <button id="show3" class="btn btn-primary me-2">UCF</button>
+            <button id="sh1" class="btn btn-primary me-2">East End</button>
+            <button id="sh2" class="btn btn-primary me-2">Mills</button>
+            <button id="sh3" class="btn btn-primary me-2">UCF</button>
         </div>
     </div>
 </div>
 <div class="d-flex flex-column flex-md-row justify-content-evenly mt-4">
 <?php foreach($shop as $s) { ?>
-    <div class="card flex-grow-1 mx-2 my-2"  id="tab<?= $s->id?>">
-        <div class="card-header"><h3 id="shopName<?= $s->id?>"  class=""><?= $s->name ?></h3></div>
+    <div class="card flex-grow-1 mx-2 my-2"  id="partab<?= $s->id?>">
+        <div class="card-header"><h3 id="parName<?= $s->id?>"  class=""><?= $s->name ?></h3></div>
         <div class="card-body">
-            <form action="" method="post">
-                <label for="">Cold Brew Black</label>
-                <input class="form-control" type="text" name="" id="">
-                <label for="">Cold Brew White</label>
-                <input class="form-control" type="text" name="" id="">
-                <label for="">Cold Vegan</label>
-                <input class="form-control" type="text" name="" id="">
-            </form>
-        </div>
+            <table class="table table-sm text-center">
+                <thead class="text-centered">
+                    <tr>
+                    <?php foreach ($par as $p) { ?>
+                        
+                        <?php if($s->id == $p->store_id && ($p->product_id >= 4 && $p->product_id <=6)) {?>
+                            <th><?= $p->product_name ?></th>
+                        <?php } ?>
+                        <?php } ?>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <?php foreach ($par as $p) { ?>
+                        
+                        <?php if($s->id == $p->store_id && ($p->product_id >= 4 && $p->product_id <=6)) {?>
+                            <td><?= $p->par ?></td>
+                        <?php } ?>
+                        <?php } ?>
+                        </tr>
+                    </tbody>    
+                </table>
+            </div>
     </div>
 <?php } ?>
 </div>
@@ -133,6 +153,17 @@ if($to == "") {
          $("#show" + num).on("click", function(){
             $("#tab" + num).toggle(300, 'linear');
             $("#shopName" + num).toggle(300, 'linear');
+         });
+      });
+   });
+
+   $(document).ready(function() {
+      var nums = [1, 2, 3]
+      htmlContent = "style=display: none;"
+      nums.forEach(num => {
+         $("#sh" + num).on("click", function(){
+            $("#partab" + num).toggle(300, 'linear');
+            $("#parName" + num).toggle(300, 'linear');
          });
       });
    });
