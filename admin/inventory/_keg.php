@@ -10,10 +10,6 @@ $shop = $db->query("SELECT * FROM shops")->results();
 $par = $db->query("SELECT pp.*, p.* FROM product_par as pp
 LEFT OUTER JOIN products as p on pp.product_id=p.id
 WHERE pp.product_id BETWEEN 4 AND 6")->results();
-dump($db->errorString());
-dump($par);
-
-
 
 $rec = $db->query("SELECT * from shops RIGHT JOIN inventory_cold_brew_entry as icbe ON shops.id = icbe.store_id")->results();
 
@@ -52,9 +48,9 @@ if($to == "") {
     <div class="text-center">
         <h4 class="mb-2 me-2">View/Hide Inventory:</h4>  
         <div class="d-flex justify-content-center align-items-center mt-1">   
-            <button id="show1" class="btn btn-primary me-2">East End</button>
-            <button id="show2" class="btn btn-primary me-2">Mills</button>
-            <button id="show3" class="btn btn-primary me-2">UCF</button>
+            <button id="show1" class="btn btn-info me-2">East End</button>
+            <button id="show2" class="btn btn-warning me-2">Mills</button>
+            <button id="show3" class="btn btn-success me-2">UCF</button>
         </div>
     </div>
 </div>
@@ -97,9 +93,9 @@ if($to == "") {
     <div class="text-center">
         <h4 class="mb-2 me-2">View/Hide Cold Brew Par:</h4>  
         <div class="d-flex justify-content-center align-items-center mt-1">   
-            <button id="sh1" class="btn btn-primary me-2">East End</button>
-            <button id="sh2" class="btn btn-primary me-2">Mills</button>
-            <button id="sh3" class="btn btn-primary me-2">UCF</button>
+            <button id="sh1" class="btn btn-info me-2">East End</button>
+            <button id="sh2" class="btn btn-warning me-2">Mills</button>
+            <button id="sh3" class="btn btn-success me-2">UCF</button>
         </div>
     </div>
 </div>

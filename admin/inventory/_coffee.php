@@ -6,7 +6,8 @@ $coffees = $db->query("SELECT * FROM products_coffee")->results();
 
 
 $ee_stock = $db->query("SELECT eei.entry_date, eei.id, eei.coffee_id, eei.stock, eei.entry_date, c.coffee_name FROM inventory_eastend_coffee_entry AS eei LEFT OUTER JOIN products_coffee AS c ON eei.coffee_id=c.id WHERE ACTIVE = 1")->results();
-$mills_stock = $db->query("SELECT m.entry_date, m.id, m.coffee_id, m.stock, m.entry_date, c.coffee_name FROM inventory_mills_coffee_entry AS m LEFT OUTER JOIN products_coffee AS c ON m.coffee_id=c.id WHERE ACTIVE = 1")->results();
+$mills_stock = $db->query("SELECT DISTINCT m.entry_date, m.id, m.coffee_id, m.stock, m.entry_date, c.coffee_name FROM inventory_mills_coffee_entry AS m LEFT OUTER JOIN products_coffee AS c ON m.coffee_id=c.id WHERE ACTIVE = 1")->results();
+
 dump($mills_stock);
 dump($db->errorString());
 $cb_stock = $db->query("SELECT * FROM inventory_cold_brew_entry GROUP BY entry_date DESC LIMIT 2")->results();
@@ -113,28 +114,53 @@ if($to == "") {
 
 <?php foreach($shop as $s) { ?>
    <div class="table-responsive mt-4">
-    <h3 id="shopName<?= $s->id?>"  class="vertical-align-center"><?= $s->name ?></h3>
-    <table id="tab<?= $s->id?>"  class="table table-striped table-light table-sm table-bordered table-hover"> 
-        <thead>
-            <tr>
-                <th rowspan="">Latest Record</th>
-                <?php foreach($coffees as $c) { ?> 
-                <th><?= $c->coffee_name ?></th>
-                <?php } ?>
-                
-            </tr>
-        </thead>
-
-        <tbody class="table-striped mb-3">
-               
-                <?php foreach($coffees as $cs) { ?>
+    
+    <div class="card">
+        <div class="card-header">
+        <h3 id="shopName<?= $s->id?>"  class="vertical-align-center"><?= $s->name ?></h3>
+        </div>
+    
+        <div class="card-body">
+            <table id="tab<?= $s->id?>"  class="table table-striped table-light table-sm table-bordered table-hover"> 
+                <thead>
                     <tr>
-                        <td></td>
-                                               
-                    </tr>           
-                <?php } ?>
-        </tbody>
-    </table>
+                        <th>Coffee Name</th>
+                    <?php foreach($coffees as $cs) { ?>
+                            
+                                
+                        <?php if($s->id == 2){ ?>
+                            <th><?php
+                             if($m->coffee_id == $cs->id){ echo $m->entry_date; }?>  
+                            </th>
+                        <?php } elseif($s->id == 1) { ?>
+                            <th><?php
+                             foreach($ee_stock as $e) { if($e->coffee_id == $cs->id){ echo cleanDate($e->entry_date); }}?>  
+                            </th>
+                        <?php } elseif($s->id == 3) { ?>
+                            <th><?php
+                             foreach($ucf_stock as $u) { if($u->coffee_id == $cs->id){ echo cleanDate($u->entry_date); }}?> 
+                            </th>
+                        <?php } ?>
+                           
+                        
+                        <?php } ?>
+                    </tr>
+                </thead>
+
+                <tbody class="table-striped mb-3">
+                    
+                        <?php foreach($coffees as $cs) { ?>
+                            <tr>
+                                <td><?= $cs->coffee_name ?></td>   
+                                <td><?php if($s->id == 2){ foreach($mills_stock as $m) { if($m->coffee_id == $cs->id){ echo $m->stock; }}?></td>  
+                            </tr>           
+                        <?php } ?>
+                        <?php } ?>
+                </tbody>
+            </table> 
+        </div>
+    </div>
+    
 </div>
 <?php } ?>
 <div class="row mt-4 mb-4">

@@ -25,6 +25,10 @@ require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
             <h4 class="align-self-center"></h4>
         </div>
         <div class="text-center align-self-center mb-5">
+            <a class="text-bg-primary-emphasis" href="<?=$us_url_root?>admin/inventory/syrup_home.php"><button class="btn btn-secondary btn-lg shadow">Syrups</button></a>
+            <h4 class="align-self-center"></h4>
+        </div>
+        <div class="text-center align-self-center mb-5">
             <a href="<?=$us_url_root?>admin/inventory/home.php"><button class="btn btn-secondary btn-lg shadow">Pastry Waste</button></a>
             <h4 class="align-self-center"></h4>
         </div> 
