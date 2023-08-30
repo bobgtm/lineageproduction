@@ -2,9 +2,13 @@
 require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
-$cb_stock = $db->query("SELECT * FROM inventory_cold_brew_entry WHERE entry_date > CURDATE() - INTERVAL 1 WEEK ORDER BY entry_date DESC")->results();
-// offset date
+$syrup = $db->query("SELECT * FROM inventory_syrup WHERE entry_date > CURDATE() - INTERVAL 1 WEEK ORDER BY entry_date DESC")->results();
 
+// dump($syrup_stock);
+$syrups_q = $db->query("SELECT p.id as product_id, p.product_name, iyp.* FROM products as p  
+LEFT OUTER JOIN inventory_syrup AS iyp ON p.id=iyp.syrup_id
+WHERE product_type = 3 AND ACTIVE = 1 LIMIT 11")->results();
+// dump($syrups);
 $shop = $db->query("SELECT * FROM shops")->results();
 
 $par = $db->query("SELECT pp.*, p.* FROM product_par as pp
@@ -59,28 +63,25 @@ if($to == "") {
 <?php foreach($shop as $s) { ?>
     <div class="card flex-grow-1 mx-2 my-2"  id="tab<?= $s->id?>">
         <div class="card-header"><h3 id="shopName<?= $s->id?>"  class=""><?= $s->name ?></h3></div>
-        <div class="card-body">
-        <table class="table table-light table-sm"> 
+        <div class="card-body table-responsive">
+        <table class="table table-light table-striped table-sm"> 
             <thead>
                 <tr>
-                    <th scope="col">Date</th>
-                    <th scope="col" class="">CB Black</th>
-                    <th scope="col" class="">CB White</th>
-                    <th scope="col" class="">CB Vegan</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Quantity</th>
                 </tr>
             </thead>
 
             <tbody class="table-striped mb-3 ">
-                <?php foreach($cb_stock as $q => $r) { ?>
-                    <?php if ($s->id == $r->store_id) { ?>
-                    <tr class="">
-                        <td class="" scope="" ><?= cleanDate($r->entry_date) ?></td>
-                        <td class=""><?= $r->cbb_stock?></td>
-                        <td class=""><?= $r->cbw_stock?></td>
-                        <td class=""><?= $r->cbv_stock?></td>
-                    </tr>
+                <?php foreach($syrups_q as $y){ ?>
+                <tr>
+                    <?php if($s->id == $y->store_id){ ?>
+                        <td scope="col" class=""><?=$y->product_name?></td>
+                        <td><?=$y->quantity?></td>
+                    <?php } ?>
+                </tr>
                 <?php } ?>
-                <?php } ?>
+                
             </tbody>
         </table>
         </div>
@@ -166,3 +167,5 @@ if($to == "") {
    });
 
 </script>
+
+<?php require_once $abs_us_root . $us_url_root .'views/menu_foot.php'; ?>
