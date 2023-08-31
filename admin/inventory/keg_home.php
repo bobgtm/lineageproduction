@@ -13,7 +13,7 @@ function getCB() {
 
 
 $details = $user->data()->permissions;
-dump($details);
+
 // Grabs Par Information from form
 if(!empty($_POST['cbpar'])){
     $storeid = Input::get('location');
@@ -83,7 +83,7 @@ if(!empty($_POST['cbinv'])){
 ?>
 
 
-<div class="row row-cols-2 d-flex flex-row justify-content-center mx-3 mt-3">
+<div class="row row-cols-2 d-flex flex-md-row flex-sm-column justify-content-center mx-1 mt-4">
     <div class="col col-sm-12 col-md-8 col-lg-4 mx-auto text-center">    
         <form  action="" method="post">
             <h4 class="text-center">Cold Brew Inventory</h4>

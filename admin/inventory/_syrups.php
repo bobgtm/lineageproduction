@@ -2,25 +2,94 @@
 require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
-$syrup = $db->query("SELECT * FROM inventory_syrup WHERE entry_date > CURDATE() - INTERVAL 1 WEEK ORDER BY entry_date DESC")->results();
+// $syrup = $db->query("SELECT * FROM inventory_syrup WHERE entry_date > CURDATE() - INTERVAL 1 WEEK ORDER BY entry_date DESC")->results();
 
-// dump($syrup_stock);
-$syrups_q = $db->query("SELECT p.id as product_id, p.product_name, iyp.* FROM products as p  
-LEFT OUTER JOIN inventory_syrup AS iyp ON p.id=iyp.syrup_id
-WHERE product_type = 3 AND ACTIVE = 1 LIMIT 11")->results();
-// dump($syrups);
+$syrCount = $db->query("SELECT * FROM products WHERE product_type = 3 and ACTIVE = 1")->count();
+
+$mills_inv = $db->query("SELECT ip.*, p.product_name  FROM inventory_syrup as ip
+LEFT OUTER JOIN products as p
+on ip.syrup_id=p.id
+WHERE ip.store_id = 1
+LIMIT $syrCount
+")->results();
+
+$ee_inv = $db->query("SELECT ip.*, p.product_name  FROM inventory_syrup as ip
+LEFT OUTER JOIN products as p
+on ip.syrup_id=p.id
+WHERE ip.store_id = 2
+LIMIT $syrCount
+")->results();
+
+$ucf_inv = $db->query("SELECT ip.*, p.product_name  FROM inventory_syrup as ip
+LEFT OUTER JOIN products as p
+on ip.syrup_id=p.id
+WHERE ip.store_id = 3
+LIMIT $syrCount
+")->results();
+
+dump($mills_inv);
+dump($db->errorString());
+$store_par = $db->query("SELECT pp.*, p.* FROM product_par as pp
+LEFT OUTER JOIN products as p
+ON pp.product_id=p.id
+WHERE pp.product_type = 3 AND active = 1
+")->results();
+
+
+
+
+// $syrups_q = $db->query("SELECT t1.*,
+// p.id as prod_id, p.product_name,
+// pp.par, pp.unit_id as unit
+// FROM inventory_syrup t1
+// JOIN (
+//   SELECT syrup_id, store_id, entry_date, MAX(id) AS max_id
+//   FROM (
+//     SELECT syrup_id, store_id, entry_date, MAX(entry_date) AS max_date
+//     FROM inventory_syrup
+//     GROUP BY syrup_id, store_id 
+//   ) t2
+//   GROUP BY syrup_id, store_id, entry_date
+// ) t3
+// ON t1.id=t3.max_id
+// ")->results();
+// dump($db->errorString());
+
+
+
+
+function parseUnit($value){
+    switch ($value) {
+        case '1':
+            echo "Gal.";
+            break;
+        case '2':
+            echo "L";
+            break;
+        case '3':
+            echo "Qt.";
+            break;
+        case '4':
+            echo "C.";
+            break;
+        case '5':
+            echo "Oz.";
+            break;
+        default:
+            echo "no unit supplied";
+            break;
+    }
+}
+
+
 $shop = $db->query("SELECT * FROM shops")->results();
 
-$par = $db->query("SELECT pp.*, p.* FROM product_par as pp
-LEFT OUTER JOIN products as p on pp.product_id=p.id
-WHERE pp.product_id BETWEEN 4 AND 6")->results();
 
-$rec = $db->query("SELECT * from shops RIGHT JOIN inventory_cold_brew_entry as icbe ON shops.id = icbe.store_id")->results();
 
 
 function cleanDate($val) {
    $newDate = new DateTime($val);
-   $strip = $newDate->format('l: m/j');
+   $strip = $newDate->format('D: m/j');
    return $strip;
 }
 $from = Input::get('from');
@@ -69,19 +138,39 @@ if($to == "") {
                 <tr>
                     <th scope="col">Product</th>
                     <th scope="col">Quantity</th>
+                    <th scope="col">Latest Inventory</th>
+                    
                 </tr>
             </thead>
 
             <tbody class="table-striped mb-3 ">
-                <?php foreach($syrups_q as $y){ ?>
+                <?php if($s->id == 1){ ?>
+                    <?php foreach($ee_inv as $y){ ?>
                 <tr>
-                    <?php if($s->id == $y->store_id){ ?>
-                        <td scope="col" class=""><?=$y->product_name?></td>
-                        <td><?=$y->quantity?></td>
-                    <?php } ?>
+                    <td scope="col" class=""><?=$y->product_name?></td>
+                    <td scope="col"><?= $y->quantity == "" ? "0 " : $y->quantity . " " ?><?= parseUnit($y->unit_id)?></td>
+                    <td scope="col"><?= cleanDate($y->entry_date)?></td>   
                 </tr>
                 <?php } ?>
-                
+                <?php } ?>
+                <?php if($s->id == 2){ ?>
+                    <?php foreach($mills_inv as $y){ ?>
+                <tr>
+                    <td scope="col" class=""><?=$y->product_name?></td>
+                    <td scope="col"><?= $y->quantity == "" ? "0 " : $y->quantity . " " ?><?= parseUnit($y->unit_id)?></td>
+                    <td scope="col"><?= cleanDate($y->entry_date)?></td>   
+                </tr>
+                <?php } ?>
+                <?php } ?>
+                <?php if($s->id == 3){ ?>
+                    <?php foreach($ucf_inv as $y){ ?>
+                <tr>
+                    <td scope="col" class=""><?=$y->product_name?></td>
+                    <td scope="col"><?= $y->quantity == "" ? "0 " : $y->quantity . " " ?><?= parseUnit($y->unit_id)?></td>
+                    <td scope="col"><?= cleanDate($y->entry_date)?></td>   
+                </tr>
+                <?php } ?>
+                <?php } ?>
             </tbody>
         </table>
         </div>
@@ -108,23 +197,19 @@ if($to == "") {
             <table class="table table-sm text-center">
                 <thead class="text-centered">
                     <tr>
-                    <?php foreach ($par as $p) { ?>
-                        
-                        <?php if($s->id == $p->store_id && ($p->product_id >= 4 && $p->product_id <=6)) {?>
-                            <th><?= $p->product_name ?></th>
-                        <?php } ?>
-                        <?php } ?>
+                        <th>Product</th>
+                        <th>Par Amount</th>
                     </tr>
                     </thead>
                     <tbody>
+                        <?php foreach($store_par as $p){ ?>
                         <tr>
-                        <?php foreach ($par as $p) { ?>
-                        
-                        <?php if($s->id == $p->store_id && ($p->product_id >= 4 && $p->product_id <=6)) {?>
-                            <td><?= $p->par ?></td>
-                        <?php } ?>
-                        <?php } ?>
+                            <?php if($s->id == $p->store_id){ ?>
+                                <td scope="col" class=""><?=$p->product_name?></td>
+                                <td scope="col"><?=$p->par . " " ?><?= parseUnit($p->unit_id)?></td>
+                            <?php } ?>
                         </tr>
+                        <?php } ?>
                     </tbody>    
                 </table>
             </div>
@@ -132,15 +217,7 @@ if($to == "") {
 <?php } ?>
 </div>
 
-<div class="row mt-4 mb-4">
-    <div class="text-center ">
-        <a href="<?php $us_url_root?>/inventory/keg_home.php" class="btn btn-primary">Back to Keg Form</a>
-    </div>
-    <div class="d-flex justify-content-center flex-lg-row flex-sm-column p-0">
-        <a href="<?= $us_url_root?>admin/home.php" class="btn btn-primary m-2">Back to Home Page</a>
-        <a href="<?= $us_url_root?>admin/inventory/coffee_home.php" class="btn btn-primary m-2">View Coffee Form</a>
-    </div>
-</div>
+
 
 
 <script>

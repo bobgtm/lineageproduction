@@ -90,7 +90,7 @@ if(!empty($_POST['syrinv'])){
                     'syrup_id' => $k,
                     'quantity' => $v,
                     'unit_id' => $u,
-                    'entry_date' => date('Y-m-d'),
+                    'entry_date' => date('Y-m-d H:i:s'),
                     'store_id' => Input::get('location')
                 ];
 
