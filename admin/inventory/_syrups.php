@@ -2,61 +2,57 @@
 require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
-// $syrup = $db->query("SELECT * FROM inventory_syrup WHERE entry_date > CURDATE() - INTERVAL 1 WEEK ORDER BY entry_date DESC")->results();
+
 
 $syrCount = $db->query("SELECT * FROM products WHERE product_type = 3 and ACTIVE = 1")->count();
 
-$mills_inv = $db->query("SELECT ip.*, p.product_name  FROM inventory_syrup as ip
-LEFT OUTER JOIN products as p
-on ip.syrup_id=p.id
-WHERE ip.store_id = 1
-LIMIT $syrCount
-")->results();
+$mills_inv = $db->query("SELECT ip.*, p.product_name
+FROM inventory_syrup AS ip
+LEFT JOIN products AS p ON ip.syrup_id = p.id
+INNER JOIN (
+    SELECT syrup_id, MAX(entry_date) AS max_entry_date
+    FROM inventory_syrup
+    WHERE store_id = 2
+    GROUP BY syrup_id
+) AS latest_entries ON ip.syrup_id = latest_entries.syrup_id
+WHERE ip.entry_date = latest_entries.max_entry_date
+AND p.active = 1
+ORDER BY ip.syrup_id
+LIMIT $syrCount")->results(); 
 
-$ee_inv = $db->query("SELECT ip.*, p.product_name  FROM inventory_syrup as ip
-LEFT OUTER JOIN products as p
-on ip.syrup_id=p.id
-WHERE ip.store_id = 2
-LIMIT $syrCount
-")->results();
+$ee_inv = $db->query("SELECT ip.*, p.product_name
+FROM inventory_syrup AS ip
+LEFT JOIN products AS p ON ip.syrup_id = p.id
+INNER JOIN (
+    SELECT syrup_id, MAX(entry_date) AS max_entry_date
+    FROM inventory_syrup
+    WHERE store_id = 1
+    GROUP BY syrup_id
+) AS latest_entries ON ip.syrup_id = latest_entries.syrup_id
+WHERE ip.entry_date = latest_entries.max_entry_date
+AND p.active = 1
+ORDER BY ip.syrup_id
+LIMIT $syrCount")->results();
 
-$ucf_inv = $db->query("SELECT ip.*, p.product_name  FROM inventory_syrup as ip
-LEFT OUTER JOIN products as p
-on ip.syrup_id=p.id
-WHERE ip.store_id = 3
-LIMIT $syrCount
-")->results();
+$ucf_inv = $db->query("SELECT ip.*, p.product_name
+FROM inventory_syrup AS ip
+LEFT JOIN products AS p ON ip.syrup_id = p.id
+INNER JOIN (
+    SELECT syrup_id, MAX(entry_date) AS max_entry_date
+    FROM inventory_syrup
+    WHERE store_id = 3
+    GROUP BY syrup_id
+) AS latest_entries ON ip.syrup_id = latest_entries.syrup_id
+WHERE ip.entry_date = latest_entries.max_entry_date
+AND p.active = 1
+ORDER BY ip.syrup_id
+LIMIT $syrCount")->results();
 
-dump($mills_inv);
-dump($db->errorString());
 $store_par = $db->query("SELECT pp.*, p.* FROM product_par as pp
 LEFT OUTER JOIN products as p
 ON pp.product_id=p.id
 WHERE pp.product_type = 3 AND active = 1
 ")->results();
-
-
-
-
-// $syrups_q = $db->query("SELECT t1.*,
-// p.id as prod_id, p.product_name,
-// pp.par, pp.unit_id as unit
-// FROM inventory_syrup t1
-// JOIN (
-//   SELECT syrup_id, store_id, entry_date, MAX(id) AS max_id
-//   FROM (
-//     SELECT syrup_id, store_id, entry_date, MAX(entry_date) AS max_date
-//     FROM inventory_syrup
-//     GROUP BY syrup_id, store_id 
-//   ) t2
-//   GROUP BY syrup_id, store_id, entry_date
-// ) t3
-// ON t1.id=t3.max_id
-// ")->results();
-// dump($db->errorString());
-
-
-
 
 function parseUnit($value){
     switch ($value) {
@@ -91,27 +87,6 @@ function cleanDate($val) {
    $newDate = new DateTime($val);
    $strip = $newDate->format('D: m/j');
    return $strip;
-}
-$from = Input::get('from');
-$to = Input::get('to');
-$searched = false;
-dump($_GET);
-// If the user decides to select a filter
-if(!empty($_GET["filter"])){
-   if ($from != "" && $to != "") {
-      // $searched = true;
-      $rec = $db->query("SELECT * FROM shops RIGHT JOIN inventory_cold_brew_entry AS icbe ON shops.id = icbe.shop_id WHERE DATE(date) >= ? AND DATE(date) <= ?", [$from, $to])->results();
-   }
-} elseif(!empty($_GET["clear"])){
-   $from = "2023-01-01";
-   $to = date("D: Y, m");
-   Redirect::to('_keg.php');
-}
-if($from == "") {
-   $from = "2023-01-01";
-}
-if($to == "") {
-   $to = date("Y-m-d");
 }
 ?>
 
