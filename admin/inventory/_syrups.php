@@ -217,7 +217,9 @@ if($to == "") {
 <?php } ?>
 </div>
 
-
+<div class="row mt-4 mb-4">
+    <?php require_once $abs_us_root.$us_url_root."views/menu_foot.php" ?>
+</div>
 
 
 <script>

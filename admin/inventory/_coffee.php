@@ -163,12 +163,11 @@ if($to == "") {
     
 </div>
 <?php } ?>
+
 <div class="row mt-4 mb-4">
-    <div class="text-center">
-        <a href="../inventory/coffee_home.php" class="btn btn-primary">Back to Coffee Form</a>
-    </div>
-    
+    <?php require_once $abs_us_root.$us_url_root."views/menu_foot.php" ?>
 </div>
+
 
 
 <script>
