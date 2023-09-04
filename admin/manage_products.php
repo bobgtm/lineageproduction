@@ -3,18 +3,76 @@ require_once '../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
 $products = $db->query("SELECT * from products ORDER BY active DESC")->results();
+if(!empty($_POST['addProduct'])) {
+    $name = Input::get('newProduct');
+    $ptype = Input::get("prodType");
+    
+    $fields = [
+        'product_name' => $name,
+        'product_type' => $ptype,
+        'active' => 1,
+    ];
+    $fields2 = [
+            'coffee_name' => $name,
+            'active' => 1,
+        ];
+    
+    if($ptype == 1){
+        echo "one";
+        // $db->insert('products', $fields);
+        
+        $db->insert('products_coffee', $fields2);
+    
+    } else {
+        echo "not one";
+        $db->insert('products', $fields);
+    }
+}
+
 
 ?>
+<div class="row mx-3 my-3">
 
+    <div class="column">
+        <div class="card">
+            <div class="card-header">Add Product</div>
+            <div class="card-body">
+                <form action="" method="post" class="">
+                    <div class="d-flex justify-content-between flex-row">
+                        <div class="flex-grow-1 mx-2">
+                            <label for="newProduct"  class="mb-2">Name</label>
+                            <input class="form-control mb-2" type="text" name="newProduct">
+                        </div>
+                        <div class="flex-grow-1 mx-2">
+                            <label for="newProduct" class="mb-2">Product Type</label>
+                            <select name="prodType" class="form-control mb-2" id="">
+                                <option value="">Select...</option>
+                                <option value="1">Coffee</option>
+                                <option value="3">Syrup</option>
+                                <option value="2">Cold Brew</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <input type="submit" name="addProduct" value="Save" class="btn btn-primary flex-grow-0 mx-2">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row mx-3 my-3">
     <div class="column">
         <div class="card">
+            <div class="card-header">
+                Manage Product Status
+            </div>
             <div class="card-body">
+
                 <table class="table table-striped table-sm">
                     <thead>
                         <tr>
-                            <th>Head 1</th>
-                            <th>Status</th>
+                            <th>Product Name</th>
+                            <th>Toggle Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,6 +124,7 @@ $products = $db->query("SELECT * from products ORDER BY active DESC")->results()
             }).done(function(responseData) {
                 console.log(responseData); // You can directly work with responseData as an object
                 $("label[for='" + nid + "']").html(responseData.status);
+                
             })
         });
     });

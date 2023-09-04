@@ -5,7 +5,7 @@ require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 function getCoffees() {
     global $db;
     
-    $res = $db->query("SELECT * FROM products_coffee WHERE active = 1")->results();
+    $res = $db->query("SELECT * FROM products WHERE product_type = 1 AND active = 1")->results();
     
     return $res;
 }
@@ -99,7 +99,7 @@ if(!empty($_POST)){
                 <?php 
                 $coffee = getCoffees();
                 foreach($coffee as $c) { ?>
-                    <label for="coffee" class="mt-2"><?= $c->coffee_name ?></label>
+                    <label for="coffee" class="mt-2"><?= $c->product_name ?></label>
                     <input type="number" class="form-control mt-2" name="coffee_[<?= $c->id ?>]" id="" value="">
                 <?php } ?>
             </div>

@@ -9,7 +9,7 @@ $shop = $db->query("SELECT * FROM shops")->results();
 
 $par = $db->query("SELECT pp.*, p.* FROM product_par as pp
 LEFT OUTER JOIN products as p on pp.product_id=p.id
-WHERE pp.product_id BETWEEN 4 AND 6")->results();
+WHERE pp.product_id BETWEEN 4 AND 6 AND active = 1")->results();
 
 $rec = $db->query("SELECT * from shops RIGHT JOIN inventory_cold_brew_entry as icbe ON shops.id = icbe.store_id")->results();
 
@@ -22,7 +22,7 @@ function cleanDate($val) {
 $from = Input::get('from');
 $to = Input::get('to');
 $searched = false;
-dump($_GET);
+
 // If the user decides to select a filter
 if(!empty($_GET["filter"])){
    if ($from != "" && $to != "") {
@@ -110,7 +110,7 @@ if($to == "") {
                     <?php foreach ($par as $p) { ?>
                         
                         <?php if($s->id == $p->store_id && ($p->product_id >= 4 && $p->product_id <=6)) {?>
-                            <th><?= $p->product_name ?></th>
+                            <th span="col"><?= $p->product_name ?></th>
                         <?php } ?>
                         <?php } ?>
                     </tr>

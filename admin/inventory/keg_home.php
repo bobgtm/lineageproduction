@@ -44,6 +44,8 @@ if(!empty($_POST['cbpar'])){
             $db->insert("product_par", $fields);
         }
     }
+
+    usSuccess("Cold Brew Par Saved");
 }
 // $fields = [];
 if(!empty($_POST['cbinv'])){
@@ -83,8 +85,8 @@ if(!empty($_POST['cbinv'])){
 ?>
 
 
-<div class="row row-cols-2 d-flex flex-md-row flex-sm-column justify-content-center mx-1 mt-4">
-    <div class="col col-sm-12 col-md-8 col-lg-4 mx-auto text-center">    
+<div class="row row-cols-2 d-flex flex-md-row flex-column justify-content-center align-items-center mx-1 mt-4">
+    <div class="col col-sm-12 col-md-8 col-lg-4 mx-auto mb-4 text-center">    
         <form  action="" method="post">
             <h4 class="text-center">Cold Brew Inventory</h4>
                 
@@ -106,13 +108,13 @@ if(!empty($_POST['cbinv'])){
                 <input type="number" class="form-control mt-2" name="cb[<?= $c->product_name ?>]" id="" value="">
                 <?php } ?>
             </div>
-            <div class="item ">
-                <input type="submit" name="cbinv" value="Save" class="btn btn btn-success mt-2">
+            <div class="item">
+                <input type="submit" name="cbinv" value="Save" class="btn btn btn-success mt-3">
             </div>        
         </form>
     </div>
     <?php if((isset($user) && $user->isLoggedIn()) && $user->data()->id == 1 || $user->data()->id == 6) { ?>
-    <div class="col col-sm-12 col-md-8 col-lg-4 mx-auto text-center">
+    <div class="col col-sm-12 col-md-8 col-lg-4 mx-auto align-self-center text-center">
         <form  action="" method="post">
             <h4 class="text-center">Cold Brew Par</h4>
                 
@@ -135,7 +137,7 @@ if(!empty($_POST['cbinv'])){
                 <?php } ?>
             </div>
             <div class="item ">
-                <input type="submit" name="cbpar" value="Save" class="btn btn btn-success mt-2">
+                <input type="submit" name="cbpar" value="Save" class="btn btn btn-success mt-3">
             </div>
         </form>
     </div>

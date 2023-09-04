@@ -156,7 +156,7 @@ function cleanDate($val) {
 
 <div class="row my-3">
     <div class="text-center">
-        <h4 class="mb-2 me-2">View/Hide Cold Brew Par:</h4>  
+        <h4 class="mb-2 me-2">View/Hide Syrup Par:</h4>  
         <div class="d-flex justify-content-center align-items-center mt-1">   
             <button id="sh1" class="btn btn-info me-2">East End</button>
             <button id="sh2" class="btn btn-warning me-2">Mills</button>
