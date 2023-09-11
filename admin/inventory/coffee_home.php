@@ -14,37 +14,18 @@ function getCoffees() {
 // $fields = [];
 if(!empty($_POST)){
     $coffees = Input::get('coffee_');
-    if(Input::get('location') == 1) {
-        foreach($coffees as $id => $inv) {
-                $fields = [ 
-                    'entry_date' => date('Y-m-d'),
-                    'coffee_id' => $id,
-                    'stock' => $inv        
-                    ];
-                $db->insert('inventory_eastend_coffee_entry', $fields);
-            }
-    }
-    if(Input::get('location') == 2) {
-        foreach($coffees as $id => $inv) {
+    foreach($coffees as $id => $inv) {
             $fields = [ 
-                'entry_date' => date('Y-m-d'),
+                'entry_date' => date('Y-m-d H:i:s'),
+                'store_id' => Input::get('location'),
                 'coffee_id' => $id,
-                'stock' => $inv        
+                'stock' => $inv
                 ];
-            $db->insert('inventory_mills_coffee_entry', $fields);
+            $db->insert('inventory_coffee', $fields);
         }
+    usSuccess("Coffee Inventory Saved");
     }
-    if(Input::get('location') == 3) {
-        foreach($coffees as $id => $inv) {
-            $fields = [ 
-                'entry_date' => date('Y-m-d'),
-                'coffee_id' => $id,
-                'stock' => $inv        
-                ];
-            $db->insert('inventory_coffee_entry', $fields);
-        }
-    }
-   
+       
 //    
 //    dump($fields);
     
@@ -74,7 +55,7 @@ if(!empty($_POST)){
     
    
    
-}
+
 ?>
 
 

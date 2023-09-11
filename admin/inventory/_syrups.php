@@ -85,7 +85,7 @@ $shop = $db->query("SELECT * FROM shops")->results();
 
 function cleanDate($val) {
    $newDate = new DateTime($val);
-   $strip = $newDate->format('D: m/j');
+   $strip = $newDate->format('D: m/j - g:i a');
    return $strip;
 }
 ?>

@@ -80,21 +80,26 @@ if(!empty($_POST['syrpar'])){
 if(!empty($_POST['syrinv'])){
     
    $syrups = Input::get('sinv');
-   
+   $syrups2 = [];
+   foreach($syrups as $k => $v) {
+     for ($i=0; $i < count($syrups) ; $i++) { 
+            $syrups2[$k] = intval($v);
+     }
+   }
    $vals = Input::get('val');
-    foreach($syrups as $k => $v){
-        foreach($vals as $t => $u){
-            if ($k == $t){
-                
-                $fields = [
-                    'syrup_id' => $k,
-                    'quantity' => $v,
-                    'unit_id' => $u,
-                    'entry_date' => date('Y-m-d H:i:s'),
-                    'store_id' => Input::get('location')
-                ];
-
-                $db->insert('inventory_syrup', $fields);            
+    foreach($syrups2 as $k => $v){
+        if($v != 0) {
+            foreach($vals as $t => $u){
+                if ($k == $t){
+                    $fields = [
+                        'syrup_id' => $k,
+                        'quantity' => $v,
+                        'unit_id' => $u,
+                        'entry_date' => date('Y-m-d H:i:s'),
+                        'store_id' => Input::get('location')
+                    ];
+                    $db->insert('inventory_syrup', $fields);            
+                }
             }
         }
     }
@@ -103,7 +108,7 @@ if(!empty($_POST['syrinv'])){
     
     
     
-    usSuccess("Inventory Saved");
+    // usSuccess("Inventory Saved");
 }
 ?>
 
