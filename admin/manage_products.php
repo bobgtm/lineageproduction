@@ -12,20 +12,27 @@ if(!empty($_POST['addProduct'])) {
         'product_type' => $ptype,
         'active' => 1,
     ];
-    $fields2 = [
-            'coffee_name' => $name,
-            'active' => 1,
-        ];
+    
     
     if($ptype == 1){
-        echo "one";
-        // $db->insert('products', $fields);
         
-        $db->insert('products_coffee', $fields2);
-    
-    } else {
-        echo "not one";
+        
+        
+        
         $db->insert('products', $fields);
+        $newProdId = $db->lastId();
+        $fields2 = [
+            'coffee_name' => $name,
+            'active' => 1,
+            'product_id' => $newProdId,
+        ];
+        $db->insert('products_coffee', $fields2);
+        Redirect::to("manage_products.php");
+    } elseif($ptype == 2) {
+        usSuccess("Cold Brew Added");
+        $db->insert('products', $fields);
+        usSuccess("Cold Brew Added");
+        Redirect::to("manage_products.php");
     }
 }
 

@@ -86,7 +86,7 @@ if(!empty($_POST['cbinv'])){
 
 
 <div class="row row-cols-2 d-flex flex-md-row flex-column justify-content-center align-items-center mx-1 mt-4">
-    <div class="col col-sm-12 col-md-8 col-lg-4 mx-auto mb-4 text-center">    
+    <div class="col col-12 col-md-8 col-lg-4 mx-auto text-center">    
         <form  action="" method="post">
             <h4 class="text-center">Cold Brew Inventory</h4>
                 
@@ -114,7 +114,7 @@ if(!empty($_POST['cbinv'])){
         </form>
     </div>
     <?php if((isset($user) && $user->isLoggedIn()) && $user->data()->id == 1 || $user->data()->id == 6) { ?>
-    <div class="col col-sm-12 col-md-8 col-lg-4 mx-auto align-self-center text-center">
+    <div class="col col-12 col-md-8 col-lg-4 mx-auto mt-lg-0 mt-5 text-center">
         <form  action="" method="post">
             <h4 class="text-center">Cold Brew Par</h4>
                 

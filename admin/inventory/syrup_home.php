@@ -113,8 +113,8 @@ if(!empty($_POST['syrinv'])){
 ?>
 
 
-<div class="row row-cols-2 d-flex flex-row justify-content-center mx-3 mt-3">
-    <div class="col col-sm-12 col-md-8 col-lg-4 mx-auto text-center">    
+<div class="row row-cols-2 d-flex flex-lg-row flex-column justify-content-center mx-5-lg mx-0 mt-3">
+    <div class="col col-12 col-md-8 col-lg-4 mx-auto text-center mb-5">    
         <form  action="" method="post">
             <h4 class="text-center">Syrup Inventory</h4>
                 
@@ -150,7 +150,7 @@ if(!empty($_POST['syrinv'])){
         </form>
     </div>
     <?php if((isset($user) && $user->isLoggedIn()) && $user->data()->id == 1 || $user->data()->id == 6) { ?>
-    <div class="col col-sm-12 col-md-8 col-lg-4 mx-auto text-center">
+    <div class="col col-12 col-md-8 col-lg-4 mx-auto text-center">
         <form  action="" method="post">
             <h4 class="text-center">Syrup Par</h4>
                 
@@ -192,4 +192,7 @@ if(!empty($_POST['syrinv'])){
         <a class="text-center mx-auto" href="_syrups.php"><button class="btn btn-success btn-sm px-3 mt-3 mb-5">View Current Syrup Inventory</button></a>
 </div>
 
+<div class="row mt-4 mb-4">
 <?php require_once $abs_us_root . $us_url_root . 'users/includes/html_footer.php'; ?>
+</div>
+
