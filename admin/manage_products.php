@@ -15,10 +15,6 @@ if(!empty($_POST['addProduct'])) {
     
     
     if($ptype == 1){
-        
-        
-        
-        
         $db->insert('products', $fields);
         $newProdId = $db->lastId();
         $fields2 = [
@@ -28,12 +24,18 @@ if(!empty($_POST['addProduct'])) {
         ];
         $db->insert('products_coffee', $fields2);
         Redirect::to("manage_products.php");
-    } elseif($ptype == 2) {
-        usSuccess("Cold Brew Added");
+    } 
+    if($ptype == 2) {
         $db->insert('products', $fields);
-        usSuccess("Cold Brew Added");
+        Redirect::to("manage_products.php");
+    } 
+    if($ptype == 3) {
+        $db->insert('products', $fields);
+        
         Redirect::to("manage_products.php");
     }
+    
+    
 }
 
 
@@ -55,8 +57,8 @@ if(!empty($_POST['addProduct'])) {
                             <select name="prodType" class="form-control mb-2" id="">
                                 <option value="">Select...</option>
                                 <option value="1">Coffee</option>
-                                <option value="3">Syrup</option>
                                 <option value="2">Cold Brew</option>
+                                <option value="3">Syrup</option>
                             </select>
                         </div>
                     </div>
