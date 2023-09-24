@@ -21,7 +21,7 @@ $resp['msg'] = "updated";
 
 if($c->product_type == 1){
     $db->update("products", $id, ["active" => $active]);
-    $db->update("products_coffee", $cId->product_id, ["active" => $active]);
+    // $db->update("products_coffee", $cId->product_id, ["active" => $active]);
 } else {
     $db->update("products", $id, ["active" => $active]);
 }
