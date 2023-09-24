@@ -21,6 +21,7 @@ if(!empty($_POST)){
                 'coffee_id' => $id,
                 'stock' => $inv
                 ];
+                dump($fields);
             $db->insert('inventory_coffee', $fields);
         }
     usSuccess("Coffee Inventory Saved");

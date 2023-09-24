@@ -3,20 +3,21 @@ require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 $shop = $db->query("SELECT * FROM shops")->results();
 
-$coffCount = $db->query("SELECT * FROM products WHERE product_type = 1 and ACTIVE = 1")->count();
+$coffCount = $db->query("SELECT * FROM products WHERE product_type = 1 AND active = 1")->count();
+
 
 $coffee_stock = $db->query("WITH RankedEntries AS (
     SELECT
       *,
-      ROW_NUMBER() OVER (PARTITION BY store_id, coffee_id ORDER BY entry_date DESC) AS rn
+      ROW_NUMBER() OVER (PARTITION BY store_id, coffee_id ORDER BY entry_date DESC ) AS rn
     FROM
       inventory_coffee
   )
   SELECT
-    r.*, p.coffee_name, p.active
+    r.*, p.product_name, p.active
   FROM
     RankedEntries as r
-  LEFT OUTER JOIN products_coffee as p
+  LEFT OUTER JOIN products as p
   ON r.coffee_id=p.id
   WHERE
     rn = 1
@@ -88,7 +89,7 @@ if($to == "") {
                     <?php foreach($coffee_stock as $c) { 
                         if($s->id == $c->store_id) { ?>
                     <tr>    
-                        <td><?= $c->coffee_name?> </td>
+                        <td><?= $c->product_name?> </td>
                         <td><?= cleanDate($c->entry_date) ?> </td>
                         <td><?= $c->stock ?></td>
                     </tr>

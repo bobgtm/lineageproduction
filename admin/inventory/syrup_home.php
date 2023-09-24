@@ -12,7 +12,7 @@ function getsyr() {
 
 $units = $db->query("SELECT * FROM unit_types")->results();
 
-$details = $user->data()->permissions;
+// $details = $user->data()->permissions;
 
 // Grabs Par Information from form
 if(!empty($_POST['syrpar'])){
@@ -149,7 +149,7 @@ if(!empty($_POST['syrinv'])){
             </div>        
         </form>
     </div>
-    <?php if((isset($user) && $user->isLoggedIn()) && $user->data()->id == 1 || $user->data()->id == 6) { ?>
+    
     <div class="col col-12 col-md-8 col-lg-4 mx-auto text-center">
         <form  action="" method="post">
             <h4 class="text-center">Syrup Par</h4>
@@ -185,7 +185,7 @@ if(!empty($_POST['syrinv'])){
             </div>
         </form>
     </div>
-    <?php } ?>
+    
     
 </div>
 <div class="text-center">
