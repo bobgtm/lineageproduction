@@ -1,14 +1,14 @@
 <?php
-require_once 'users/init.php';
+require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
-$c = $dbI->query("Select * from entries")->results();
-$s = $dbI->query("SELECT * FROM shops")->results();
-$rec = $db->query("SELECT * from shops RIGHT JOIN entries ON shops.id = entries.shop_id")->results();
+$c = $db->query("SELECT * FROM entries")->results();
+$s = $db->query("SELECT * FROM shops")->results();
+$rec = $db->query("SELECT * FROM shops RIGHT JOIN entries ON shops.id = entries.shop_id")->results();
 
 function cleanDate($val) {
    $newDate = new DateTime($val);
-   $strip = $newDate->format('m/j/y');
+   $strip = $newDate->format('m/j/Y');
    return $strip;
 }
 $from = Input::get('from');

@@ -32,7 +32,8 @@ require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
             <h4 class="align-self-center"></h4>
         </div> 
         <div class="text-center align-self-center mx-1 mb-3">
-            <a href="<?=$us_url_root?>admin/inventory/home.php"><button class="btn btn-secondary btn-lg shadow">Quality Control</button></a>
+            <a href="<?=$us_url_root?>admin/qc/index.php"><button class="btn btn-secondary btn-lg shadow">Quality Control</button></a>
+            
             <h4 class="align-self-center"></h4>
         </div>
         <div class="text-center align-self-center mx-1 mb-3">

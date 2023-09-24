@@ -1,5 +1,5 @@
 <?php
-require_once 'users/init.php';
+require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 if(!(isset($user) && $user->isLoggedIn())){
    echo "Please Login to view the page";
@@ -25,7 +25,7 @@ if(isset($_POST['submit'])){
    }
    $db->insert('entries', $fields);    
    usSuccess("Notes Noted");
-	Redirect::to("lin");
+	Redirect::to("qc_recs.php");
 }
 
 ?>
@@ -216,7 +216,7 @@ if(isset($_POST['submit'])){
             <button class="btn btn-primary" name="submit" value="submit" type="submit">Submit form</button>
          </div>
          <div class="col-sm-2">
-            <a href="records.php" class="btn btn-primary">View Records</a>
+            <a href="qc_recs.php" class="btn btn-primary">View Records</a>
          </div>
       </div>
       
