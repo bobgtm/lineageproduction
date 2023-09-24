@@ -22,12 +22,6 @@ $coffee_stock = $db->query("WITH RankedEntries AS (
   WHERE
     rn = 1
   AND p.active = 1;")->results();
-  
-
-
-
-dump($coffee_stock);
-dump($db->errorString());
 
 function cleanDate($val) {
     $newDate = new DateTime($val);
