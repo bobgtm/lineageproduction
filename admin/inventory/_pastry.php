@@ -3,26 +3,29 @@ require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 $shop = $db->query("SELECT * FROM shops")->results();
 
-$coffCount = $db->query("SELECT * FROM products WHERE product_type = 4 AND active = 1")->count();
+$pastries = $db->query("SELECT * FROM products WHERE product_type = 4 AND active = 1")->results();
 
 
-$coffee_stock = $db->query("WITH RankedEntries AS (
-    SELECT
-      *,
-      ROW_NUMBER() OVER (PARTITION BY store_id, pastry_id ORDER BY entry_date DESC ) AS rn
-    FROM
-      inventory_pastry
-  )
-  SELECT
-    r.*, p.product_name, p.active
-  FROM
-    RankedEntries as r
-  LEFT OUTER JOIN products as p
-  ON r.pastry_id=p.id
-  WHERE
-    rn = 1
-  AND p.active = 1;")->results();
+// $pastry_stock = $db->query("WITH RankedEntries AS (
+//     SELECT
+//       *,
+//       ROW_NUMBER() OVER (PARTITION BY store_id, product_id ORDER BY entry_date DESC ) AS rn
+//     FROM
+//       inventory_pastry
+//   )
+//   SELECT
+//     r.*, p.product_name, p.active
+//   FROM
+//     RankedEntries as r
+//   LEFT OUTER JOIN products as p
+//   ON r.product_id=p.id
+//   WHERE
+//     rn = 1
+//   AND p.active = 1;")->results();
+$pastry_stock = $db->query("SELECT * FROM inventory_pastry WHERE entry_date > CURDATE() - INTERVAL 1 WEEK  GROUP BY product_id ORDER BY entry_date DESC")->results();
 
+dump($pastry_stock);
+dump($db->errorString());
 function cleanDate($val) {
     $newDate = new DateTime($val);
     $strip = $newDate->format('D: m/j - g:i a');
@@ -75,23 +78,25 @@ if($to == "") {
                 <thead>
                     <tr>
                         <th>Product</th>
-                        <th>Entry Date</th>
-                        <th>Retail Bags</th>
+                        <th>Date</th>
+                        <th>Waste Count</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach($coffee_stock as $c) { 
-                        if($s->id == $c->store_id) { ?>
-                    <tr>    
-                        <td><?= $c->product_name?> </td>
-                        <td><?= cleanDate($c->entry_date) ?> </td>
-                        <td><?= $c->stock ?></td>
-                    </tr>
-                    <?php } ?>
-                    <?php } ?>
+                        <?php foreach($pastries as $p) { ?>
+                        <tr>
+                            <td><?=$p->product_name?></td>
+                            <?php foreach($pastry_stock as $st) { 
+                                if($s->id == $st->store_id) { ?>
+                                <td><?= $s->entry_date ?></td>
+                                <td><?= $s->stock ?></td>
+                            <?php } ?>
+                        </tr>
+                        <?php } ?>
+                        <?php } ?>
+                        
                 </tbody>
             </table>
-
         </div>
     </div>
 <?php } ?>
