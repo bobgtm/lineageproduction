@@ -28,7 +28,7 @@ require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
     </div>
     <div class="d-flex flex-column flex-lg-row justify-content-md-center col-xg-3 col-md-12 col-sm-12 mb-4">       
         <div class="text-center align-self-center mx-1 mb-3">
-            <a href="<?=$us_url_root?>admin/inventory/home.php"><button class="btn btn-secondary btn-lg shadow">Pastry Waste</button></a>
+            <a href="<?=$us_url_root?>admin/inventory/pastry_home.php"><button class="btn btn-secondary btn-lg shadow">Pastry Waste</button></a>
             <h4 class="align-self-center"></h4>
         </div> 
         <div class="text-center align-self-center mx-1 mb-3">

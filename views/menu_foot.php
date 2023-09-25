@@ -6,4 +6,5 @@
         <a href="<?= $us_url_root?>admin/inventory/keg_home.php" class="btn btn-primary m-2">View Keg Form</a>
         <a href="<?= $us_url_root?>admin/inventory/coffee_home.php" class="btn btn-primary m-2">View Coffee Form</a>
         <a href="<?= $us_url_root?>admin/inventory/syrup_home.php" class="btn btn-primary m-2">View Syrup Form</a>
+        <a href="<?= $us_url_root?>admin/inventory/pastry_home.php" class="btn btn-primary m-2">View Pastry Form</a>
     </div>
