@@ -25,15 +25,10 @@ if(!empty($_POST['addProduct'])) {
         $db->insert('products_coffee', $fields2);
         Redirect::to("manage_products.php");
     } 
-    if($ptype == 2) {
+    if($ptype == 2 || $ptype == 3 || $ptype == 4) {
         $db->insert('products', $fields);
         Redirect::to("manage_products.php");
     } 
-    if($ptype == 3) {
-        $db->insert('products', $fields);
-        
-        Redirect::to("manage_products.php");
-    }
     
     
 }
@@ -59,6 +54,7 @@ if(!empty($_POST['addProduct'])) {
                                 <option value="1">Coffee</option>
                                 <option value="2">Cold Brew</option>
                                 <option value="3">Syrup</option>
+                                <option value="4">Pastry</option>
                             </select>
                         </div>
                     </div>
