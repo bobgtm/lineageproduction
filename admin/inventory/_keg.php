@@ -7,9 +7,9 @@ $cb_stock = $db->query("SELECT * FROM inventory_cold_brew_entry WHERE entry_date
 
 $shop = $db->query("SELECT * FROM shops")->results();
 
-$par = $db->query("SELECT pp.*, p.* FROM product_par as pp
-LEFT OUTER JOIN products as p on pp.product_id=p.id
-WHERE pp.product_id BETWEEN 4 AND 6 AND active = 1")->results();
+$par = $db->query("SELECT pp.*, p.* FROM products as p
+RIGHT OUTER JOIN product_par as pp on pp.product_id=p.id
+WHERE pp.product_type = 2 AND p.active = 1")->results();
 
 $rec = $db->query("SELECT * from shops RIGHT JOIN inventory_cold_brew_entry as icbe ON shops.id = icbe.store_id")->results();
 
@@ -109,7 +109,7 @@ if($to == "") {
                     <tr>
                     <?php foreach ($par as $p) { ?>
                         
-                        <?php if($s->id == $p->store_id && ($p->product_id >= 4 && $p->product_id <=6)) {?>
+                        <?php if($s->id == $p->store_id && ($p->product_id >= 4 && $p->product_id <=6)) { ?>
                             <th span="col"><?= $p->product_name ?></th>
                         <?php } ?>
                         <?php } ?>

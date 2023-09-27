@@ -5,11 +5,12 @@ require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 function getCB() {
     global $db;
     
-    $res = $db->query("SELECT * FROM products WHERE product_name LIKE 'cold%' ORDER BY id DESC")->results();
+    $res = $db->query("SELECT * FROM products WHERE product_type = 2 ORDER BY id DESC")->results();
     
     return $res;
 }
 
+//  = $db->query("SELECT * FROM products WHERE product_type = 2 ORDER BY id DESC")->results();
 
 
 
@@ -30,6 +31,7 @@ if(!empty($_POST['cbpar'])){
         foreach($ids as $i => $par) {
             $fields["product_id"] = $i; 
             $fields["par"] = $par; 
+            $fields["product_type"] = 2;
             $db->insert("product_par", $fields);
         }
     } 
@@ -41,6 +43,7 @@ if(!empty($_POST['cbpar'])){
         foreach($ids as $i => $par) {
             $fields["product_id"] = $i; 
             $fields["par"] = $par; 
+            $fields["product_type"] = 2;
             $db->insert("product_par", $fields);
         }
     }
