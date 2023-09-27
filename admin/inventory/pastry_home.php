@@ -15,16 +15,22 @@ if(!empty($_POST['pastryInv'])){
    $pastryVal = Input::get('pastryI');
    
    
-   
+   $fields2 = [
+                'entry_date' => date('Y-m-d H:i:s'),
+                'store_id' => Input::get('location')
+            ];
+            $db->insert('inventory_pastry_entry', $fields2);
+            $dbID = $db->lastId();    
     
 
     foreach($pastryVal as $t => $v){
             
+
             $fields = [
                 'product_id' => $t,
-                'stock' => $v,
-                'entry_date' => date('Y-m-d H:i:s'),
-                'store_id' => Input::get('location')
+                'entry_id' => $dbID,
+                'store_id' => Input::get('location'),
+                'stock' => $v
             ];
             
             $db->insert('inventory_pastry', $fields);            

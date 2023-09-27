@@ -3,62 +3,28 @@ require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 $shop = $db->query("SELECT * FROM shops")->results();
 
-$pastries = $db->query("SELECT * FROM products WHERE product_type = 4 AND active = 1")->results();
+$pastries = $db->query("SELECT * FROM products WHERE product_type = 4 AND active = 1 ORDER BY id ASC")->results();
 
+$dates = $db->query("SELECT * FROM inventory_pastry_entry")->results();
+$pastry_stock = $db->query("SELECT ip.*, pe.id, p.product_name
+FROM inventory_pastry AS ip
+LEFT OUTER JOIN products AS p ON ip.product_id = p.id
+LEFT OUTER JOIN inventory_pastry_entry as pe ON pe.id=ip.entry_id
+WHERE pe.entry_date > CURDATE() - INTERVAL 1 WEEK
+ORDER BY ip.product_id")->results();
 
-// $pastry_stock = $db->query("WITH RankedEntries AS (
-//     SELECT
-//       *,
-//       ROW_NUMBER() OVER (PARTITION BY store_id, product_id ORDER BY entry_date DESC ) AS rn
-//     FROM
-//       inventory_pastry
-//   )
-//   SELECT
-//     r.*, p.product_name, p.active
-//   FROM
-//     RankedEntries as r
-//   LEFT OUTER JOIN products as p
-//   ON r.product_id=p.id
-//   WHERE
-//     rn = 1
-//   AND p.active = 1;")->results();
-$pastry_stock = $db->query("SELECT * FROM inventory_pastry WHERE entry_date > CURDATE() - INTERVAL 1 WEEK  GROUP BY product_id ORDER BY entry_date DESC")->results();
-
-dump($pastry_stock);
-dump($db->errorString());
 function cleanDate($val) {
     $newDate = new DateTime($val);
-    $strip = $newDate->format('D: m/j - g:i a');
+    $strip = $newDate->format('D: m/j g:i a');
     return $strip;
  }
-$from = Input::get('from');
-$to = Input::get('to');
-// $searched = false;
-// dump($_GET);
-// If the user decides to select a filter
-if(!empty($_GET["filter"])){
-   if ($from != "" && $to != "") {
-      // $searched = true;
-      $rec = $dbI->query("SELECT * FROM shops RIGHT JOIN inventory_cold_brew_entry AS icbe ON shops.id = icbe.shop_id WHERE DATE(date) >= ? AND DATE(date) <= ?", [$from, $to])->results();
-   }
-} elseif(!empty($_GET["clear"])){
-   $from = "2023-01-01";
-   $to = date("D: Y, m");
-   Redirect::to('_keg.php');
-}
-if($from == "") {
-   $from = "2023-01-01";
-}
-if($to == "") {
-   $to = date("Y-m-d");
-}
 ?>
 
 
 
 <div class="row my-3">
     <div class="text-center">
-        <h4 class="mb-2 me-2">View/Hide Inventory:</h4>  
+        <h4 class="mb-2 me-2">View/Hide Shop Waste for:</h4>  
         <div class="d-flex justify-content-center align-items-center mt-1">   
         
             <button id="show1" class="btn btn-primary me-2">East End</button>
@@ -73,28 +39,30 @@ if($to == "") {
         <div id="" class="card-header">
             <h3 id="shopName<?$s->id?>"><?=$s->name ?></h3>
         </div>
-        <div class="card-body">
+        <div class="card-body table-responsive">
             <table class="table" >
                 <thead>
                     <tr>
-                        <th>Product</th>
                         <th>Date</th>
-                        <th>Waste Count</th>
+                        <?php foreach($pastries as $p) { ?>
+                            <th><?= $p->product_name?></th>
+                        <?php } ?>
+                        
                     </tr>
                 </thead>
                 <tbody>
-                        <?php foreach($pastries as $p) { ?>
-                        <tr>
-                            <td><?=$p->product_name?></td>
-                            <?php foreach($pastry_stock as $st) { 
-                                if($s->id == $st->store_id) { ?>
-                                <td><?= $s->entry_date ?></td>
-                                <td><?= $s->stock ?></td>
+                    <?php foreach($dates as $date) {
+                        if($date->store_id == $s->id ) { ?>
+                        <tr class="">
+                            <td class="" scope="" ><?= cleanDate($date->entry_date) ?></td>
+                            <?php foreach($pastry_stock as $q => $r) { ?>
+                                <?php if ($s->id == $r->store_id && ($r->entry_id == $date->id)) { ?>
+                                    <td class=""><?= $r->stock?></td>
+                            <?php } ?>
                             <?php } ?>
                         </tr>
-                        <?php } ?>
-                        <?php } ?>
-                        
+                    <?php } ?>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>
@@ -103,8 +71,6 @@ if($to == "") {
 <div class="row mt-4 mb-4">
     <?php require_once $abs_us_root.$us_url_root."views/menu_foot.php" ?>
 </div>
-
-
 
 <script>
    $(document).ready(function() {
