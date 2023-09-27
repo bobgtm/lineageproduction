@@ -41,9 +41,9 @@ if(!empty($_POST['pastryInv'])){
 
 
 <div class="row row-cols-2 d-flex flex-lg-row flex-column justify-content-center mx-5-lg mx-0 mt-3">
-    <div class="col col-12 col-md-8 col-lg-4 mx-auto text-center mb-5">    
+    <div class="col col-12 col-md-8 col-lg-4 mx-auto text-center mb-3">    
         <form  action="" method="post">
-            <h4 class="text-center">Syrup Inventory</h4>
+            <h4 class="text-center">Pastry Waste Form</h4>
                 
             <div class="form-group">
                 <label for="" class="form-label">Shop Location</label>
@@ -77,7 +77,7 @@ if(!empty($_POST['pastryInv'])){
     
 </div>
 <div class="text-center">
-        <a class="text-center mx-auto" href="_pastry.php"><button class="btn btn-success btn-sm px-3 mt-3 mb-5">View Pastry Waste</button></a>
+        <a class="text-center mx-auto" href="_pastry.php"><button class="btn btn-success btn-sm px-3 mt-2 mb-5">View Pastry Waste</button></a>
 </div>
 
 <div class="row mt-4 mb-4">
