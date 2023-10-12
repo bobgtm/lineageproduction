@@ -10,13 +10,6 @@ function getCB() {
     return $res;
 }
 
-$invCheck = $db->query("SELECT * FROM inventory_cold_brew_entry WHERE store_id = 1 ORDER BY entry_date DESC LIMIT 1")->results();
-// dnd($invCheck);
-
-
-//  = $db->query("SELECT * FROM products WHERE product_type = 2 ORDER BY id DESC")->results();
-
-
 
 
 // Grabs Par Information from form

@@ -88,7 +88,7 @@ if(!empty($_POST['syrinv'])){
    }
    $vals = Input::get('val');
     foreach($syrups2 as $k => $v){
-        if($v != 0) {
+        
             foreach($vals as $t => $u){
                 if ($k == $t){
                     $fields = [
@@ -101,7 +101,7 @@ if(!empty($_POST['syrinv'])){
                     $db->insert('inventory_syrup', $fields);            
                 }
             }
-        }
+        
     }
    
 
