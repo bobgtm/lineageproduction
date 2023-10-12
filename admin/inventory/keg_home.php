@@ -25,7 +25,7 @@ if(!empty($_POST['cbpar'])){
     $ids = Input::get('cbid');    
     // Need to check whether there are entries in the db for the store already,
     $check = $db->query("SELECT * FROM product_par WHERE store_id = ? AND product_id BETWEEN 4 AND 6", [$storeid])->count();
-    dump($check);
+    
     // If not, then we add the first entry
     if($check < 1) {
         foreach($ids as $i => $par) {
@@ -53,38 +53,51 @@ if(!empty($_POST['cbpar'])){
 // $fields = [];
 if(!empty($_POST['cbinv'])){
     
-   $cbs = Input::get('cb');
-    
-        
-    $fields = [ 
-    'entry_date' => date('Y-m-d'),
-    'store_id' => Input::get('location')
-    ];
-    foreach ($cbs as $cb => $inv) {
-    switch ($cb) {
-        case 'Cold Brew Black':
-            $fields['cbb_stock'] = $inv;
-            break;
-        case 'Cold Brew White':
-            $fields['cbw_stock'] = $inv;
-            break;
-        case 'Cold Brew Vegan':
-            $fields['cbv_stock'] = $inv;
-            break;
-        default:
-                // Handle the default case if needed
-            break;
-    }
-    }
-
-    $db->insert('inventory_cold_brew_entry', $fields);
-    usSuccess("Inventory Saved");
-    // dump($db->errorString());
+    $cbs = Input::get('cb');
+     $store_id = Input::get('location');
+         
+     $fields = [ 
+     'entry_date' => date('Y-m-d'),
+     'store_id' => $store_id
+     ];
+     foreach ($cbs as $cb => $inv) {
+         $invCheck = $db->query("SELECT * FROM inventory_cold_brew_entry WHERE store_id = ? ORDER BY entry_date DESC LIMIT 1", [$store_id])->results();
+     switch ($cb) {
+         case 'Cold Brew Black':
+             if($inv == ""){
+                 $fields['cbb_stock'] = $invCheck[0]->cbb_stock;    
+             } else {
+                 $fields['cbb_stock'] = $inv;
+             }
+             break;
+         case 'Cold Brew White':
+             if($inv == ""){
+                 $fields['cbw_stock'] = $invCheck[0]->cbw_stock;    
+             } else {
+                 $fields['cbw_stock'] = $inv;
+             }
+             break;
+         case 'Cold Brew Vegan':
+             if($inv == ""){
+                 $fields['cbv_stock'] = $invCheck[0]->cbv_stock;    
+             } else {
+                 $fields['cbv_stock'] = $inv;
+             }
+             break;
+         default:
+                 // Handle the default case if needed
+             break;
+     }
+     }
+     $db->insert('inventory_cold_brew_entry', $fields);
+ 
+     usSuccess("Inventory Saved");
+     // dump($db->errorString());
+      
      
     
-   
-   
-}
+    
+ }
 ?>
 
 
