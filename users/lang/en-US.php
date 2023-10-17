@@ -363,6 +363,7 @@ $lang = array_merge($lang,array(
 		"MAINT_BAN"			=> "Sorry. You have been banned. If you feel this is an error, please contact the administrator.",
 		"MAINT_TOK"			=> "There was an error with your form. Please go back and try again. Please note that submitting the form by refreshing the page will cause an error. If this continues to happen, please contact the administrator.",
 		"MAINT_OPEN"		=> "An Open Source PHP User Management Framework.",
+        "MAINT_SUCC"		=> "Please Login Below",
 		"MAINT_PLEASE"	=> "You have successfully installed UserSpice!<br>To view our getting started documentation, please visit"
 		));
 
