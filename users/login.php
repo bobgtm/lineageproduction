@@ -144,7 +144,7 @@ if (empty($dest = sanitizedDest('dest'))) {
             </div>
             <?php if($settings->registration==1) {?>
               <div class="col-12 text-center"><br>
-                <a class="" href='<?=$us_url_root?>users/join.php'><i class="fa fa-plus-square"></i> <?=lang("SIGNUP_TEXT","");?></a><br><br>
+                <!-- <a class="" href='<?=$us_url_root?>users/join.php'><i class="fa fa-plus-square"></i> <?=lang("SIGNUP_TEXT","");?></a><br><br> -->
               </div><?php } ?>
               <?php   includeHook($hooks,'bottom');?>
             </div>
