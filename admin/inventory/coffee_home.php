@@ -2,6 +2,11 @@
 require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
+if(!(isset($user) && $user->isLoggedIn())){
+    echo "Please Login to view the page";
+    die();
+ }
+ 
 function getCoffees() {
     global $db;
     
