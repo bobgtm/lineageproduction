@@ -2,6 +2,10 @@
 require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
+if(!(isset($user) && $user->isLoggedIn())){
+    echo "Please Login to view the page";
+    die();
+ }
 $c = $db->query("SELECT * FROM entries")->results();
 $s = $db->query("SELECT * FROM shops")->results();
 $rec = $db->query("SELECT * FROM shops RIGHT JOIN entries ON shops.id = entries.shop_id")->results();

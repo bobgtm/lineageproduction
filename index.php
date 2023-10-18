@@ -15,11 +15,9 @@ if(isset($user) && $user->isLoggedIn()){
 			<p align="center">
 				<?php
 				if($user->isLoggedIn()){
-					
                     Redirect::to($abs_us_root."admin/home.php");
 				}else{?>
-					<a class="btn btn-primary" href="users/login.php" role="button"><?=lang("SIGNIN_TEXT");?> &raquo;</a>
-					
+					<a class="btn btn-primary mt-5" href="users/login.php" role="button"><?=lang("SIGNIN_TEXT");?> &raquo;</a>
 				<?php }?>
 			</p>
 			<br>

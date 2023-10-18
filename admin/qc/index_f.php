@@ -18,7 +18,7 @@ $currentDate = date('d-m-Y')
    <form method="post">
       <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 g-3 mt-2">
          <div class="col">
-            <div class="card shadow-sm  ">
+            <div class="card">
                <div class="card-body">
                   <label for="" class="form-label"><h5>Shop Location</h5></label>
                   <select name="location" class="form-select" id="" required>
@@ -31,7 +31,7 @@ $currentDate = date('d-m-Y')
             </div>
          </div>
          <div class="col">
-            <div class="card shadow-sm  ">
+            <div class="card  ">
                <div class="card-body">
                   <h5 class="card-title">431</h5>     
                   <label for="date" class="form-label">Roast Date</label>

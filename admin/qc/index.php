@@ -38,82 +38,69 @@ if(isset($_POST['submit'])){
       <p>Taste each of the prodcuts below and submit any notes about what you are tasting, concerns, etc</p>      
    </div>
 </div>
-
-<div class="row mb-5">
-   <form method="post">
+<div class="row mx-auto">
+    <form method="post">
       <!-- Shop location -->
-      
-      <div class="card col-md-4 shadow-sm  border border-dark border-1 ">
-         <div class="card-body">
-            <div class="col col-sm-12 col-md-6">
-               <label for="" class="card-title form-label ">Shop Location</label>
-               <select name="location" class="form-select" id="" required>
-                  <option selected disabled value="">Where ya at? </option>
-                  <option value="1">East End</option>
-                  <option value="2">Mills</option>
-                  <option value="3">UCF</option>
-               </select>
-            </div>
-         </div>
-      </div>
-      
-      
-     
-      <div class="card border-dark mt-2 col-md-4">
-
-         <div class="card-body">
-            <label for="date" class="card-title form-label">431</label>     
-            <div class="">
-               
-               <div class="col col-sm-10">
-                  <input name="batch_date" placeholder="date" type="date" class="form-control" id="date"/>
-               </div>
-            </div>
-      
-            <div class="col col-sm-12 col-lg-4 mt-2">
-               <label for="validationCustom02" class="form-label">431° Notes</label>
-               <input name="batch_notes" type="text" class="form-control" id="validationCustom02" placeholder="how we tasting?" required>  
-            </div>
-         </div>             
-      </div>
-         
-     
-      <!-- SO BATCH -->
-      <div class="row align-items-center mt-2">
-         <div class="mt-2 col-lg-4 col-md-5">
-            <label for="date" class="form-label">Single Origin Batch Roast Date</label>
-               <!-- <div class="input-group date" id="datepicker2">
-                  <span class="input-group-text">
-                     <span class="input-group-append">
-                        <i class="fa fa-calendar"></i>
-                     </span>
-                  </span> -->
-            <input name="so_date" type="date" class="form-control" id="date"/>
-               <!-- </div> -->
-         </div>
-         <div class="mt-2 col-lg-4 col-md-4">
-            <label for="so_notes" class="form-label">S.O. Batch Notes</label>
-            <!-- <input name="so_notes" type="text" class="form-control" id="validationCustom02" value="" required> -->
+      <div class="row">
+        <div class="card shadow-sm px-0">
+            <div class="card-body">
+                
+                <label for="" class="card-title form-label ">Shop Location</label>
+                <select name="location" class="form-select" id="" required>
+                    <option selected disabled value="">Where ya at? </option>
+                    <option value="1">East End</option>
+                    <option value="2">Mills</option>
+                    <option value="3">UCF</option>
+                </select>
             
-            <!-- <label for="" class="form-label">Shop Location</label> -->
-            <select name="so_notes" class="form-select" id="" required>
-               <option selected disabled vale="">What are you tasting?</option>
-               <option value="1">Green/Vegatative</option>
-               <option value="2">Sour/Fermented</option>
-               <option value="3">Fruity</option>
-               <option value="4">Floral</option>
-               <option value="5">Sweet</option>
-               <option value="6">Nutty/Cocoa</option>
-               <option value="7">Spices</option>
-               <option value="8">Roasted</option>
-               <option value="9">Other</option>
-            </select>
-         </div>  
-         <div class="mt-2 col-lg-4 col-md-3">
-            <label for="validationCustom02" class="form-label">S.O. Batch Origin</label>
-            <input name="so_bean" type="text" class="form-control" id="validationCustom02" placeholder="ex: Ardi" required>            
-         </div>
+            </div>
+        </div>
       </div>
+     
+      <div class="row mt-2 align-items-center">
+        <div class="card shadow-sm px-0">
+            <div class="card-body">
+                <div class="row justify-content-md-center align-middle">
+                    <div class="col-2 my-0"><label for="date" class="form-label align-middle my-0"><p class="align-middle mb-0 mt-1">431°</p> </label></div>
+                    <div class="col-10"><input name="batch_date" placeholder="date" type="date" class="form-control" id="date"/></div>
+                </div>
+                <div class="row">
+                    <div class="col mt-2">
+                        <input name="batch_notes" type="text" class="form-control my-1" id="validationCustom02" placeholder="how we tasting?" required>  
+                        <input name="batch_origin" type="text" class="form-control mt-2" id="validationCustom02" placeholder="origin" required>  
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+        <!-- SO BATCH -->
+    <div class="row align-items-center mt-2">
+        <div class="card shadow-sm px-0">
+            <div class="card-body">
+                <div class="row justify-content-md-center align-middle">
+                    <div class="col-4 my-0 mx-0 pe-0"><label for="date" class="form-label align-middle my-0"><p class="align-middle mb-0 mt-1">S.O. Batch</p> </label></div>
+                    <div class="col-8 mx-0 ps-0"><input name="so_date" type="date" class="form-control" id="date"/></div>
+                    
+                </div>
+                <input name="batch_origin" type="text" class="form-control mt-2" id="validationCustom02" placeholder="origin" required>  
+                <select name="so_notes" class="form-select mt-2" id="" required>
+                    <option selected disabled vale="">What are you tasting?</option>
+                    <option value="1">Green/Vegatative</option>
+                    <option value="2">Sour/Fermented</option>
+                    <option value="3">Fruity</option>
+                    <option value="4">Floral</option>
+                    <option value="5">Sweet</option>
+                    <option value="6">Nutty/Cocoa</option>
+                    <option value="7">Spices</option>
+                    <option value="8">Roasted</option>
+                    <option value="9">Other</option>
+                </select>
+            </div>
+        </div>
+    </div>
+         
+         
+      
       <!-- MODERN AMERICAN -->
       <div class="row mt-2">
          <div class="mt-2 col-lg-4 col-md-5">
@@ -131,7 +118,7 @@ if(isset($_POST['submit'])){
             <label for="validationCustom03" class="form-label">M.A. Notes</label>
             <!-- <input name="ma_notes" type="text" class="form-control" id="validationCustom03" required> -->
             <select name="so_notes" class="form-select" id="" required>
-               <option selected disabled vale="">What are you tasting?</option>
+               <option selected disabled value="">What are you tasting?</option>
                <option value="1">Green/Vegatative</option>
                <option value="2">Sour/Fermented</option>
                <option value="3">Fruity</option>
@@ -167,50 +154,43 @@ if(isset($_POST['submit'])){
             <input name="soe_bean" type="text" class="form-control" id="validationCustom02" placeholder="ex: Luz Mila" required>            
          </div>
       </div>
-      <div class="row mt-2">
-         <div class="col-lg-4 col-md-5 mt-2">
-            <label for="date" class="form-label">CB Black Keg Date</label>
-               <!-- <div class="input-group date" id="datepicker5">
-                  <span class="input-group-text">
-                     <span class="input-group-append">
-                        <i class="fa fa-calendar"></i>
-                     </span>
-                  </span> -->
-            <input name="cbb_date" type="date" class="form-control" id="date"/>
-               <!-- </div> -->
-         </div>
-         <div class="mt-2 col-lg-4 col-md-4">
-            <label for="validationCustom02" class="form-label">CB Black Notes</label>
-            <input name="cbb_notes" type="text" class="form-control" id="validationCustom02" value=" " required>
-         </div>
-      </div>
-      <div class="row mt-2">
-         <div class="mt-2 col-lg-4 col-md-5">
-            <label for="date" class="form-label">CB White Keg Date</label>
-               <!-- <div class="input-group date" id="datepicker6"> -->
-                  <!-- <span class="input-group-text">
-                     <span class="input-group-append">
-                        <i class="fa fa-calendar"></i>
-                     </span>
-                  </span> -->
-            <input name="cbw_date" type="date" class="form-control" id="date"/>
-               <!-- </div> -->
-         </div>
-         <div class="mt-2 col-lg-4 col-md-4">
-            <label for="validationCustom02" class="form-label">CB White Notes</label>
-            <input name="cbw_notes" type="text" class="form-control" id="validationCustom02" value=" " required>
-         </div>
-      </div>
-      <div class="row mt-2">
-         <div class="mt-2 col-lg-4 col-md-5">
-            <label for="date" class="form-label">CB Vegan Keg Date</label>       
-            <input name="cbv_date" type="date" class="form-control" id="date"/>
-         </div>
-         <div class="mt-2 col-lg-4 col-md-4">
-            <label for="validationCustom02" class="form-label">CB Vegan Notes</label>
-            <input name="cbv_notes" type="text" class="form-control" id="validationCustom02" value=" " required>
-         </div>
-      </div>
+     
+        <div class="row mt-3 ">
+            <div class="card px-0 shadow-sm">
+                <div class="card-body">
+                    <div class="row mt-2 vertical-align-center">
+                        <div class="col-4 align-middle my-0"><label for="date" class="form-label align-middle my-0">CB Black</label></div>
+                        <div class="col-8">
+                            <select name="cbv_qual" class="form-select" id="">
+                            <option value="good">Good</option>
+                            <option value="good">Poor</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-2 vertical-align-center">
+                        <div class="col-4 align-middle my-0"><label for="date" class="form-label align-middle my-0">CB White</label></div>
+                        <div class="col-8">
+                            <select name="cbv_qual" class="form-select" id="">
+                            <option value="good">Good</option>
+                            <option value="good">Poor</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-2 vertical-align-center">
+                        <div class="col-4 align-middle my-0"><label for="date" class="form-label align-middle my-0">CB Vegan</label></div>
+                        <div class="col-8">
+                            <select name="cbv_qual" class="form-select" id="">
+                            <option value="good">Good</option>
+                            <option value="good">Poor</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
       <div class="d-flex justify-content-between mt-4">
          <div class="col-sm-2">
             <button class="btn btn-primary" name="submit" value="submit" type="submit">Submit form</button>
@@ -221,6 +201,10 @@ if(isset($_POST['submit'])){
       </div>
       
    </form>
+</div>
+
+<div class="row mb-5">
+   
 </div>
 
 
