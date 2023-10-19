@@ -2,16 +2,16 @@
 require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
+$uname = $user->data()->username;
+
 if(!(isset($user) && $user->isLoggedIn())){
     echo "Please Login to view the page";
     die();
  }
  
 function getCoffees() {
-    global $db;
-    
+    global $db;    
     $res = $db->query("SELECT * FROM products WHERE product_type = 1 AND active = 1")->results();
-    
     return $res;
 }
 
@@ -19,17 +19,37 @@ function getCoffees() {
 // $fields = [];
 if(!empty($_POST)){
     $coffees = Input::get('coffee_');
+    $store_id = Input::get('location');
+    $inserted = false;
     foreach($coffees as $id => $inv) {
+        $fields = [];
+        if($inv != "") {
+            $invCheck = $db->query("SELECT * FROM inventory_coffee WHERE store_id = ? and coffee_id = ? ORDER BY entry_date DESC LIMIT 1", [$store_id, $id])->results();
+            
+            foreach($invCheck as $i) {
+                if($inv == $i->stock) {
+                    usMessage("A count of {$inv} was already recorded for this product");
+                    break 2;
+                }
+            }
+
             $fields = [ 
                 'entry_date' => date('Y-m-d H:i:s'),
-                'store_id' => Input::get('location'),
+                'store_id' => $store_id,
                 'coffee_id' => $id,
                 'stock' => $inv
                 ];
-                
-            $db->insert('inventory_coffee', $fields);
+
         }
-    usSuccess("Coffee Inventory Saved");
+            $db->insert('inventory_coffee', $fields);
+            $inserted = true;
+        }
+        
+        if($inserted && ($uname == "mills")){
+            usSuccess("༼ つ ◕_◕ ༽つ saved ");
+        } else {
+            usSuccess("Coffee Inventory Saved");
+        }
     }
        
 //    
