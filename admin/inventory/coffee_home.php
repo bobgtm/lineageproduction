@@ -51,37 +51,6 @@ if(!empty($_POST)){
             usSuccess("Coffee Inventory Saved");
         }
     }
-       
-//    
-//    dump($fields);
-    
-        
-    
-    // foreach ($cbs as $cb => $inv) {
-    // switch ($cb) {
-    //     case 'Cold Brew Black':
-    //         $fields['cbb_stock'] = $inv;
-    //         break;
-    //     case 'Cold Brew White':
-    //         $fields['cbw_stock'] = $inv;
-    //         break;
-    //     case 'Cold Brew Vegan':
-    //         $fields['cbv_stock'] = $inv;
-    //         break;
-    //     default:
-    //             // Handle the default case if needed
-    //         break;
-    // }
-    // }
-
-    // $db->insert('inventory_cold_brew_entry', $fields);
-    // usSuccess("Inventory Saved");
-    // dump($db->errorString());
-     
-    
-   
-   
-
 ?>
 
 
