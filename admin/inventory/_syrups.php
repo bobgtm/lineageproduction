@@ -60,19 +60,10 @@ function parseUnit($value){
             echo "Gal.";
             break;
         case '2':
-            echo "L";
-            break;
-        case '3':
-            echo "Qt.";
-            break;
-        case '4':
-            echo "C.";
-            break;
-        case '5':
-            echo "Oz.";
+            echo "toddy";
             break;
         default:
-            echo "no unit supplied";
+            echo "no unit given";
             break;
     }
 }
