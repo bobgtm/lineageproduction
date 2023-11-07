@@ -9,7 +9,8 @@ $shop = $db->query("SELECT * FROM shops")->results();
 
 $par = $db->query("SELECT pp.*, p.* FROM products as p
 RIGHT OUTER JOIN product_par as pp on pp.product_id=p.id
-WHERE pp.product_type = 2 AND p.active = 1")->results();
+WHERE pp.product_type = 2 AND p.active = 1
+ORDER BY p.id ASC")->results();
 
 $rec = $db->query("SELECT * from shops RIGHT JOIN inventory_cold_brew_entry as icbe ON shops.id = icbe.store_id")->results();
 
