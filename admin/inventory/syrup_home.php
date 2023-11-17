@@ -88,12 +88,12 @@ if(!empty($_POST['syrinv'])){
    $syrups2 = [];
    foreach($syrups as $k => $v) {
      for ($i=0; $i < count($syrups) ; $i++) { 
-            $syrups2[$k] = intval($v);
+            $syrups2[$k] = floatval($v);
      }
    }
    $vals = Input::get('val');
     foreach($syrups2 as $k => $v){
-        if($v != 0) {
+        if($v > 0.00) {
             foreach($vals as $t => $u){
                 if ($k == $t){
                     $fields = [
@@ -113,7 +113,7 @@ if(!empty($_POST['syrinv'])){
     
     
     
-    // usSuccess("Inventory Saved");
+    usSuccess("Syrup Inventory Saved");
 }
 ?>
 
@@ -140,7 +140,7 @@ if(!empty($_POST['syrinv'])){
                 foreach($syr as $s) { ?>
                 <label for="syr" class="mt-3 fw-bold"><?= $s->product_name ?></label>
                 <div class="row row-cols-2">
-                    <div class="col"><input type="number" class="form-control mt-2" name="sinv[<?= $s->id ?>]" id="" value=""></div>
+                    <div class="col"><input type="number" class="form-control mt-2" name="sinv[<?= $s->id ?>]" id="" value="" step="0.01"></div>
                     <div class="col"><select class="form-control mt-2 text-center" name="val[<?= $s->id ?>]" id="">
                         <?php foreach($units as $v) { ?>
                             <option value="<?= $v->id ?>"><?= $v->unit_name ?></option>
