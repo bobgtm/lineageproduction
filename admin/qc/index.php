@@ -1,21 +1,30 @@
 <?php
 require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
-// if(!(isset($user) && $user->isLoggedIn())){
-//    echo "Please Login to view the page";
-//    die();
-// }
-// $defaultDate = date("M d, Y");
-// echo $defaultDate;
+
+$defaultDate = date("Y-m-d");
+$coffees = $db->query("SELECT * FROM products WHERE product_type = 1 AND active = 1 AND product_name NOT IN ('431', 'Modern American', 'Select Decaf')")->results();
 
 $fields = [];
 if(isset($_POST['submit'])){
    $fields = [
       'date' => date("Y-m-d H:i:s"),
       'shop_id' => Input::get('location'),
+      'batch_origin' => Input::get('batch_origin'),
       'so_bean'  => Input::get('so_bean'),
       'soe_bean'  => Input::get('soe_bean'),
+      'sob_name' => Input::get('sob_name'),
+      'sob_origin' => Input::get('sob_origin'),
+      'ma_origin' => Input::get('ma_origin'),
+      'cbv_qual' => Input::get('cbv_qual'),
+      'cbv_notes' => Input::get('cbvPoor'),
+      'cbw_qual' => Input::get('cbw_qual'),
+      'cbw_notes' => Input::get('cbwPoor'),
+      'cbb_qual' => Input::get('cbb_qual'),
+      'cbb_notes' => Input::get('cbbPoor'),
    ];
+
+   
    foreach ($_POST as $k => $v) {
       if (str_contains($k, "_date")) {
          // $v = convertDate($v);
@@ -25,9 +34,10 @@ if(isset($_POST['submit'])){
          $fields[$k] = $v;
       }
    }
-   $db->insert('entries', $fields);    
+    dump($fields);
+//    $db->insert('entries', $fields);    
    usSuccess("Notes Noted");
-	Redirect::to("qc_recs.php");
+	// Redirect::to("qc_recs.php");
 }
 
 ?>
@@ -65,7 +75,7 @@ if(isset($_POST['submit'])){
                 <div class="card-body">
                     <div class="row justify-content-md-center">
                         <div class="col-2 my-0"><label for="date" class="form-label align-middle my-0"><p class="align-middle mb-0 mt-1">431°</p> </label></div>
-                        <div class="col-10"><input name="batch_date" placeholder="date" type="date" class="form-control" id="date"/></div>
+                        <div class="col-10"><input name="batch_date"  type="date" class="form-control" id="date" value="<?= $defaultDate ?>"/></div>
                     </div>
                     <div class="row mb-sm-2">
                         <div class="col mt-2">
@@ -81,10 +91,16 @@ if(isset($_POST['submit'])){
                 <div class="card-body">
                     <div class="row justify-content-md-center align-middle">
                         <div class="col-4 my-0 mx-0 pe-0"><label for="sob_date" class="form-label align-middle my-0"><p class="align-middle mb-0 mt-1">S.O. Batch</p> </label></div>
-                        <div class="col-8 mx-0 ps-0"><input name="sob_date" type="date" class="form-control" id="date" placeholder="<?php echo $defaultDate ?>"/></div>
+                        <div class="col-8 mx-0 ps-0"><input name="sob_date" type="date" class="form-control" id="date" value="<?= $defaultDate ?>"/></div>
                     </div>
-                    <input name="sob_name" type="text" class="form-control mt-2" id="validationCustom02" placeholder="Name" required>  
-                    <input name="sob_origin" type="text" class="form-control mt-2" id="validationCustom02" placeholder="origin" required>  
+                    <select name="sob_name" id="" class="form-select mt-2">
+                            <option value="">Select...</option>
+                        <?php foreach ($coffees as $c) { ?> 
+                            <option value="<?= $c->product_name ?>"><?= $c->product_name ?></option>
+                        <?php } ?>
+                    </select>
+                    <!-- <input name="sob_name" type="text" class="form-control mt-2" id="validationCustom02" placeholder="Name" required>   -->
+                    <!-- <input name="sob_origin" type="text" class="form-control mt-2" id="validationCustom02" placeholder="origin" required>   -->
                     <select name="sob_notes" class="form-select mt-2" id="" required>
                         <option selected disabled vale="">What are you tasting?</option>
                         <option value="1">Green/Vegatative</option>
@@ -109,7 +125,7 @@ if(isset($_POST['submit'])){
                 <div class="card-body pb-3">
                     <div class="row justify-content-md-evenly mb-3">
                         <div class="col-lg-3 col-sm-3 my-0"><label for="date" class="form-label my-0"><p class="my-1">M.A. Espresso</p> </label></div>
-                        <div class="col-lg-9 col-sm-9"><input name="ma_date" placeholder="date" type="date" class="form-control" id="date"/></div>
+                        <div class="col-lg-9 col-sm-9"><input name="ma_date"  type="date" class="form-control" id="date" value="<?= $defaultDate ?>"/></div>
                     </div>
                     
                     <div class="col">
@@ -136,12 +152,18 @@ if(isset($_POST['submit'])){
                 <div class="card-body">
                     <div class="row justify-content-md-center align-middle">
                         <div class="col-4 my-0"><label for="date" class="form-label align-middle my-0"><p class="align-middle mb-0 mt-1">S.O. Espresso</p> </label></div>
-                        <div class="col-8"><input name="soe_date" placeholder="date" type="date" class="form-control" id="date"/></div>
+                        <div class="col-8"><input name="soe_date"  type="date" class="form-control" id="date" value="<?= $defaultDate ?>"/></div>
                     </div>
                     <div class="row">
                         <div class="col mt-2">
-                            <input name="soe_name" type="text" class="form-control mt-2" id="validationCustom02" placeholder="Name" required>  
-                            <input name="soe_origin" type="text" class="form-control mt-2" id="validationCustom02" placeholder="origin" required>  
+                            <select name="soe_name" id="" class="form-select mt-2">
+                                <option value="">Select...</option>
+                            <?php foreach ($coffees as $c) { ?> 
+                                <option value="<?= $c->product_name ?>"><?= $c->product_name ?></option>
+                            <?php } ?>
+                            </select>
+                            <!-- <input name="soe_name" type="text" class="form-control mt-2" id="validationCustom02" placeholder="Name" required>  
+                            <input name="soe_origin" type="text" class="form-control mt-2" id="validationCustom02" placeholder="origin" required>   -->
                             <select name="soe_notes" class="form-select mt-2" id="" required>
                                 <option selected disabled vale="">What are you tasting?</option>
                                 <option value="1">Green/Vegatative</option>
@@ -165,34 +187,49 @@ if(isset($_POST['submit'])){
       
       
      
-    <div class="row mt-3 ">
+    <div class="row mt-2 mx-1">
         <div class="card px-0 shadow-sm">
             <div class="card-body">
                 <div class="row mt-2 vertical-align-center">
                     <div class="col-4 align-middle my-0"><label for="date" class="form-label align-middle my-0">CB Black</label></div>
                     <div class="col-8">
-                        <select name="cbv_qual" class="form-select" id="">
+                        <select name="cbb_qual" class="form-select" id="cbb_qual">
                         <option value="good">Good</option>
-                        <option value="good">Poor</option>
+                        <option value="poor">Poor</option>
                         </select>
+                        <div class="d-flex flex-column">
+                        <input style="display: none;" name="cbb_date"  type="date" class="form-control mt-2 cbb_date" id="date" disabled value="<?= $defaultDate ?>">
+                        <input style="display: none" name="cbbPoor" type="text" class="form-control mt-2 cbbPoor" id="validationCustom02" placeholder="Quick notes">     
+                        </div>
+                        
                     </div>
+                    
                 </div>
                 <div class="row mt-2 vertical-align-center">
                     <div class="col-4 align-middle my-0"><label for="date" class="form-label align-middle my-0">CB White</label></div>
                     <div class="col-8">
-                        <select name="cbv_qual" class="form-select" id="">
+                        <select name="cbw_qual" class="form-select" id="cbw_qual">
                         <option value="good">Good</option>
-                        <option value="good">Poor</option>
+                        <option value="poor">Poor</option>
                         </select>
+                        <div class="d-flex flex-column">
+                            <input style="display: none;" name="cbw_date"  type="date" class="form-control mt-2 cbw_date" id="date" disabled value="<?= $defaultDate ?>">
+                            <input style="display: none" name="cbwPoor" type="text" class="form-control mt-2 cbwPoor" id="validationCustom02" placeholder="CBW Taste" > 
+                        </div>
                     </div>
+                    
                 </div>
                 <div class="row mt-2 vertical-align-center">
                     <div class="col-4 align-middle my-0"><label for="date" class="form-label align-middle my-0">CB Vegan</label></div>
-                    <div class="col-8">
-                        <select name="cbv_qual" class="form-select" id="">
-                        <option value="good">Good</option>
-                        <option value="good">Poor</option>
+                    <div class="col-8 cbvp">
+                        <select name="cbv_qual" class="form-select" id="cbv_qual">
+                            <option value="good">Good</option>
+                            <option value="poor">Poor</option>
                         </select>
+                        <div class="d-flex flex-column">
+                            <input style="display: none;" name="cbv_date"  type="date" class="form-control mt-2 cbv_date" id="date" disabled value="<?= $defaultDate ?>">
+                            <input style="display: none;" name="cbvPoor" type="text" class="form-control mt-2 cbvPoor" id="validationCustom02" placeholder="CBV Taste" disabled>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -201,7 +238,7 @@ if(isset($_POST['submit'])){
 
         
 
-      <div class="d-flex justify-content-between mt-4">
+      <div class="d-flex justify-content-evenly mt-4">
          <div class="col-sm-2">
             <button class="btn btn-primary" name="submit" value="submit" type="submit">Submit form</button>
          </div>
@@ -228,6 +265,79 @@ $(function(){
    }
 });
 
-</script>
+$(function(){
 
+
+    $("#cbv_qual").on("change", function() {
+        var val = $("#cbv_qual option:selected").text();
+        if(val === 'Poor'){
+            $(".cbvPoor").show()
+            $(".cbv_date").show()
+            
+            $(".cbvPoor").removeAttr("disabled")
+            $(".cbvPoor").attr("required", true)
+            
+            $(".cbv_date").removeAttr("disabled")
+            $(".cbv_date").attr("required", true)
+        }
+        if(val === 'Good'){
+            $(".cbvPoor").hide()
+            $(".cbv_date").removeAttr("disabled")
+            $(".cbv_date").attr("required", true)
+            
+            $(".cbvPoor").removeAttr("required")
+            $(".cbvPoor").attr("disabled", true)
+            $(".cbv_date").removeAttr("required")
+            $(".cbv_date").attr("disabled", true)
+        }
+        
+    })
+    $("#cbw_qual").on("change", function() {
+        var val = $("#cbw_qual option:selected").text();
+        if(val === 'Poor'){
+            $(".cbwPoor").show()
+            $(".cbw_date").show()
+            $(".cbwPoor").removeAttr("disabled")
+            $(".cbbPoor").attr("required", true)
+
+            $(".cbw_date").removeAttr("disabled")
+            $(".cbw_date").attr("required", true)
+            }
+        if(val === 'Good'){
+            $(".cbwPoor").hide()
+            $(".cbw_date").hide()
+            
+            $(".cbwPoor").removeAttr("required")
+            $(".cbbPoor").attr("disabled", true)
+
+            $(".cbv_date").removeAttr("required")
+            $(".cbv_date").attr("disabled", true)
+            }
+        
+    })
+    $("#cbb_qual").on("change", function() {
+        var val = $("#cbb_qual option:selected").text();
+        if(val === 'Poor'){
+            $(".cbbPoor").show()
+            $(".cbb_date").show()
+            $(".cbbPoor").removeAttr("disabled")
+            $(".cbbPoor").attr("required", true)
+
+            $(".cbb_date").removeAttr("disabled")
+            $(".cbb_date").attr("required", true)
+            }
+        if(val === 'Good'){
+            $(".cbbPoor").hide()
+            $(".cbb_date").hide()
+            $(".cbb").hide()
+            $(".cbbPoor").attr("disabled", true)
+            $(".cbbPoor").removeAttr("required")
+
+            $(".cbv_date").removeAttr("required")
+            $(".cbv_date").attr("disabled", true)
+            }
+        
+    })
+})
+</script>
 <?php require_once $abs_us_root . $us_url_root . 'users/includes/html_footer.php'; ?>
