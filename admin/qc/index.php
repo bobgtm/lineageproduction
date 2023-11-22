@@ -4,7 +4,8 @@ require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
 $defaultDate = date("Y-m-d");
 $coffees = $db->query("SELECT * FROM products WHERE product_type = 1 AND active = 1 AND product_name NOT IN ('431', 'Modern American', 'Select Decaf')")->results();
-
+$origins = $db->query("SELECT * FROM coffee_origins")->results();
+dump($origins);
 $fields = [];
 if(isset($_POST['submit'])){
    $fields = [
@@ -71,7 +72,7 @@ if(isset($_POST['submit'])){
     <div class="row mx-1 mt-2 d-flex justify-content-center align-items-stretch">
         <div class="col mx-ms-0 me-md-2 px-0 mb-2">
             <!--  {property}{sides}-{breakpoint}-{size}  -->
-            <div class="card shadow-sm py-lg-3 py-md-3">
+            <div class="card shadow-sm py-lg-0 py-md-3 py-0">
                 <div class="card-body">
                     <div class="row justify-content-md-center">
                         <div class="col-2 my-0"><label for="date" class="form-label align-middle my-0"><p class="align-middle mb-0 mt-1">431°</p> </label></div>
@@ -79,8 +80,13 @@ if(isset($_POST['submit'])){
                     </div>
                     <div class="row mb-sm-2">
                         <div class="col mt-2">
-                            <input name="batch_notes" type="text" class="form-control my-1" id="validationCustom02" placeholder="how we tasting?" required>  
-                            <input name="batch_origin" type="text" class="form-control mt-2" id="validationCustom02" placeholder="origin" required>  
+                            <select name="batch_origin" id="" class="form-select">
+                                <option value="" >Origin...</option>
+                                <?php foreach($origins as $o): ?>
+                                    <option value=""><?= $o->origin_location ?></option>
+                                <?php endforeach ?>
+                            </select>
+                            <input name="batch_notes" type="text" class="form-control mt-2" id="validationCustom02" placeholder="what are you tasting?" required>  
                         </div>
                     </div>
                 </div>
@@ -199,7 +205,7 @@ if(isset($_POST['submit'])){
                         </select>
                         <div class="d-flex flex-column">
                         <input style="display: none;" name="cbb_date"  type="date" class="form-control mt-2 cbb_date" id="date" disabled value="<?= $defaultDate ?>">
-                        <input style="display: none" name="cbbPoor" type="text" class="form-control mt-2 cbbPoor" id="validationCustom02" placeholder="Quick notes">     
+                        <input style="display: none" name="cbbPoor" type="text" class="form-control mt-2 cbbPoor" id="validationCustom02" placeholder="CBB Notes">     
                         </div>
                         
                     </div>
@@ -214,7 +220,7 @@ if(isset($_POST['submit'])){
                         </select>
                         <div class="d-flex flex-column">
                             <input style="display: none;" name="cbw_date"  type="date" class="form-control mt-2 cbw_date" id="date" disabled value="<?= $defaultDate ?>">
-                            <input style="display: none" name="cbwPoor" type="text" class="form-control mt-2 cbwPoor" id="validationCustom02" placeholder="CBW Taste" > 
+                            <input style="display: none" name="cbwPoor" type="text" class="form-control mt-2 cbwPoor" id="validationCustom02" placeholder="CBW Notes" > 
                         </div>
                     </div>
                     
@@ -228,7 +234,7 @@ if(isset($_POST['submit'])){
                         </select>
                         <div class="d-flex flex-column">
                             <input style="display: none;" name="cbv_date"  type="date" class="form-control mt-2 cbv_date" id="date" disabled value="<?= $defaultDate ?>">
-                            <input style="display: none;" name="cbvPoor" type="text" class="form-control mt-2 cbvPoor" id="validationCustom02" placeholder="CBV Taste" disabled>
+                            <input style="display: none;" name="cbvPoor" type="text" class="form-control mt-2 cbvPoor" id="validationCustom02" placeholder="CBV Notes" disabled>
                         </div>
                     </div>
                 </div>
