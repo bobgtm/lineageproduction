@@ -12,6 +12,7 @@ if(isset($_POST['submit'])){
       'date' => date("Y-m-d H:i:s"),
       'shop_id' => Input::get('location'),
       'batch_origin' => Input::get('batch_origin'),
+      'batch_notes' => Input::get('batch_notes'),
       'so_bean'  => Input::get('so_bean'),
       'soe_bean'  => Input::get('soe_bean'),
       'sob_name' => Input::get('sob_name'),
@@ -87,7 +88,7 @@ if(isset($_POST['submit'])){
                                 <?php endforeach ?>
                             </select>
                             <!-- <input name="batch_notes" type="text" class="form-control mt-2" id="validationCustom02" placeholder="what are you tasting?" required>   -->
-                            <select name="sob_notes" class="form-select mt-2" id="" required>
+                            <select name="batch_notes" class="form-select mt-2" id="" required>
                                 <option selected disabled vale="">What are you tasting?</option>
                                 <option value="1">Green/Vegatative</option>
                                 <option value="2">Sour/Fermented</option>
