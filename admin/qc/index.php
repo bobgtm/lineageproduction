@@ -5,7 +5,7 @@ require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 $defaultDate = date("Y-m-d");
 $coffees = $db->query("SELECT * FROM products WHERE product_type = 1 AND active = 1 AND product_name NOT IN ('431', 'Modern American', 'Select Decaf')")->results();
 $origins = $db->query("SELECT * FROM coffee_origins")->results();
-dump($origins);
+
 $fields = [];
 if(isset($_POST['submit'])){
    $fields = [
@@ -78,7 +78,7 @@ if(isset($_POST['submit'])){
                         <div class="col-2 my-0"><label for="date" class="form-label align-middle my-0"><p class="align-middle mb-0 mt-1">431°</p> </label></div>
                         <div class="col-10"><input name="batch_date"  type="date" class="form-control" id="date" value="<?= $defaultDate ?>"/></div>
                     </div>
-                    <div class="row mb-sm-2">
+                    <div class="row">
                         <div class="col mt-2">
                             <select name="batch_origin" id="" class="form-select">
                                 <option value="" >Origin...</option>
@@ -86,7 +86,19 @@ if(isset($_POST['submit'])){
                                     <option value=""><?= $o->origin_location ?></option>
                                 <?php endforeach ?>
                             </select>
-                            <input name="batch_notes" type="text" class="form-control mt-2" id="validationCustom02" placeholder="what are you tasting?" required>  
+                            <!-- <input name="batch_notes" type="text" class="form-control mt-2" id="validationCustom02" placeholder="what are you tasting?" required>   -->
+                            <select name="sob_notes" class="form-select mt-2" id="" required>
+                                <option selected disabled vale="">What are you tasting?</option>
+                                <option value="1">Green/Vegatative</option>
+                                <option value="2">Sour/Fermented</option>
+                                <option value="3">Fruity</option>
+                                <option value="4">Floral</option>
+                                <option value="5">Sweet</option>
+                                <option value="6">Nutty/Cocoa</option>
+                                <option value="7">Spices</option>
+                                <option value="8">Roasted</option>
+                                <option value="9">Other</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -100,7 +112,7 @@ if(isset($_POST['submit'])){
                         <div class="col-8 mx-0 ps-0"><input name="sob_date" type="date" class="form-control" id="date" value="<?= $defaultDate ?>"/></div>
                     </div>
                     <select name="sob_name" id="" class="form-select mt-2">
-                            <option value="">Select...</option>
+                            <option value="">What's on?</option>
                         <?php foreach ($coffees as $c) { ?> 
                             <option value="<?= $c->product_name ?>"><?= $c->product_name ?></option>
                         <?php } ?>
@@ -126,16 +138,22 @@ if(isset($_POST['submit'])){
     </div>
         
     <div class="row mx-1 mt-2 d-flex justify-content-center align-items-stretch">
-        <div class="col mx-ms-0 me-md-2 px-0 mb-2 align-self-stretch ">
-            <div class="card shadow-sm py-lg-4 py-md-4">
-                <div class="card-body pb-3">
-                    <div class="row justify-content-md-evenly mb-3">
-                        <div class="col-lg-3 col-sm-3 my-0"><label for="date" class="form-label my-0"><p class="my-1">M.A. Espresso</p> </label></div>
-                        <div class="col-lg-9 col-sm-9"><input name="ma_date"  type="date" class="form-control" id="date" value="<?= $defaultDate ?>"/></div>
+        <div class="col mx-ms-0 me-md-2 px-0 mb-2">
+            <div class="card shadow-sm ">
+                <div class="card-body">
+                    <div class="row justify-content-md-evenly mb-2">
+                        <div class="col-4 col-lg-3 col-sm-3 my-0"><label for="date" class="form-label my-0"><p class="my-1">M.A. Espresso</p> </label></div>
+                        <div class="col-8 col-lg-9 col-sm-9"><input name="ma_date"  type="date" class="form-control" id="date" value="<?= $defaultDate ?>"/></div>
                     </div>
                     
                     <div class="col">
-                        <input name="ma_origin" type="text" class="form-control mt-2" id="validationCustom02" placeholder="origin" required>  
+                        <!-- <input name="ma_origin" type="text" class="form-control mt-2" id="validationCustom02" placeholder="origin" required>   -->
+                        <select name="batch_origin" id="" class="form-select">
+                                <option value="" >Origin...</option>
+                                <?php foreach($origins as $o): ?>
+                                    <option value=""><?= $o->origin_location ?></option>
+                                <?php endforeach ?>
+                            </select>
                         <select name="ma_notes" class="form-select mt-2" id="" required>
                             <option selected disabled vale="">What are you tasting?</option>
                             <option value="1">Green/Vegatative</option>
@@ -155,15 +173,15 @@ if(isset($_POST['submit'])){
         </div>        
         <div class="col-sm-12 col-md-7 mx-0 px-0">
             <div class="card shadow-sm px-0">
-                <div class="card-body">
+                <div class="card-body ">
                     <div class="row justify-content-md-center align-middle">
                         <div class="col-4 my-0"><label for="date" class="form-label align-middle my-0"><p class="align-middle mb-0 mt-1">S.O. Espresso</p> </label></div>
-                        <div class="col-8"><input name="soe_date"  type="date" class="form-control" id="date" value="<?= $defaultDate ?>"/></div>
+                        <div class="col-8 my-0"><input name="soe_date"  type="date" class="form-control" id="date" value="<?= $defaultDate ?>"/></div>
                     </div>
                     <div class="row">
-                        <div class="col mt-2">
+                        <div class="col">
                             <select name="soe_name" id="" class="form-select mt-2">
-                                <option value="">Select...</option>
+                                <option selected disabled value="">What's on? </option>
                             <?php foreach ($coffees as $c) { ?> 
                                 <option value="<?= $c->product_name ?>"><?= $c->product_name ?></option>
                             <?php } ?>
