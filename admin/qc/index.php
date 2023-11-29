@@ -13,31 +13,33 @@ if(isset($_POST['submit'])){
       'shop_id' => Input::get('location'),
       'batch_origin' => Input::get('batch_origin'),
       'batch_notes' => Input::get('batch_notes'),
-      'so_bean'  => Input::get('so_bean'),
-      'soe_bean'  => Input::get('soe_bean'),
-      'sob_name' => Input::get('sob_name'),
-      'sob_origin' => Input::get('sob_origin'),
-      'ma_origin' => Input::get('ma_origin'),
-      'cbv_qual' => Input::get('cbv_qual'),
-      'cbv_notes' => Input::get('cbvPoor'),
-      'cbw_qual' => Input::get('cbw_qual'),
-      'cbw_notes' => Input::get('cbwPoor'),
+      'batch_date' => Input::get('batch_date'),
+      'sob_origin' => Input::get('sob_name'),
+      'sob_notes' => Input::get('sob_notes'),
+      'sob_date' => Input::get('sob_name'),
+      'ma_origin' => Input::get('ma_origin'),    
+      'ma_notes' => Input::get('ma_notes'),    
+      'ma_date' => Input::get('ma_date'),    
+      'soe_origin'  => Input::get('soe_origin'),
+      'soe_notes'  => Input::get('soe_notes'),
+      'soe_date'  => Input::get('soe_date'),
       'cbb_qual' => Input::get('cbb_qual'),
-      'cbb_notes' => Input::get('cbbPoor'),
+      'cbb_date' => Input::get('cbb_date'),
+      'cbbPoor' => Input::get('cbbPoor'),
+      'cbw_qual' => Input::get('cbw_qual'),
+      'cbw_date' => Input::get('cbw_date'),
+      'cbwPoor' => Input::get('cbwPoor'),
+      'cbv_qual' => Input::get('cbv_qual'),
+      'cbv_date' => Input::get('cbv_date'),
+      'cbvPoor' => Input::get('cbvPoor'),
+      
    ];
 
    
-   foreach ($_POST as $k => $v) {
-      if (str_contains($k, "_date")) {
-         // $v = convertDate($v);
-         $fields[$k] = $v;
-      }  
-      if (str_contains($k, "_notes")) {
-         $fields[$k] = $v;
-      }
-   }
+   
     dump($fields);
-//    $db->insert('entries', $fields);    
+   $db->insert('entries', $fields);
+    dump($db->errorString());
    usSuccess("Notes Noted");
 	// Redirect::to("qc_recs.php");
 }
@@ -84,7 +86,7 @@ if(isset($_POST['submit'])){
                             <select name="batch_origin" id="" class="form-select">
                                 <option value="" >Origin...</option>
                                 <?php foreach($origins as $o): ?>
-                                    <option value=""><?= $o->origin_location ?></option>
+                                    <option value="<?= $o->id ?>"><?= $o->origin_location ?></option>
                                 <?php endforeach ?>
                             </select>
                             <!-- <input name="batch_notes" type="text" class="form-control mt-2" id="validationCustom02" placeholder="what are you tasting?" required>   -->
@@ -149,10 +151,10 @@ if(isset($_POST['submit'])){
                     
                     <div class="col">
                         <!-- <input name="ma_origin" type="text" class="form-control mt-2" id="validationCustom02" placeholder="origin" required>   -->
-                        <select name="batch_origin" id="" class="form-select">
+                        <select name="ma_origin" id="" class="form-select">
                                 <option value="" >Origin...</option>
                                 <?php foreach($origins as $o): ?>
-                                    <option value=""><?= $o->origin_location ?></option>
+                                    <option value="<?= $o->id ?>"><?= $o->origin_location ?></option>
                                 <?php endforeach ?>
                             </select>
                         <select name="ma_notes" class="form-select mt-2" id="" required>
@@ -181,7 +183,7 @@ if(isset($_POST['submit'])){
                     </div>
                     <div class="row">
                         <div class="col">
-                            <select name="soe_name" id="" class="form-select mt-2">
+                            <select name="soe_origin" id="" class="form-select mt-2">
                                 <option selected disabled value="">What's on? </option>
                             <?php foreach ($coffees as $c) { ?> 
                                 <option value="<?= $c->product_name ?>"><?= $c->product_name ?></option>
@@ -263,14 +265,14 @@ if(isset($_POST['submit'])){
 
         
 
-      <div class="d-flex justify-content-evenly mt-4">
-         <div class="col-sm-2">
-            <button class="btn btn-primary" name="submit" value="submit" type="submit">Submit form</button>
-         </div>
-         <div class="col-sm-2">
-            <a href="qc_recs.php" class="btn btn-primary">View Records</a>
-         </div>
-      </div>
+    <div class="d-flex justify-content-evenly mt-4">
+        <div class="col-sm-2">
+        <button class="btn btn-primary" name="submit" value="submit" type="submit">Submit form</button>
+        </div>
+        <div class="col-sm-2">
+        <a href="qc_recs.php" class="btn btn-primary">View Records</a>
+        </div>
+    </div>
 </form>
 
 
