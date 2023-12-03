@@ -15,31 +15,68 @@ function getPastry() {
     return $res;
 }
 
+
+// dump($db->errorString());
 if(!empty($_POST['pastryInv'])){
     
    $pastryVal = Input::get('pastryI');
+//    foreach($pastryVal as $t => $v){
+//     echo $t . "<br>";
+//     if($v == ""){
+//         echo "hello<br>";
+//     }
+//     echo $v . "<br>";
+//    }
+   
+   $store_id = Input::get('location');
+   $active = getPastry();
    
    
+   
+   
+  
    $fields2 = [
-                'entry_date' => date('Y-m-d H:i:s'),
-                'store_id' => Input::get('location')
-            ];
-            $db->insert('inventory_pastry_entry', $fields2);
-            $dbID = $db->lastId();    
+        'entry_date' => date('Y-m-d H:i:s'),
+        'store_id' => $store_id 
+    ];
+            
+    $db->insert('inventory_pastry_entry', $fields2);
+    $dbID = $db->lastId();    
     
 
     foreach($pastryVal as $t => $v){
-            
+        // I want to use this to go through the database, check for the most recent entry... delete it, 
+        // Then replace it with a new entry that edits the number for the number that needs to be changed. 
+        // So far this query just checks for the recent inventory number. 
+        $invCheck = $db->query("SELECT ip.*, ie.* FROM inventory_pastry as ip
+        LEFT JOIN inventory_pastry_entry as ie
+        ON ie.id=ip.entry_id
+        WHERE ip.store_id = ?
+        AND ip.entry_id = ?
+        ORDER BY ie.entry_date DESC", [$store_id, $dbID])->results();
+        
 
+        // foreach($invCheck as $invNum) {
+        //     for($i = 0; $i < count($active); $i++) {
+        //         if($active[$i]->id == $invNum->product_id) {
+        //            echo "confirmed<br>";
+        //         } else {
+        //             echo "unconfrim";
+        //         }
+                
+        //       }      
+        // }
             $fields = [
                 'product_id' => $t,
                 'entry_id' => $dbID,
-                'store_id' => Input::get('location'),
+                'store_id' => $store_id,
                 'stock' => $v
             ];
             
-            $db->insert('inventory_pastry', $fields);            
+            $db->insert('inventory_pastry', $fields);
+        
         }
+        echo usSuccess("🥐 Waste saved");
 }
 
 ?>
