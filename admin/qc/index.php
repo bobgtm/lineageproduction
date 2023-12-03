@@ -14,34 +14,32 @@ if(isset($_POST['submit'])){
       'batch_origin' => Input::get('batch_origin'),
       'batch_notes' => Input::get('batch_notes'),
       'batch_date' => Input::get('batch_date'),
-      'sob_origin' => Input::get('sob_name'),
+      'sob_origin' => Input::get('sob_origin'),
       'sob_notes' => Input::get('sob_notes'),
-      'sob_date' => Input::get('sob_name'),
+      'sob_date' => Input::get('sob_date'),
       'ma_origin' => Input::get('ma_origin'),    
       'ma_notes' => Input::get('ma_notes'),    
       'ma_date' => Input::get('ma_date'),    
       'soe_origin'  => Input::get('soe_origin'),
       'soe_notes'  => Input::get('soe_notes'),
       'soe_date'  => Input::get('soe_date'),
-      'cbb_qual' => Input::get('cbb_qual'),
       'cbb_date' => Input::get('cbb_date'),
+      'cbb_qual' => Input::get('cbb_qual'),
       'cbbPoor' => Input::get('cbbPoor'),
-      'cbw_qual' => Input::get('cbw_qual'),
       'cbw_date' => Input::get('cbw_date'),
+      'cbw_qual' => Input::get('cbw_qual'),
       'cbwPoor' => Input::get('cbwPoor'),
-      'cbv_qual' => Input::get('cbv_qual'),
       'cbv_date' => Input::get('cbv_date'),
+      'cbv_qual' => Input::get('cbv_qual'),
       'cbvPoor' => Input::get('cbvPoor'),
       
    ];
-
-   
-   
-    dump($fields);
+    
    $db->insert('entries', $fields);
-    dump($db->errorString());
-   usSuccess("Notes Noted");
-	// Redirect::to("qc_recs.php");
+    usSuccess("Entry Saved");
+    
+//    Redirect::to("qc_recs.php");
+   
 }
 
 ?>
@@ -114,7 +112,7 @@ if(isset($_POST['submit'])){
                         <div class="col-4 my-0 mx-0 pe-0"><label for="sob_date" class="form-label align-middle my-0"><p class="align-middle mb-0 mt-1">S.O. Batch</p> </label></div>
                         <div class="col-8 mx-0 ps-0"><input name="sob_date" type="date" class="form-control" id="date" value="<?= $defaultDate ?>"/></div>
                     </div>
-                    <select name="sob_name" id="" class="form-select mt-2">
+                    <select name="sob_origin" id="" class="form-select mt-2">
                             <option value="">What's on?</option>
                         <?php foreach ($coffees as $c) { ?> 
                             <option value="<?= $c->product_name ?>"><?= $c->product_name ?></option>
@@ -265,7 +263,7 @@ if(isset($_POST['submit'])){
 
         
 
-    <div class="d-flex justify-content-evenly mt-4">
+    <div class="d-flex justify-content-evenly mt-4 mb-3">
         <div class="col-sm-2">
         <button class="btn btn-primary" name="submit" value="submit" type="submit">Submit form</button>
         </div>
@@ -274,13 +272,6 @@ if(isset($_POST['submit'])){
         </div>
     </div>
 </form>
-
-
-<div class="row mb-5">
-   
-</div>
-
-
 
 <!-- Place any per-page javascript here -->
 <script>
@@ -363,7 +354,6 @@ $(function(){
             $(".cbv_date").removeAttr("required")
             $(".cbv_date").attr("disabled", true)
             }
-        
     })
 })
 </script>
