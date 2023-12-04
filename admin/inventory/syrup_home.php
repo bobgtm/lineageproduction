@@ -29,10 +29,9 @@ if(!empty($_POST['syrpar'])){
     $syrups = Input::get('spar');
    
     $vals = Input::get('valpar');
-    // dump($syrups);
-    // dump($vals);
+
     $check = $db->query("SELECT * FROM product_par WHERE store_id = ? AND product_type = ?", [$storeid, 3])->count();
-    // dump($check);
+    
     if($check < 1) {
         foreach($syrups as $k => $v){
             foreach($vals as $t => $u){
@@ -58,7 +57,7 @@ if(!empty($_POST['syrpar'])){
     // If so, then we delete the previous entry and replace it with a new entry
     if($check >= 1){
         $ids = Input::get('valpar');    
-        // dnd($ids);
+        
         foreach($ids as $i => $par) {
             $db->delete("product_par", ["and", ["product_id", "=", $i], ["store_id", "=", $storeid]]);   
         }
@@ -88,11 +87,12 @@ if(!empty($_POST['syrinv'])){
    $syrups2 = [];
    foreach($syrups as $k => $v) {
      for ($i=0; $i < count($syrups) ; $i++) { 
-            $syrups2[$k] = floatval($v);
+            $syrups2[$k] = number_format((float)$v,2,'.','');
      }
    }
    $vals = Input::get('val');
-    foreach($syrups2 as $k => $v){
+    foreach($syrups as $k => $v){
+        echo "Syrup: " . $k . " = Qty: " . $v."<br>";
         if($v > 0.00) {
             foreach($vals as $t => $u){
                 if ($k == $t){
