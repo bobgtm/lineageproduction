@@ -39,15 +39,8 @@ function parseNote($val) {
 }
 
 $s = $db->query("SELECT * FROM shops")->results();
-// foreach ($s as $store) {
-//     foreach($c as $entry) {
-//         if ($entry->shop_id == $store->id) {
-//             echo "".$store->id." ".$store->name."<br>"; 
-//         }
-//     }
-// }
-$rec = $db->query("SELECT * FROM shops RIGHT JOIN entries ON shops.id = entries.shop_id")->results();
-
+$rec = $db->query("SELECT * FROM shops LEFT JOIN entries ON shops.id = entries.shop_id")->results();
+dump ($rec);
 function cleanDate($val) {
    $newDate = new DateTime($val);
    $strip = $newDate->format('D: M. j');
@@ -134,17 +127,29 @@ function cleanDate($val) {
                             <td><?= cleanDate($r->date) ?></td>
                             <!-- 431 Notes and Date -->
                             <td>
-                            <?= parseNote($r->batch_notes)."</br>".parseOrigin($r->batch_origin)."</br>".coffDate($r->batch_date)?>
+                                <p class="m-0 p-0"><span class="fw-bold">Origin: </span><?= parseOrigin($r->batch_origin)?></p>
+                                <p class="m-0 p-0" ><span class="fw-bold">Notes: </span><?=  parseNote($r->batch_notes) ?></p>
+                                <p class="m-0 p-0" ><span class="fw-bold">Date: </span><?= coffDate($r->batch_date)?></p>
+                            
                             </td>
                             <!-- Single Orign bean and Date -->
                             <td>
-                                <p class="m-0 p-0" ><?=parseNote($r->sob_notes) ?></p>
-                                <p class="m-0 p-0" > <?= $r->sob_origin?></p>
-                                <p class="m-0 p-0" ><?=coffDate($r->sob_date) ?></p>
+                                <p class="m-0 p-0" > <span class="fw-bold">Coffee: </span><?= $r->sob_origin?></p>
+                                <p class="m-0 p-0" ><span class="fw-bold">Notes: </span><?=parseNote($r->sob_notes) ?></p>
+                                <p class="m-0 p-0" ><span class="fw-bold">Date: </span><?=coffDate($r->sob_date) ?></p>
                             </td>
                             <!-- SO Batch Notes -->
-                            <td><?=  parseNote($r->ma_notes)."</br>".parseOrigin($r->ma_origin)."</br>".coffDate($r->ma_date)?></td>
-                            <td><?=  parseNote($r->soe_notes)."</br>".$r->soe_origin."</br>".coffDate($r->soe_date)?></td>
+                            <td>
+                                <p class="m-0 p-0"><span class="fw-bold">Origin: </span><?= parseOrigin($r->ma_origin)?></p>
+                                <p class="m-0 p-0" ><span class="fw-bold">Notes: </span><?=  parseNote($r->ma_notes) ?></p>
+                                <p class="m-0 p-0" ><span class="fw-bold">Date: </span><?= coffDate($r->ma_date)?></p>
+                            </td>
+                            <!-- S0 Espresso -->
+                            <td>
+                                <p class="m-0 p-0"><span class="fw-bold">Origin: </span><?= $r->soe_origin ?></p>
+                                <p class="m-0 p-0" ><span class="fw-bold">Notes: </span><?=  parseNote($r->soe_notes) ?></p>
+                                <p class="m-0 p-0" ><span class="fw-bold">Date: </span><?= coffDate($r->soe_date)?></p>
+                                
                             <td>
                                 <p class="m-0 p-0"><?php  echo $r->cbb_qual."</br>"; ?></p>
                                 <?php if($r->cbb_qual == 'poor') { ?>

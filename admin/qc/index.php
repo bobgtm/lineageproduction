@@ -81,15 +81,14 @@ if(isset($_POST['submit'])){
                     </div>
                     <div class="row">
                         <div class="col mt-2">
-                            <select name="batch_origin" id="" class="form-select">
-                                <option value="" >Origin...</option>
+                            <select name="batch_origin" id="" class="form-select" required>
+                                <option inactive value="" >Origin...</option>
                                 <?php foreach($origins as $o): ?>
                                     <option value="<?= $o->id ?>"><?= $o->origin_location ?></option>
                                 <?php endforeach ?>
                             </select>
-                            <!-- <input name="batch_notes" type="text" class="form-control mt-2" id="validationCustom02" placeholder="what are you tasting?" required>   -->
                             <select name="batch_notes" class="form-select mt-2" id="" required>
-                                <option selected disabled vale="">What are you tasting?</option>
+                                <option inactive value="">What are you tasting?</option>
                                 <option value="1">Green/Vegatative</option>
                                 <option value="2">Sour/Fermented</option>
                                 <option value="3">Fruity</option>
@@ -110,9 +109,9 @@ if(isset($_POST['submit'])){
                 <div class="card-body">
                     <div class="row justify-content-md-center align-middle">
                         <div class="col-4 my-0 mx-0 pe-0"><label for="sob_date" class="form-label align-middle my-0"><p class="align-middle mb-0 mt-1">S.O. Batch</p> </label></div>
-                        <div class="col-8 mx-0 ps-0"><input name="sob_date" type="date" class="form-control" id="date" value="<?= $defaultDate ?>"/></div>
+                        <div class="col-8 mx-0 ps-0"><input name="sob_date" type="date" class="form-control" id="date" value="<?= $defaultDate ?>" required/></div>
                     </div>
-                    <select name="sob_origin" id="" class="form-select mt-2">
+                    <select name="sob_origin" id="" class="form-select mt-2" required>
                             <option value="">What's on?</option>
                         <?php foreach ($coffees as $c) { ?> 
                             <option value="<?= $c->product_name ?>"><?= $c->product_name ?></option>
@@ -121,7 +120,7 @@ if(isset($_POST['submit'])){
                     <!-- <input name="sob_name" type="text" class="form-control mt-2" id="validationCustom02" placeholder="Name" required>   -->
                     <!-- <input name="sob_origin" type="text" class="form-control mt-2" id="validationCustom02" placeholder="origin" required>   -->
                     <select name="sob_notes" class="form-select mt-2" id="" required>
-                        <option selected disabled vale="">What are you tasting?</option>
+                        <option invactive value="">What are you tasting?</option>
                         <option value="1">Green/Vegatative</option>
                         <option value="2">Sour/Fermented</option>
                         <option value="3">Fruity</option>
@@ -144,19 +143,19 @@ if(isset($_POST['submit'])){
                 <div class="card-body">
                     <div class="row justify-content-md-evenly mb-2">
                         <div class="col-4 col-lg-3 col-sm-3 my-0"><label for="date" class="form-label my-0"><p class="my-1">M.A. Espresso</p> </label></div>
-                        <div class="col-8 col-lg-9 col-sm-9"><input name="ma_date"  type="date" class="form-control" id="date" value="<?= $defaultDate ?>"/></div>
+                        <div class="col-8 col-lg-9 col-sm-9"><input name="ma_date"  type="date" class="form-control" id="date" value="<?= $defaultDate ?>" /></div>
                     </div>
                     
                     <div class="col">
                         <!-- <input name="ma_origin" type="text" class="form-control mt-2" id="validationCustom02" placeholder="origin" required>   -->
-                        <select name="ma_origin" id="" class="form-select">
-                                <option value="" >Origin...</option>
+                        <select name="ma_origin" id="" class="form-select" required>
+                                <option value="">Origin...</option>
                                 <?php foreach($origins as $o): ?>
                                     <option value="<?= $o->id ?>"><?= $o->origin_location ?></option>
                                 <?php endforeach ?>
                             </select>
-                        <select name="ma_notes" class="form-select mt-2" id="" required>
-                            <option selected disabled vale="">What are you tasting?</option>
+                        <select name="ma_notes" id="" class="form-select mt-2" required>
+                            <option value="">What are you tasting?</option>
                             <option value="1">Green/Vegatative</option>
                             <option value="2">Sour/Fermented</option>
                             <option value="3">Fruity</option>
@@ -181,16 +180,16 @@ if(isset($_POST['submit'])){
                     </div>
                     <div class="row">
                         <div class="col">
-                            <select name="soe_origin" id="" class="form-select mt-2">
-                                <option selected disabled value="">What's on? </option>
+                            <select name="soe_origin" id="" class="form-select mt-2" required>
+                                <option value="">What's on? </option>
                             <?php foreach ($coffees as $c) { ?> 
                                 <option value="<?= $c->product_name ?>"><?= $c->product_name ?></option>
                             <?php } ?>
                             </select>
                             <!-- <input name="soe_name" type="text" class="form-control mt-2" id="validationCustom02" placeholder="Name" required>  
                             <input name="soe_origin" type="text" class="form-control mt-2" id="validationCustom02" placeholder="origin" required>   -->
-                            <select name="soe_notes" class="form-select mt-2" id="" required>
-                                <option selected disabled vale="">What are you tasting?</option>
+                            <select name="soe_notes" id="" class="form-select mt-2" required>
+                                <option value="">What are you tasting?</option>
                                 <option value="1">Green/Vegatative</option>
                                 <option value="2">Sour/Fermented</option>
                                 <option value="3">Fruity</option>
@@ -284,75 +283,93 @@ $(function(){
 });
 
 $(function(){
-
-
     $("#cbv_qual").on("change", function() {
         var val = $("#cbv_qual option:selected").text();
         if(val === 'Poor'){
+            // Show Poor Fields for notes, date
             $(".cbvPoor").show()
             $(".cbv_date").show()
-            
+            // Remove Disabled from poor notes
             $(".cbvPoor").removeAttr("disabled")
+            // Make poor notes required
             $(".cbvPoor").attr("required", true)
-            
+            // Remove disabled att from date 
             $(".cbv_date").removeAttr("disabled")
+            // Make date required
             $(".cbv_date").attr("required", true)
-        }
+            }
         if(val === 'Good'){
+            // Hide poor and date fields
             $(".cbvPoor").hide()
-            $(".cbv_date").removeAttr("disabled")
-            $(".cbv_date").attr("required", true)
+            $(".cbv_date").hide()
+
             
-            $(".cbvPoor").removeAttr("required")
             $(".cbvPoor").attr("disabled", true)
+            $(".cbvPoor").removeAttr("required")
+
             $(".cbv_date").removeAttr("required")
             $(".cbv_date").attr("disabled", true)
-        }
-        
+            }
     })
+
+   
+    
     $("#cbw_qual").on("change", function() {
         var val = $("#cbw_qual option:selected").text();
         if(val === 'Poor'){
+            // Show Poor Fields for notes, date
             $(".cbwPoor").show()
             $(".cbw_date").show()
+            // Remove Disabled from poor notes
             $(".cbwPoor").removeAttr("disabled")
-            $(".cbbPoor").attr("required", true)
-
+            // Make poor notes required
+            $(".cbwPoor").attr("required", true)
+            // Remove disabled att from date 
             $(".cbw_date").removeAttr("disabled")
+            // Make cbb date required
             $(".cbw_date").attr("required", true)
             }
         if(val === 'Good'){
+            // Hide poor and date fields
             $(".cbwPoor").hide()
             $(".cbw_date").hide()
-            
-            $(".cbwPoor").removeAttr("required")
-            $(".cbbPoor").attr("disabled", true)
 
-            $(".cbv_date").removeAttr("required")
-            $(".cbv_date").attr("disabled", true)
+            //
+            // $(".cbb").hide()
+            $(".cbwPoor").attr("disabled", true)
+            $(".cbwPoor").removeAttr("required")
+
+            $(".cbw_date").removeAttr("required")
+            $(".cbw_date").attr("disabled", true)
             }
-        
     })
     $("#cbb_qual").on("change", function() {
         var val = $("#cbb_qual option:selected").text();
         if(val === 'Poor'){
+            // Show Poor Fields for notes, date
             $(".cbbPoor").show()
             $(".cbb_date").show()
+            // Remove Disabled from poor notes
             $(".cbbPoor").removeAttr("disabled")
+            // Make poor notes required
             $(".cbbPoor").attr("required", true)
-
+            // Remove disabled att from date 
             $(".cbb_date").removeAttr("disabled")
+            // Make cbb date required
             $(".cbb_date").attr("required", true)
             }
         if(val === 'Good'){
+            // Hide poor and date fields
             $(".cbbPoor").hide()
             $(".cbb_date").hide()
-            $(".cbb").hide()
+
+            //
+            // $(".cbb").hide()
             $(".cbbPoor").attr("disabled", true)
             $(".cbbPoor").removeAttr("required")
 
-            $(".cbv_date").removeAttr("required")
-            $(".cbv_date").attr("disabled", true)
+            $(".cbb_date").removeAttr("required")
+            $(".cbb_date").attr("disabled", true)
             }
     })
 })
