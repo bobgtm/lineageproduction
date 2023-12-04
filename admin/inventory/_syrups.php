@@ -60,7 +60,7 @@ function parseUnit($value){
             echo "Gal.";
             break;
         case '2':
-            echo "toddy";
+            echo "Toddy";
             break;
         default:
             echo "no unit given";
