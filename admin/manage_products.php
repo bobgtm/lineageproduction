@@ -6,13 +6,6 @@ $products = $db->query("SELECT * from products ORDER BY active DESC")->results()
 $product_type = $db->query("SELECT * FROM product_type_string")->results();
 
 
-
-$coffees = $db->query("SELECT * FROM proudcts WHERE 'product_type' = ORDER BY active DESC")->results();
-$syr = $db->query("SELECT * FROM proudcts WHERE 'product_type' = ORDER BY active DESC")->results();
-$cbs = $db->query("SELECT * FROM proudcts WHERE 'product_type' = ORDER BY active DESC")->results();
-$past = $db->query("SELECT * FROM proudcts WHERE 'product_type' = ORDER BY active DESC")->results();
-
-
 if(!empty($_POST['addProduct'])) {
     $name = Input::get('newProduct');
     $ptype = Input::get("prodType");
@@ -45,11 +38,11 @@ if(!empty($_POST['addProduct'])) {
 
 
 ?>
-<div class="row mx-3 my-3">
+<div class="row my-3">
 
     <div class="column">
         <div class="card">
-            <div class="card-header">Add Product</div>
+            <div class="card-header"><strong>Add Product</strong></div>
             <div class="card-body">
                 <form action="" method="post" class="">
                     <div class="d-flex justify-content-between flex-row">
@@ -77,14 +70,14 @@ if(!empty($_POST['addProduct'])) {
 </div>
 
 <!-- Main Div -->
-<div class="row mx-3 my-3">
+<div class="row my-3">
     <!-- Man Col
     <div class="col"> -->
         <?php foreach($product_type as $pt) { ?>
-            <div class="col-3">
-                <div class="card">
+            <div class="col col-sm-12 col-lg-3">
+                <div class="card mt-3">
                     <div class="card-header">
-                        Manage <?= $pt->type_name ?> Product Status
+                        <span class="fw-b"><strong>Manage <?= ucwords($pt->type_name) ?> Product Status</strong></span>
                     </div>
                     <div class="card-body">
 
