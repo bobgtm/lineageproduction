@@ -77,7 +77,7 @@ if(!empty($_POST['addProduct'])) {
             <div class="col col-sm-12 col-lg-3">
                 <div class="card mt-3">
                     <div class="card-header">
-                        <span class="fw-b"><strong>Manage <?= ucwords($pt->type_name) ?> Product Status</strong></span>
+                        <span class="fw-b"><strong><?= ucwords($pt->type_name) ?></strong></span>
                     </div>
                     <div class="card-body">
 
