@@ -3,6 +3,16 @@ require_once '../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
 $products = $db->query("SELECT * from products ORDER BY active DESC")->results();
+$product_type = $db->query("SELECT * FROM product_type_string")->results();
+
+
+
+$coffees = $db->query("SELECT * FROM proudcts WHERE 'product_type' = ORDER BY active DESC")->results();
+$syr = $db->query("SELECT * FROM proudcts WHERE 'product_type' = ORDER BY active DESC")->results();
+$cbs = $db->query("SELECT * FROM proudcts WHERE 'product_type' = ORDER BY active DESC")->results();
+$past = $db->query("SELECT * FROM proudcts WHERE 'product_type' = ORDER BY active DESC")->results();
+
+
 if(!empty($_POST['addProduct'])) {
     $name = Input::get('newProduct');
     $ptype = Input::get("prodType");
@@ -65,42 +75,49 @@ if(!empty($_POST['addProduct'])) {
         </div>
     </div>
 </div>
-<div class="row mx-3 my-3">
-    <div class="column">
-        <div class="card">
-            <div class="card-header">
-                Manage Product Status
-            </div>
-            <div class="card-body">
 
-                <table class="table table-striped table-sm">
-                    <thead>
-                        <tr>
-                            <th>Product Name</th>
-                            <th>Toggle Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($products as $p) { ?>
-                        <tr>
-                            <td><?= $p->product_name ?></td>
-                            
-                            <td>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input switch" type="checkbox" role="switch" id="<?= $p->id ?>" <?= $p->active == 1 ? "checked" : "";?>/>
-                                <label class="form-check-label" for="<?= $p->id ?>" id="<?= $p->id ?>" data-update="update"><?= $p->active < 1 ? "Disabled" : "Enabled";?></label>
-                            </div>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                    </tbody>
-                </table>
+    <?php foreach($product_type as $pt) { ?>
+        <div class="row mx-3 my-3">
+            <div class="column">
+                <div class="card">
+                    <div class="card-header">
+                        Manage <?= $pt->type_name ?> Product Status
+                    </div>
+                    <div class="card-body">
+
+                        <table class="table table-striped table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Toggle Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach($products as $p) { 
+                                    if($pt->id == $p->product_type) { ?>
+                                    <tr>
+                                        <td><?= $p->product_name ?></td>
+                                        
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input switch" type="checkbox" role="switch" id="<?= $p->id ?>" <?= $p->active == 1 ? "checked" : "";?>/>
+                                                <label class="form-check-label" for="<?= $p->id ?>" id="<?= $p->id ?>" data-update="update"><?= $p->active < 1 ? "Disabled" : "Enabled";?></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                
+                    </div>
+                </div>
+                
             
-            </div>
+            </div> 
         </div>
-        
-    </div>
-</div>
+    <?php } ?>
+    
 <script>
     $(document).ready(function() {
 
