@@ -76,9 +76,12 @@ if(!empty($_POST['addProduct'])) {
     </div>
 </div>
 
-    <?php foreach($product_type as $pt) { ?>
-        <div class="row mx-3 my-3">
-            <div class="column">
+<!-- Main Div -->
+<div class="row mx-3 my-3">
+    <!-- Man Col
+    <div class="col"> -->
+        <?php foreach($product_type as $pt) { ?>
+            <div class="col-3">
                 <div class="card">
                     <div class="card-header">
                         Manage <?= $pt->type_name ?> Product Status
@@ -112,11 +115,13 @@ if(!empty($_POST['addProduct'])) {
                 
                     </div>
                 </div>
-                
-            
-            </div> 
-        </div>
-    <?php } ?>
+            </div>
+        <?php } ?>
+        <!-- End Main Col
+    </div>  -->
+    <!-- End Main Div -->
+</div>
+    
     
 <script>
     $(document).ready(function() {
