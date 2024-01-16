@@ -2,18 +2,26 @@
 require_once 'users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
-// $db->query("CREATE TABLE ict_products 
-//     (id int,
-//     product_name varchar(255)
-//     )");
-// dump($db->errorString());
-// $db->query("ALTER TABLE `ict_products` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);");
+// Create ICT Products Table
+$countIctProductTable = $db->query("SHOW TABLES LIKE 'inventory_ict'")->count();
+
+if($countIctProductTable == 0) {
+    $db->query("CREATE TABLE ict_products 
+    (id int,
+    product_name varchar(255), 
+    abbreviation int, 
+    unit_type varchar(255), 
+    product_category varchar(255)
+    )");
+    $db->query("ALTER TABLE `ict_products` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);");
+}
+
+// Add Products to ict_products
 $count = $db->query("SELECT * FROM `ict_products`")->count();
-dump($count);
 if($count <= 0){
     $db->query("INSERT INTO `ict_products` 
     (`product_name`) 
-    VALUES ('Oloong'), 
+    VALUES ('Oolong'), 
            ('Jasmine Green'),
            ('Yunnan Black'),
            ('Matcha'), 
@@ -53,15 +61,21 @@ if($count <= 0){
     ");    
 }
 
-$db->query("ALTER TABLE `ict_products`
-ADD COLUMN abbreviation INT AFTER product_name,
-ADD COLUMN unit_type VARCHAR(255) AFTER abbreviation;
-");
-dump($db->errorString());
-// $ict_tables = $db->query("CREATE TABLE ict_products 
-// (id int,
-// product_name varchar(255),
+// $db->query("ALTER TABLE `ict_products`
+// ADD COLUMN abbreviation INT AFTER product_name,
+// ADD COLUMN unit_type VARCHAR(255) AFTER abbreviation;
 // ");
+dump($db->errorString());
+// Add ICT Inventory Table for inventory entries
+$countInventoryTable = $db->query("SHOW TABLES LIKE 'inventory_ict'")->count();
+if($countInventoryTable == 0) {
+    $db->query("CREATE TABLE inventory_ict 
+    (id int,
+    entry_date datetime,
+    product_id int,
+    amount int
+    )");    
+}
 
 
 echo "done";
