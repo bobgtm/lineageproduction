@@ -1,12 +1,17 @@
 <?php 
 require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
-
-$uname = $user->data()->username;
-
 if(!(isset($user) && $user->isLoggedIn())){
     echo "Please Login to view the page";
     die();
+ }
+$uname = $user->data()->username;
+$user_id = $user->data()->id;
+
+
+ if($user_id != 3){
+    usError("That page is for East End Only");
+    Redirect::to($us_url_root."admin/home.php");
  }
  
 function getIct() {
