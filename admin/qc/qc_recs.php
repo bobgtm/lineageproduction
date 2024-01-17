@@ -40,7 +40,7 @@ function parseNote($val) {
 
 $s = $db->query("SELECT * FROM shops")->results();
 $rec = $db->query("SELECT * FROM shops LEFT JOIN entries ON shops.id = entries.shop_id")->results();
-dump ($rec);
+// dump ($rec);
 function cleanDate($val) {
    $newDate = new DateTime($val);
    $strip = $newDate->format('D: M. j');
