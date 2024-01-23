@@ -35,7 +35,7 @@ if($uid == 5) {
 // Grabs Par Information from form
 if(!empty($_POST['syrpar'])){
     // echo "This one is submitted";
-    $storeid = Input::get('location');
+    
     $fields = [
      'store_id' => $store_id
     ];
