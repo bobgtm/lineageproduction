@@ -2,8 +2,6 @@
 require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
-$uname = $user->data()->username;
-
 if(!(isset($user) && $user->isLoggedIn())){
     echo "Please Login to view the page";
     die();
@@ -58,7 +56,7 @@ if(!empty($_POST)){
             $inserted = true;
         }
         
-        if($inserted && ($uname == "mills")){
+        if($inserted && ($uname == "Mills")){
             usSuccess("༼ つ ◕_◕ ༽つ saved ");
         } else {
             usSuccess("Coffee Inventory Saved");
