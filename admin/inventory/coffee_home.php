@@ -14,24 +14,37 @@ function getCoffees() {
     $res = $db->query("SELECT * FROM products WHERE product_type = 1 AND active = 1")->results();
     return $res;
 }
+$uname = $user->data()->fname;
+$user_ids = $db->query("SELECT id FROM users")->results();
+$store_id = "";
+$uid = $user->data()->id;
 
+if($uid == 3) {
+    $store_id = 1;
+}
+if($uid == 4) {
+    $store_id = 2;
+}
+if($uid == 5) {
+    $store_id = 3;
+}
 
 // $fields = [];
 if(!empty($_POST)){
     $coffees = Input::get('coffee_');
-    $store_id = Input::get('location');
+    
     $inserted = false;
     foreach($coffees as $id => $inv) {
         $fields = [];
         if($inv != "") {
             $invCheck = $db->query("SELECT * FROM inventory_coffee WHERE store_id = ? and coffee_id = ? ORDER BY entry_date DESC LIMIT 1", [$store_id, $id])->results();
             
-            foreach($invCheck as $i) {
-                if($inv == $i->stock) {
-                    usMessage("A count of {$inv} was already recorded for this product");
-                    break 2;
-                }
-            }
+            // foreach($invCheck as $i) {
+            //     if($inv == $i->stock) {
+            //         usMessage("A count of {$inv} was already recorded for this product");
+            //         break 2;
+            //     }
+            // }
 
             $fields = [ 
                 'entry_date' => date('Y-m-d H:i:s'),
@@ -56,19 +69,8 @@ if(!empty($_POST)){
 
 <div class="row mt-3 text-center">
     <form  action="" method="post">
-        <h4 class="text-center">Coffee Inventory</h4>
+        <h4 class="text-center"><?= ucwords($uname) ?> Coffee Inventory</h4>
             
-        <div class="col col-lg-3 col-md-6 col-sm-12 mx-auto text-center">
-            <label for="" class="form-label">Shop Location</label>
-            <select name="location" class="form-select mb-1" id="" required>
-                <option selected disabled value="">Where ya at?</option>
-
-                <option value="1">East End</option>
-                <option value="2">Mills</option>
-                <option value="3">UCF</option>
-            </select>
-        </div>
-             
         <div class="col col-lg-3 mb-3 mx-auto">
             <div class="form-group">
                 <!-- Coffee Retail -->
