@@ -18,19 +18,32 @@ function getsyr() {
 $units = $db->query("SELECT * FROM unit_types")->results();
 
 // $details = $user->data()->permissions;
+$uname = $user->data()->fname;
+$user_ids = $db->query("SELECT id FROM users")->results();
+$store_id = "";
+$uid = $user->data()->id;
 
+if($uid == 3) {
+    $store_id = 1;
+}
+if($uid == 4) {
+    $store_id = 2;
+}
+if($uid == 5) {
+    $store_id = 3;
+}
 // Grabs Par Information from form
 if(!empty($_POST['syrpar'])){
-    echo "This one is submitted";
+    // echo "This one is submitted";
     $storeid = Input::get('location');
     $fields = [
-     'store_id' => $storeid
+     'store_id' => $store_id
     ];
     $syrups = Input::get('spar');
    
     $vals = Input::get('valpar');
 
-    $check = $db->query("SELECT * FROM product_par WHERE store_id = ? AND product_type = ?", [$storeid, 3])->count();
+    $check = $db->query("SELECT * FROM product_par WHERE store_id = ? AND product_type = ?", [$store_id, 3])->count();
     
     if($check < 1) {
         foreach($syrups as $k => $v){
@@ -41,7 +54,7 @@ if(!empty($_POST['syrpar'])){
                         'product_id' => $k,
                         'par' => $v,
                         'unit_id' => $u,
-                        'store_id' => Input::get('location'),
+                        'store_id' => $store_id,
                         'product_type' => 3,
                     ];
                     // dump($fields);
@@ -59,7 +72,7 @@ if(!empty($_POST['syrpar'])){
         $ids = Input::get('valpar');    
         
         foreach($ids as $i => $par) {
-            $db->delete("product_par", ["and", ["product_id", "=", $i], ["store_id", "=", $storeid]]);   
+            $db->delete("product_par", ["and", ["product_id", "=", $i], ["store_id", "=", $store_id]]);   
         }
         foreach($syrups as $k => $v){
             foreach($vals as $t => $u){
@@ -69,7 +82,7 @@ if(!empty($_POST['syrpar'])){
                         'product_id' => $k,
                         'par' => $v,
                         'unit_id' => $u,
-                        'store_id' => Input::get('location'),
+                        'store_id' => $store_id,
                         'product_type' => 3,
                     ];
                     
@@ -101,7 +114,7 @@ if(!empty($_POST['syrinv'])){
                         'quantity' => $v,
                         'unit_id' => $u,
                         'entry_date' => date('Y-m-d H:i:s'),
-                        'store_id' => Input::get('location')
+                        'store_id' => $store_id
                     ];
                     $db->insert('inventory_syrup', $fields);            
                 }
@@ -121,17 +134,9 @@ if(!empty($_POST['syrinv'])){
 <div class="row row-cols-2 d-flex flex-lg-row flex-column justify-content-center mx-5-lg mx-0 mt-3">
     <div class="col col-12 col-md-8 col-lg-4 mx-auto text-center mb-5">    
         <form  action="" method="post">
-            <h4 class="text-center">Syrup Inventory</h4>
+            <h4 class="text-center"><?= ucwords($uname) ?> Syrup Inventory</h4>
                 
-            <div class="form-group">
-                <label for="" class="form-label">Shop Location</label>
-                <select name="location" class="form-select mb-1" id="" required>
-                    <option selected disabled value="">Where ya at?</option>
-                    <option value="1">East End</option>
-                    <option value="2">Mills</option>
-                    <option value="3">UCF</option>
-                </select>
-            </div>
+            
             <div class="form-group">
                 
                 
@@ -157,21 +162,10 @@ if(!empty($_POST['syrinv'])){
     
     <div class="col col-12 col-md-8 col-lg-4 mx-auto text-center">
         <form  action="" method="post">
-            <h4 class="text-center">Syrup Par</h4>
-                
-            <div class="form-group">
-                <label for="" class="form-label">Shop Location</label>
-                <select name="location" class="form-select mb-1" id="" required>
-                    <option selected disabled value="">Set Syrups Par For...</option>
-                    <option value="1">East End</option>
-                    <option value="2">Mills</option>
-                    <option value="3">UCF</option>
-                </select>
-            </div>
-            <div class="form-group">
-                
-                
-                <?php 
+            <h4 class="text-center"><?= ucwords($uname) ?> Syrup Par</h4>
+           
+           <div class="form-group">
+            <?php 
                     $syr = getsyr(); 
                     foreach($syr as $s) { ?>
                     <label for="syr" class="mt-3 fw-bold"><?= $s->product_name ?></label>
