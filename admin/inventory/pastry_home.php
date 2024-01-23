@@ -16,6 +16,20 @@ function getPastry() {
 }
 
 
+$uname = $user->data()->fname;
+$user_ids = $db->query("SELECT id FROM users")->results();
+$store_id = "";
+$uid = $user->data()->id;
+
+if($uid == 3) {
+    $store_id = 1;
+}
+if($uid == 4) {
+    $store_id = 2;
+}
+if($uid == 5) {
+    $store_id = 3;
+}
 // dump($db->errorString());
 if(!empty($_POST['pastryInv'])){
     
@@ -28,7 +42,7 @@ if(!empty($_POST['pastryInv'])){
 //     echo $v . "<br>";
 //    }
    
-   $store_id = Input::get('location');
+   
    $active = getPastry();
    
    
@@ -85,20 +99,9 @@ if(!empty($_POST['pastryInv'])){
 <div class="row row-cols-2 d-flex flex-lg-row flex-column justify-content-center mx-5-lg mx-0 mt-3">
     <div class="col col-12 col-md-8 col-lg-4 mx-auto text-center mb-3">    
         <form  action="" method="post">
-            <h4 class="text-center">Pastry Waste Form</h4>
+            <h4 class="text-center"><?= ucwords($uname) ?> Pastry Waste Form</h4>
                 
             <div class="form-group">
-                <label for="" class="form-label">Shop Location</label>
-                <select name="location" class="form-select mb-1" id="" required>
-                    <option selected disabled value="">Where ya at?</option>
-                    <option value="1">East End</option>
-                    <option value="2">Mills</option>
-                    <option value="3">UCF</option>
-                </select>
-            </div>
-            <div class="form-group">
-                
-                
             <?php 
                 $pastry = getPastry(); 
                 foreach($pastry as $p) { ?>
