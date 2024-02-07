@@ -11,13 +11,13 @@ $user_ids = $db->query("SELECT id FROM users")->results();
 $store_id = "";
 $uid = $user->data()->id;
 
-if($uid == 3) {
+if($uid == 9) {
     $store_id = 1;
 }
-if($uid == 4) {
+if($uid == 5) {
     $store_id = 2;
 }
-if($uid == 5) {
+if($uid == 10) {
     $store_id = 3;
 }
 
@@ -25,7 +25,7 @@ $fields = [];
 if(isset($_POST['submit'])){
    $fields = [
       'date' => date("Y-m-d H:i:s"),
-      'shop_id' => Input::get('location'),
+      'shop_id' => $store_id,
       'batch_origin' => Input::get('batch_origin'),
       'batch_notes' => Input::get('batch_notes'),
       'batch_date' => Input::get('batch_date'),
