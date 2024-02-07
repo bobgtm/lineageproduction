@@ -23,13 +23,13 @@ $user_ids = $db->query("SELECT id FROM users")->results();
 $store_id = "";
 $uid = $user->data()->id;
 
-if($uid == 3) {
+if($uid == 9) {
     $store_id = 1;
 }
-if($uid == 4) {
+if($uid == 5) {
     $store_id = 2;
 }
-if($uid == 5) {
+if($uid == 10) {
     $store_id = 3;
 }
 // Grabs Par Information from form
@@ -106,7 +106,7 @@ if(!empty($_POST['syrinv'])){
    $vals = Input::get('val');
     foreach($syrups as $k => $v){
         echo "Syrup: " . $k . " = Qty: " . $v."<br>";
-        if($v > 0.00) {
+        if($v != "") {
             foreach($vals as $t => $u){
                 if ($k == $t){
                     $fields = [

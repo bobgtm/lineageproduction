@@ -62,6 +62,9 @@ function parseUnit($value){
         case '2':
             echo "Toddy";
             break;
+        case '3':
+            echo "Ctr.";
+            break;
         default:
             echo "no unit given";
             break;
