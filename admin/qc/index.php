@@ -6,11 +6,26 @@ $defaultDate = date("Y-m-d");
 $coffees = $db->query("SELECT * FROM products WHERE product_type = 1 AND active = 1 AND product_name NOT IN ('431', 'Modern American', 'Select Decaf')")->results();
 $origins = $db->query("SELECT * FROM coffee_origins")->results();
 
+$uname = $user->data()->fname;
+$user_ids = $db->query("SELECT id FROM users")->results();
+$store_id = "";
+$uid = $user->data()->id;
+
+if($uid == 9) {
+    $store_id = 1;
+}
+if($uid == 5) {
+    $store_id = 2;
+}
+if($uid == 10) {
+    $store_id = 3;
+}
+
 $fields = [];
 if(isset($_POST['submit'])){
    $fields = [
       'date' => date("Y-m-d H:i:s"),
-      'shop_id' => Input::get('location'),
+      'shop_id' => $store_id,
       'batch_origin' => Input::get('batch_origin'),
       'batch_notes' => Input::get('batch_notes'),
       'batch_date' => Input::get('batch_date'),
@@ -45,7 +60,7 @@ if(isset($_POST['submit'])){
 ?>
 <div class="row mx-auto mt-3">
    <div class="col-md-12">
-      <h3>Lineage Quality Control Form</h3>
+      <h3><?= ucwords($uname) ?> Quality Control Form</h3>
    </div>
    <div class="col-lg-12 col-md-12 mt-1">
       <p class="mb-0">This should be filled out daily before the morning shift clocks out. This will help us maintain quality across all shops and determine the source of any issues.</p> 
@@ -56,7 +71,7 @@ if(isset($_POST['submit'])){
 </div>
 <form method="post">
       <!-- Shop location -->
-      <div class="row mx-1">
+      <!-- <div class="row mx-1">
         <div class="card shadow-sm px-0">
             <div class="card-body">
                 <label for="" class="card-title form-label ">Shop Location</label>
@@ -68,7 +83,7 @@ if(isset($_POST['submit'])){
                 </select>
             </div>
         </div>
-      </div>
+      </div> -->
      
     <div class="row mx-1 mt-2 d-flex justify-content-center align-items-stretch">
         <div class="col mx-ms-0 me-md-2 px-0 mb-2">

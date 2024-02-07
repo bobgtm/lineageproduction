@@ -40,7 +40,7 @@ function parseNote($val) {
 
 $s = $db->query("SELECT * FROM shops")->results();
 $rec = $db->query("SELECT * FROM shops LEFT JOIN entries ON shops.id = entries.shop_id")->results();
-dump ($rec);
+// dump ($rec);
 function cleanDate($val) {
    $newDate = new DateTime($val);
    $strip = $newDate->format('D: M. j');
@@ -153,18 +153,23 @@ function cleanDate($val) {
                             <td>
                                 <p class="m-0 p-0"><?php  echo $r->cbb_qual."</br>"; ?></p>
                                 <?php if($r->cbb_qual == 'poor') { ?>
-                                    <p class="m-0 p-0"><?= coffDate($r->cbb_date) ?></p>
-                                    <p class="m-0 p-0"><?= $r->cbbPoor ?></p>
+                                    <p class="m-0 p-0"><span class="fw-bold">Notes: </span><?= $r->cbbPoor ?></p>
+                                    <p class="m-0 p-0"><span class="fw-bold">Date: </span><?= coffDate($r->cbb_date) ?></p>
                                 <?php } ?>
                             </td>
-                            <td><?=  $r->cbw_qual ?></td>
                             <td>
-                                <?php  echo $r->cbv_qual; ?>
-                                <?php if($r->cbv_qual == 'poor') {
-                                    echo $r->cbv_date;
-                                    echo $r->cbvPoor;
-                                } 
-                                ?>
+                                 <p class="m-0 p-0"><?php  echo $r->cbw_qual."</br>"; ?></p>
+                                <?php if($r->cbw_qual == 'poor') { ?>
+                                    <p class="m-0 p-0"><span class="fw-bold">Notes: </span><?= $r->cbwPoor ?></p>
+                                    <p class="m-0 p-0"><span class="fw-bold">Date: </span><?= coffDate($r->cbw_date) ?></p>
+                                <?php } ?>
+                            </td>
+                            <td>
+                                <p class="m-0 p-0"><?php  echo $r->cbv_qual."</br>"; ?></p>
+                                <?php if($r->cbv_qual == 'poor') { ?>
+                                    <p class="m-0 p-0"><span class="fw-bold">Notes: </span><?= $r->cbvPoor ?></p>
+                                    <p class="m-0 p-0"><span class="fw-bold">Date: </span><?= coffDate($r->cbv_date) ?></p>
+                                <?php } ?>
                             </td>
                         </tr>
                     <?php } ?>

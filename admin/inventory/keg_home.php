@@ -16,20 +16,34 @@ function getCB() {
 }
 
 //  = $db->query("SELECT * FROM products WHERE product_type = 2 ORDER BY id DESC")->results();
+// $details = $user->data()->permissions;
+$uname = $user->data()->fname;
+$user_ids = $db->query("SELECT id FROM users")->results();
+$store_id = "";
+$uid = $user->data()->id;
 
+if($uid == 9) {
+    $store_id = 1;
+}
+if($uid == 5) {
+    $store_id = 2;
+}
+if($uid == 10) {
+    $store_id = 3;
+}
 
 
 
 // Grabs Par Information from form
 if(!empty($_POST['cbpar'])){
-    $storeid = Input::get('location');
+    
     $fields = [
-     'store_id' => $storeid
+     'store_id' => $store_id
     ];
     // Associative array of store_ids to quantities
     $ids = Input::get('cbid');    
     // Need to check whether there are entries in the db for the store already,
-    $check = $db->query("SELECT * FROM product_par WHERE store_id = ? AND product_id BETWEEN 4 AND 6", [$storeid])->count();
+    $check = $db->query("SELECT * FROM product_par WHERE store_id = ? AND product_id BETWEEN 4 AND 6", [$store_id])->count();
     
     // If not, then we add the first entry
     if($check < 1) {
@@ -43,7 +57,7 @@ if(!empty($_POST['cbpar'])){
     // If so, then we delete the previous entry and replace it with a new entry
     if($check >= 1){
         foreach($ids as $i => $par) {
-            $db->delete("product_par", ["and", ["product_id", "=", $i], ["store_id", "=", $storeid]]);   
+            $db->delete("product_par", ["and", ["product_id", "=", $i], ["store_id", "=", $store_id]]);   
         }
         foreach($ids as $i => $par) {
             $fields["product_id"] = $i; 
@@ -59,8 +73,7 @@ if(!empty($_POST['cbpar'])){
 if(!empty($_POST['cbinv'])){
     
     $cbs = Input::get('cb');
-    $store_id = Input::get('location');
-
+    
     $fields = [ 
     'entry_date' => date('Y-m-d'),
     'store_id' => $store_id
@@ -104,17 +117,9 @@ usSuccess("Inventory Saved");
 <div class="row row-cols-2 d-flex flex-md-row flex-column justify-content-center align-items-center mx-1 mt-4">
     <div class="col col-12 col-md-8 col-lg-4 mx-auto text-center">    
         <form  action="" method="post">
-            <h4 class="text-center">Cold Brew Inventory</h4>
+            <h4 class="text-center"><?= ucwords($uname) ?> Cold Brew Inventory</h4>
                 
-            <div class="form-group">
-                <label for="" class="form-label">Shop Location</label>
-                <select name="location" class="form-select mb-1" id="" required>
-                    <option selected disabled value="">Where ya at?</option>
-                    <option value="1">East End</option>
-                    <option value="2">Mills</option>
-                    <option value="3">UCF</option>
-                </select>
-            </div>
+            
             <div class="form-group">
                 <!-- Kegs -->
                 <?php 
@@ -132,17 +137,7 @@ usSuccess("Inventory Saved");
     
     <div class="col col-12 col-md-8 col-lg-4 mx-auto mt-lg-0 mt-5 text-center">
         <form  action="" method="post">
-            <h4 class="text-center">Cold Brew Par</h4>
-                
-            <div class="form-group">
-                <label for="" class="form-label">Shop Location</label>
-                <select name="location" class="form-select mb-1" id="" required>
-                    <option selected disabled value="">Set Cold Brew Par For...</option>
-                    <option value="1">East End</option>
-                    <option value="2">Mills</option>
-                    <option value="3">UCF</option>
-                </select>
-            </div>
+            <h4 class="text-center"><?= ucwords($uname) ?> Cold Brew Par</h4>
             <div class="form-group">
                 <!-- Kegs -->
                 <?php 
