@@ -105,7 +105,7 @@ if(!empty($_POST['syrinv'])){
    }
    $vals = Input::get('val');
     foreach($syrups as $k => $v){
-        echo "Syrup: " . $k . " = Qty: " . $v."<br>";
+        // echo "Syrup: " . $k . " = Qty: " . $v."<br>";
         if($v != "") {
             foreach($vals as $t => $u){
                 if ($k == $t){
