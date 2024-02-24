@@ -17,7 +17,7 @@ function getCB() {
 
 //  = $db->query("SELECT * FROM products WHERE product_type = 2 ORDER BY id DESC")->results();
 // $details = $user->data()->permissions;
-$uname = $user->data()->fname;
+$uname = $user->data()->fname . " " .  $user->data()->lname;
 $user_ids = $db->query("SELECT id FROM users")->results();
 $store_id = "";
 $uid = $user->data()->id;

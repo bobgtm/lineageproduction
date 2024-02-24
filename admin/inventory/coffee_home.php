@@ -12,7 +12,7 @@ function getCoffees() {
     $res = $db->query("SELECT * FROM products WHERE product_type = 1 AND active = 1")->results();
     return $res;
 }
-$uname = $user->data()->fname;
+$uname = $user->data()->fname . " " .  $user->data()->lname;
 $user_ids = $db->query("SELECT id FROM users")->results();
 $store_id = "";
 $uid = $user->data()->id;
@@ -25,6 +25,9 @@ if($uid == 5) {
 }
 if($uid == 10) {
     $store_id = 3;
+}
+if($uid == 13) {
+    $store_id = 4;
 }
 
 // $fields = [];
