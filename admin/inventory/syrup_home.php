@@ -18,7 +18,7 @@ function getsyr() {
 $units = $db->query("SELECT * FROM unit_types")->results();
 
 // $details = $user->data()->permissions;
-$uname = $user->data()->fname;
+$uname = $user->data()->fname . " " .  $user->data()->lname;
 $user_ids = $db->query("SELECT id FROM users")->results();
 $store_id = "";
 $uid = $user->data()->id;
@@ -31,6 +31,9 @@ if($uid == 5) {
 }
 if($uid == 10) {
     $store_id = 3;
+}
+if($uid == 13) {
+    $store_id = 4;
 }
 // Grabs Par Information from form
 if(!empty($_POST['syrpar'])){

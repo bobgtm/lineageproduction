@@ -6,7 +6,7 @@ $defaultDate = date("Y-m-d");
 $coffees = $db->query("SELECT * FROM products WHERE product_type = 1 AND active = 1 AND product_name NOT IN ('431', 'Modern American', 'Select Decaf')")->results();
 $origins = $db->query("SELECT * FROM coffee_origins")->results();
 
-$uname = $user->data()->fname;
+$uname = $user->data()->fname . " " .  $user->data()->lname;
 $user_ids = $db->query("SELECT id FROM users")->results();
 $store_id = "";
 $uid = $user->data()->id;

@@ -16,7 +16,7 @@ function getPastry() {
 }
 
 
-$uname = $user->data()->fname;
+$uname = $user->data()->fname . " " .  $user->data()->lname;
 $user_ids = $db->query("SELECT id FROM users")->results();
 $store_id = "";
 $uid = $user->data()->id;
