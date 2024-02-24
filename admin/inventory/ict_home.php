@@ -9,118 +9,120 @@ if(!(isset($user) && $user->isLoggedIn())){
 $uname = $user->data()->username;
 $user_id = $user->data()->id;
 
- if($user_id != 9){
+ if($user_id != 9 && $user_id != 1 && $user_id != 12){
     usError("That page is for East End Only");
     Redirect::to($us_url_root."admin/home.php");
  }
-
  // Product Information
 function getIct() {
     global $db;    
 $res = $db->query("SELECT * FROM ict_products")->results();    
     return $res;
 }
-
-// dump(getIct());
-
 // Unit Types
 $units = $db->query("SELECT * FROM unit_types WHERE id > 3")->results();
-// dump($units);
 
-
-// $fields = [];
-if(!empty($_POST)){
+// Inventory Form Submission
+if(!empty($_POST['ict_inv'])){
     $ict_products = Input::get('ict_');
-    dump($ict_products);
+    // dump($ict_products);
     $inserted = false;
     $ict_vals = Input::get('ict_inv_val');
-    dnd($ict_vals);
+    $ict_notes = Input::get('ict_notes');
+    
+    $fields = [];
     foreach($ict_products as $id => $amt) {
-
-        $fields = [];
         if($amt != "") {
-            
-            $fields = [ 
-                'entry_date' => date('Y-m-d H:i:s'),
-                'product_id' => $id,
-                'qty' => $amt,
-                // 'unit_type' => $unit
-                ];
+            foreach($ict_vals as $t => $u){
+                foreach($ict_notes as $i => $note) {
+                    if($id == $t && $id == $i){
+                        $fields = [ 
+                            'entry_date' => date('Y-m-d'),
+                            'product_id' => $id,
+                            'qty' => $amt,
+                            'unit_id' => $u, 
+                            'notes' => $note
+                        ];
+                        $db->insert('ict_inventory_entry', $fields);
+                        dump($db->errorString());
+                        $inserted = true;
+                    }
+                }
+            }
+        }
+    }
 
-        }
-            // $db->insert('ict_inventory_entry', $fields);
-            dump($fields);
-            $inserted = true;
-        }
         
-        if($inserted && ($uname == "mills")){
-            usSuccess("༼ つ ◕_◕ ༽つ saved ");
-        } else {
-            usSuccess("Coffee Inventory Saved");
-        }
+    if($inserted && ($uname == "mills")){
+        usSuccess("༼ つ ◕_◕ ༽つ saved ");
+    } else {
+        usSuccess("ICT Inventory Saved");
+    }
 }
 
+// Par form submission
+if(!empty($_POST['ict_par'])){
+       
+    $fields = [];
 
-// if(!empty($_POST['ict_par'])){
-//     // echo "This one is submitted";
+    $ict = Input::get('ict');
+    $ict_par_vals = Input::get('ict_par_val');
     
-//     $fields = [
-//         'store_id' => $store_id
-//     ];
-//     $ict = Input::get('ict');
-    
-//     $ict_par_vals = Input::get('ict_par_val');
+    $check = 0;
+    $added = 0;
+    $update = 0;
+    // * Iterate through the values of the ict input separating the item_id and the quantity
+    foreach($ict as $ict_item_id => $item_quantity) {
 
-//     $check = $db->query("SELECT * FROM ict_product_par WHERE product_type > ?", [3])->count();
-    
-//     if($check < 1) {
-//         foreach($ict as $k => $v){
-//             foreach($vals as $t => $u){
-//                 if ($k == $t){
-                    
-//                     $fields = [
-//                         'product_id' => $k,
-//                         'par' => $v,
-//                         'unit_id' => $u,
-//                         'store_id' => $store_id,
-//                         'product_type' => 3,
-//                     ];
-//                     // dump($fields);
-//                     $db->insert('ict_product_par', $fields);            
-//                     dump($db->errorString());
-//                 }
-//             }
-//         }
-//         usSuccess("Syrup Par Added");
-//     }
-//     // Associative array of store_ids to quantities
-    
-//     // If so, then we delete the previous entry and replace it with a new entry
-//     if($check >= 1){
-//         $ids = Input::get('ict_val');    
+        // * As we look through these values, if they contain something other than an empty string, we can proceed
         
-//         foreach($ids as $i => $par) {
-//             $db->delete("ict_product_par", ["and", ["product_id", "=", $i]]);   
-//         }
-//         foreach($syrups as $k => $v){
-//             foreach($vals as $t => $u){
-//                 if ($k == $t){
-                    
-//                     $fields = [
-//                         'product_id' => $k,
-//                         'par' => $v,
-//                         'unit_id' => $u,
-//                         // 'store_id' => $store_id,
-//                         // 'product_type' => 3,
-//                     ];
-                    
-//                     $db->insert('ict_product_par', $fields);            
-//                 }
-//             }
-//         }
-//         usSuccess("Par Updated");
-//     }
-// }
+        if($item_quantity != "") {
+            // * We will need to check and make sure all item_id's with a value have an entry in the product_par table or not
+            // * So we query the database for any entries that have the product_id and count those entries
+            // * We assigned the value of this query to the $check variable
+            $check = $db->query("SELECT * FROM ict_product_par WHERE product_id = ?", [$ict_item_id])->count();
+            // * If check is less than one, that means we didn't find any entries for that item
+            if ($check < 1) {
+                foreach($ict_par_vals as $item_id => $item_unit){
+                    if ($ict_item_id == $item_id){
+                        $fields = [
+                            'product_id' => $ict_item_id,
+                            'quantity' => $item_quantity,
+                            'unit_id' => $item_unit
+                        ];
+                        
+                        $db->insert('ict_product_par', $fields);            
+                        
+                    }
+                }
+                if ($added == 0) {
+                    usSuccess("ICT Par Added");
+                }
+                $added++;
+            }
+            if ($check >= 1) {
+                
+                $db->delete("ict_product_par", ["product_id", "=", $ict_item_id]);
+                foreach($ict_par_vals as $item_id => $item_unit){
+                    if ($ict_item_id == $item_id){
+                        $fields = [
+                            'product_id' => $ict_item_id,
+                            'quantity' => $item_quantity,
+                            'unit_id' => $item_unit
+                        ];
+                        
+                        $db->insert('ict_product_par', $fields);            
+                        if ($update == 0) {
+                            usSuccess("ICT Par Updated");
+                        }
+                        $update++;
+                        
+                    }
+                }
+            }
+        }
+    }
+}
 
 ?>
 
@@ -145,8 +147,15 @@ if(!empty($_POST)){
                             <option value="<?= $v->id ?>"><?= $v->unit_name ?></option>
                         <?php } ?>
                     </select></div>
+                    
+                </div>
+                <div class="row mt-2">
+                    <div class="col">
+                        <input class="form-control mt-2 mx-auto" type="Text" placeholder="notes" name="ict_notes[<?= $p->id ?>]">
+                    </div>
                 </div>
                 <?php } ?>
+
             </div>
             <div class="item ">
                 <input type="submit" name="ict_inv" value="Save" class="btn btn btn-success mt-3">
@@ -164,12 +173,16 @@ if(!empty($_POST)){
                     foreach($syr as $s) { ?>
                     <label for="syr" class="mt-3 fw-bold"><?= $s->product_name ?></label>
                     <div class="row row-cols-2">
-                      <div class="col"><input type="number" class="form-control mt-2" name="ict[<?= $s->id ?>]" id="" value=""></div>
-                        <div class="col"><select class="form-control mt-2 text-center" name="ict_par[<?= $s->id ?>]" id="">
-                            <?php foreach($units as $v) { ?>
-                                <option value="<?= $v->id ?>"><?= $v->unit_name ?></option>
-                            <?php } ?>
-                        </select></div>
+                        <div class="col">
+                            <input type="number" class="form-control mt-2" name="ict[<?= $s->id ?>]" id="" value="">
+                        </div>
+                        <div class="col">
+                            <select class="form-control mt-2 text-center" name="ict_par_val[<?= $s->id ?>]" id="">
+                                <?php foreach($units as $v) { ?>
+                                    <option value="<?= $v->id ?>"><?= $v->unit_name ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>                                           
                     </div>
                     <?php } ?>
             </div>
@@ -178,9 +191,9 @@ if(!empty($_POST)){
             </div>
         </form>
     </div>
-    
-    
+      
 </div>
-
-
+<div class="text-center">
+        <a class="text-center mx-auto" href="_ict.php"><button class="btn btn-success btn-sm px-3 mb-5">View ICT Inventory</button></a>
+</div>
 <?php require_once $abs_us_root . $us_url_root . 'users/includes/html_footer.php'; ?>
