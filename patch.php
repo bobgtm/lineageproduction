@@ -2,8 +2,9 @@
 require_once 'users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
+echo "Running Patch...";
 // Create ICT Products Table
-$countIctProductTable = $db->query("SHOW TABLES LIKE 'inventory_ict'")->count();
+$countIctProductTable = $db->query("SHOW TABLES LIKE 'ict_products'")->count();
 
 if($countIctProductTable == 0) {
     $db->query("CREATE TABLE `ict_products` (
@@ -15,13 +16,11 @@ if($countIctProductTable == 0) {
     $db->query("ALTER TABLE `ict_products` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);");
 }
 
-
-
 // Add Products to ict_products
 $count = $db->query("SELECT * FROM `ict_products`")->count();
 if($count <= 0){
     $db->query("INSERT INTO `ict_products` (`product_name`, `abbreviation`, `unit_type`) VALUES
-      ('Oloong', NULL, NULL),
+      ('Oolong', NULL, NULL),
       ('Jasmine Green', NULL, NULL),
       ('Yunnan Black', NULL, NULL),
       ('Matcha', NULL, NULL),
@@ -67,16 +66,20 @@ if($count <= 0){
 // ");
 dump($db->errorString());
 // Add ICT Inventory Table for inventory entries
-$countInventoryTable = $db->query("SHOW TABLES LIKE 'inventory_ict'")->count();
+$countInventoryTable = $db->query("SHOW TABLES LIKE 'ict_inventory_entry'")->count();
 if($countInventoryTable == 0) {
-    $db->query("CREATE TABLE inventory_ict 
+    $db->query("CREATE TABLE ict_inventory_entry
     (id int,
     entry_date datetime,
     product_id int,
-    amount int
+    qty int,
+    unit_id int,
+    notes text
     )");    
+    $db->query("ALTER TABLE `ict_inventory_entry` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);");
 }
-$countIctEntryTable = $db->query("SHOW TABLES LIKE 'inventory_ict'")->count();
+dump($db->errorString());
+$countIctEntryTable = $db->query("SHOW TABLES LIKE 'ict_inventory_entry'")->count();
 if ($countIctEntryTable == 0) {
     $db->query("CREATE TABLE `lineage`.`ict_inventory_entry` 
     (`id` INT(11) NOT NULL AUTO_INCREMENT, 
@@ -84,7 +87,36 @@ if ($countIctEntryTable == 0) {
     `product_id` INT(11) NOT NULL, 
     `qty` INT(11) NOT NULL,
     `unit_id` INT(11) NOT NULL,
+    `notes` TEXT NOT NULL,
     PRIMARY KEY (`id`)) ENGINE = InnoDB;");
 }
+dump($db->errorString());
+$countIctParTable = $db->query("SHOW TABLES LIKE 'ict_product_par'")->count();
+if($countIctParTable == 0){
+    $db->query("CREATE TABLE `lineage`.`ict_product_par`
+    (`id` INT(11) NOT NULL AUTO_INCREMENT,
+    `product_id` INT(11) NOT NULL, 
+    `quantity` INT(11) NOT NULL,
+    `unit_id` INT(11) NOT NULL,
+    PRIMARY KEY (`id`)) ENGINE = InnoDB;");
+}
+dump($db->errorString());
+
+$countUnitTypes = $db->query("SELECT * FROM unit_types")->count();
+
+if($countUnitTypes == 3) {
+    $db->query("INSERT INTO `unit_types` (`unit_name`) VALUES 
+    ('Box'),
+    ('Pack'),
+    ('Sleeves'),
+    ('Bag'),
+    ('Roll'),
+    ('Can'),
+    ('Liter'),
+    ('Lb(s).')
+    ;");
+}
+
+
 
 echo "done";
