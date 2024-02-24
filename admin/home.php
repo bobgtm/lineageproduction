@@ -11,7 +11,7 @@ require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
 <div class="row mt-4">
     <div class="d-flex flex-column flex-lg-row justify-content-md-center col-xg-3 col-md-12 col-sm-12 mb-2">
-        <?php if($user->data()->id == 9) { ?>
+        <?php if($user->data()->id == 9 || $user->data()-> id == 1) { ?>
             <div class="text-center align-self-center mx-1 mb-3">
                 <a class="text-bg-primary-emphasis" href="<?=$us_url_root?>admin/inventory/ict_home.php"><button class="btn btn-secondary btn-lg shadow">EE ICT</button></a>
             </div>
