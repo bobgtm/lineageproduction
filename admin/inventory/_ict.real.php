@@ -93,7 +93,7 @@ function cleanDate($val) {
     <div class="d-flex flex-column flex-md-row justify-content-evenly mt-4">
 
     <div class="card flex-grow-1 mx-2 my-2">
-        <div class="card-header bg-primary "><h3 class="">ICT Par</h3></div>
+        <div class="card-header"><h3 class="">ICT Par</h3></div>
         <div class="card-body">
             <table class="table table-sm ">
                 <thead class="">
@@ -101,7 +101,7 @@ function cleanDate($val) {
                         <th>Product</th>
                         <th>Par Amount</th>
                     </tr>
-                </thead>
+                    </thead>
                     <tbody>
                         <?php foreach($ict_par as $p){ ?>
                         <tr>
@@ -114,8 +114,8 @@ function cleanDate($val) {
                         </tr>
                         <?php } ?>
                     </tbody>    
-            </table>
-        </div>
+                </table>
+            </div>
     </div>
 
 </div>

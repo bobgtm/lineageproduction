@@ -16,7 +16,14 @@ $user_id = $user->data()->id;
  // Product Information
 function getIct() {
     global $db;    
-$res = $db->query("SELECT * FROM ict_products")->results();    
+    $res = $db->query("SELECT * FROM ict_products")->results();    
+    return $res;
+}
+
+function getictUnits() {
+    global $db;
+    $res = $db->query("SELECT DISTINCT unit_type FROM ict_products")->results();
+    
     return $res;
 }
 // Unit Types
@@ -126,42 +133,66 @@ if(!empty($_POST['ict_par'])){
 
 ?>
 
-
-<div class="row row-cols-2 d-flex flex-lg-row flex-column justify-content-center mx-5-lg mx-0 mt-3">
-    <div class="col col-12 col-md-8 col-lg-4 mx-auto text-center mb-5">    
-        <form  action="" method="post">
-            <h4 class="text-center"><?= ucwords($uname) ?> ICT Inventory</h4>
-                
+<div class="col col-12 col-md-8 col-lg-12 col-sm-12 mx-auto text-center mb-5">    
+    <form  action="" method="post">
+        <h4 class="text-center"><?= ucwords($uname) ?> ICT Inventory</h4>
             
-            <div class="form-group">
-                
-                
-            <?php 
-                $ict = getIct(); 
-                foreach($ict as $p) { ?>
-                <label for="ict_inv" class="mt-3 fw-bold"><?= $p->product_name ?></label>
-                <div class="row row-cols-2">
-                    <div class="col"><input type="number" class="form-control mt-2" name="ict_[<?= $p->id ?>]" id="" value="" step="0.01"></div>
-                    <div class="col"><select class="form-control mt-2 text-center" name="ict_inv_val[<?= $p->id ?>]" id="">
-                        <?php foreach($units as $v) { ?>
-                            <option value="<?= $v->id ?>"><?= $v->unit_name ?></option>
-                        <?php } ?>
-                    </select></div>
-                    
-                </div>
-                <div class="row mt-2">
-                    <div class="col">
-                        <input class="form-control mt-2 mx-auto" type="Text" placeholder="notes" name="ict_notes[<?= $p->id ?>]">
-                    </div>
-                </div>
-                <?php } ?>
+        
+        <div class="form-group">
+            <div class="row">
 
+            
+            <?php
+            $ict_products = getIct();
+            $types = getictUnits();
+            foreach ($types as $ip) { ?>
+                <div class="">
+                <?php foreach ($ict_products as $p) { 
+                    if($p->unit_type == $ip->unit_type) { ?>
+                    <div class="col"><label for="ict_inv" class="mt-3 fw-bold"><?= $p->product_name . ": " . $p->unit_type ?></label></div>
+                    <div class="row row-cols-2">
+                        <div class="col"><input type="number" class="form-control mt-2" name="ict_[<?= $p->id ?>]" id="" value="" step="0.01"></div>        
+                        <div class="col">
+                            <select class="form-control mt-2 text-center" name="ict_inv_val[<?= $p->id ?>]" id="">
+                            <?php foreach($units as $v) { ?>
+                                <option value="<?= $v->id ?>"><?= $v->unit_name ?></option>
+                            <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                <?php } ?>
+                <?php } ?>
+                </div>
+            <?php } ?>
             </div>
-            <div class="item ">
-                <input type="submit" name="ict_inv" value="Save" class="btn btn btn-success mt-3">
-            </div>        
-        </form>
-    </div>
+        <!-- <?php 
+            $ict_products = getIct(); 
+            foreach($ict_products as $p) { ?>
+            <label for="ict_inv" class="mt-3 fw-bold"><?= $p->product_name ?></label>
+            <div class="row row-cols-2">
+                <div class="col"><input type="number" class="form-control mt-2" name="ict_[<?= $p->id ?>]" id="" value="" step="0.01"></div>
+                <div class="col"><select class="form-control mt-2 text-center" name="ict_inv_val[<?= $p->id ?>]" id="">
+                    <?php foreach($units as $v) { ?>
+                        <option value="<?= $v->id ?>"><?= $v->unit_name ?></option>
+                    <?php } ?>
+                </select></div>
+                
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <input class="form-control mt-2 mx-auto" type="Text" placeholder="notes" name="ict_notes[<?= $p->id ?>]">
+                </div>
+            </div>
+            <?php } ?> -->
+
+        </div>
+        <div class="item ">
+            <input type="submit" name="ict_inv" value="Save" class="btn btn btn-success mt-3">
+        </div>        
+    </form>
+</div>
+<!-- <div class="row row-cols-2d-flex flex-lg-row flex-column justify-content-center mx-5-lg mx-0 mt-3"> -->
+    
     
     <div class="col col-12 col-md-8 col-lg-4 mx-auto text-center">
         <form  action="" method="post">
@@ -192,7 +223,7 @@ if(!empty($_POST['ict_par'])){
         </form>
     </div>
       
-</div>
+<!-- </div> -->
 <div class="text-center">
         <a class="text-center mx-auto" href="_ict.php"><button class="btn btn-success btn-sm px-3 mb-5">View ICT Inventory</button></a>
 </div>
