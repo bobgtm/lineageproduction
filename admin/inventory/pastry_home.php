@@ -34,21 +34,9 @@ if($uid == 10) {
 if(!empty($_POST['pastryInv'])){
     
    $pastryVal = Input::get('pastryI');
-//    foreach($pastryVal as $t => $v){
-//     echo $t . "<br>";
-//     if($v == ""){
-//         echo "hello<br>";
-//     }
-//     echo $v . "<br>";
-//    }
-   
-   
-   $active = getPastry();
-   
-   
-   
-   
   
+   $active = getPastry();
+
    $fields2 = [
         'entry_date' => date('Y-m-d H:i:s'),
         'store_id' => $store_id 
@@ -68,18 +56,7 @@ if(!empty($_POST['pastryInv'])){
         WHERE ip.store_id = ?
         AND ip.entry_id = ?
         ORDER BY ie.entry_date DESC", [$store_id, $dbID])->results();
-        
-
-        // foreach($invCheck as $invNum) {
-        //     for($i = 0; $i < count($active); $i++) {
-        //         if($active[$i]->id == $invNum->product_id) {
-        //            echo "confirmed<br>";
-        //         } else {
-        //             echo "unconfrim";
-        //         }
-                
-        //       }      
-        // }
+    
             $fields = [
                 'product_id' => $t,
                 'entry_id' => $dbID,

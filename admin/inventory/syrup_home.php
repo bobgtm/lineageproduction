@@ -32,12 +32,10 @@ if($uid == 5) {
 if($uid == 10) {
     $store_id = 3;
 }
-if($uid == 13) {
-    $store_id = 4;
-}
+
 // Grabs Par Information from form
 if(!empty($_POST['syrpar'])){
-    // echo "This one is submitted";
+    
     
     $fields = [
      'store_id' => $store_id
@@ -108,7 +106,6 @@ if(!empty($_POST['syrinv'])){
    }
    $vals = Input::get('val');
     foreach($syrups as $k => $v){
-        // echo "Syrup: " . $k . " = Qty: " . $v."<br>";
         if($v != "") {
             foreach($vals as $t => $u){
                 if ($k == $t){
@@ -125,10 +122,7 @@ if(!empty($_POST['syrinv'])){
         }
     }
    
-
-    
-    
-    
+  
     usSuccess("Syrup Inventory Saved");
 }
 ?>
