@@ -93,7 +93,6 @@ function cleanDate($val) {
             <button id="show1" class="btn btn-info me-2">East End</button>
             <button id="show2" class="btn btn-warning me-2">Mills</button>
             <button id="show3" class="btn btn-success me-2">UCF</button>
-            <button id="show4" class="btn btn-danger me-2">Oh Hey</button>
         </div>
     </div>
 </div>
@@ -194,7 +193,7 @@ function cleanDate($val) {
 
 <script>
    $(document).ready(function() {
-      var nums = [1, 2, 3, 4]
+      var nums = [1, 2, 3]
       htmlContent = "style=display: none;"
       nums.forEach(num => {
          $("#show" + num).on("click", function(){

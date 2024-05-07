@@ -61,8 +61,7 @@ if($to == "") {
             <button id="show1" class="btn btn-primary me-2">East End</button>
             <button id="show2" class="btn btn-primary me-2">Mills</button>
             <button id="show3" class="btn btn-primary me-2">UCF</button>
-            <button id="show4" class="btn btn-primary me-2">Oh Hey</button>
-        </div>
+            </div>
     </div>
 </div>
 <?php foreach($shop as $s) { ?>
@@ -104,7 +103,7 @@ if($to == "") {
 
 <script>
    $(document).ready(function() {
-      var nums = [1, 2, 3, 4]
+      var nums = [1, 2, 3]
       htmlContent = "style=display: none;"
       nums.forEach(num => {
          $("#show" + num).on("click", function(){
