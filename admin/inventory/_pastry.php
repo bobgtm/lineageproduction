@@ -5,7 +5,7 @@ $shop = $db->query("SELECT * FROM shops")->results();
 
 $pastries = $db->query("SELECT * FROM products WHERE product_type = 4 AND active = 1 ORDER BY id ASC")->results();
 
-$dates = $db->query("SELECT * FROM inventory_pastry_entry")->results();
+$dates = $db->query("SELECT * FROM inventory_pastry_entry WHERE entry_date > CURDATE() - INTERVAL 1 WEEK")->results();
 $pastry_stock = $db->query("SELECT ip.*, pe.id, p.product_name
 FROM inventory_pastry AS ip
 LEFT OUTER JOIN products AS p ON ip.product_id = p.id

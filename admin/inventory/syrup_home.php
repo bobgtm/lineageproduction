@@ -2,6 +2,11 @@
 require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
+if(!(isset($user) && $user->isLoggedIn())){
+    echo "Please Login to view the page";
+    die();
+ }
+
 function getsyr() {
     global $db;
     
@@ -13,21 +18,34 @@ function getsyr() {
 $units = $db->query("SELECT * FROM unit_types")->results();
 
 // $details = $user->data()->permissions;
+$uname = $user->data()->fname . " " .  $user->data()->lname;
+$user_ids = $db->query("SELECT id FROM users")->results();
+$store_id = "";
+$uid = $user->data()->id;
+
+if($uid == 9) {
+    $store_id = 1;
+}
+if($uid == 5) {
+    $store_id = 2;
+}
+if($uid == 10) {
+    $store_id = 3;
+}
 
 // Grabs Par Information from form
 if(!empty($_POST['syrpar'])){
-    echo "This one is submitted";
-    $storeid = Input::get('location');
+    
+    
     $fields = [
-     'store_id' => $storeid
+     'store_id' => $store_id
     ];
     $syrups = Input::get('spar');
    
     $vals = Input::get('valpar');
-    // dump($syrups);
-    // dump($vals);
-    $check = $db->query("SELECT * FROM product_par WHERE store_id = ? AND product_type = ?", [$storeid, 3])->count();
-    // dump($check);
+
+    $check = $db->query("SELECT * FROM product_par WHERE store_id = ? AND product_type = ?", [$store_id, 3])->count();
+    
     if($check < 1) {
         foreach($syrups as $k => $v){
             foreach($vals as $t => $u){
@@ -37,7 +55,7 @@ if(!empty($_POST['syrpar'])){
                         'product_id' => $k,
                         'par' => $v,
                         'unit_id' => $u,
-                        'store_id' => Input::get('location'),
+                        'store_id' => $store_id,
                         'product_type' => 3,
                     ];
                     // dump($fields);
@@ -53,9 +71,9 @@ if(!empty($_POST['syrpar'])){
     // If so, then we delete the previous entry and replace it with a new entry
     if($check >= 1){
         $ids = Input::get('valpar');    
-        // dnd($ids);
+        
         foreach($ids as $i => $par) {
-            $db->delete("product_par", ["and", ["product_id", "=", $i], ["store_id", "=", $storeid]]);   
+            $db->delete("product_par", ["and", ["product_id", "=", $i], ["store_id", "=", $store_id]]);   
         }
         foreach($syrups as $k => $v){
             foreach($vals as $t => $u){
@@ -65,7 +83,7 @@ if(!empty($_POST['syrpar'])){
                         'product_id' => $k,
                         'par' => $v,
                         'unit_id' => $u,
-                        'store_id' => Input::get('location'),
+                        'store_id' => $store_id,
                         'product_type' => 3,
                     ];
                     
@@ -77,38 +95,36 @@ if(!empty($_POST['syrpar'])){
     }
 }
 
-if(!empty($_POST['syrinv'])){
-    
-   $syrups = Input::get('sinv');
-   $syrups2 = [];
-   foreach($syrups as $k => $v) {
-     for ($i=0; $i < count($syrups) ; $i++) { 
-            $syrups2[$k] = intval($v);
-     }
-   }
-   $vals = Input::get('val');
-    foreach($syrups2 as $k => $v){
-        
-            foreach($vals as $t => $u){
-                if ($k == $t){
+if (!empty($_POST['syrinv'])) {
+
+    $syrups = Input::get('sinv');
+    $syrups2 = [];
+    foreach ($syrups as $k => $v) {
+        for ($i = 0; $i < count($syrups); $i++) {
+            $syrups2[$k] = number_format((float) $v, 2, '.', '');
+        }
+    }
+    $vals = Input::get('val');
+    foreach ($syrups as $k => $v) {
+        if ($v != "") {
+            foreach ($vals as $t => $u) {
+                if ($k == $t) {
                     $fields = [
                         'syrup_id' => $k,
                         'quantity' => $v,
                         'unit_id' => $u,
                         'entry_date' => date('Y-m-d H:i:s'),
-                        'store_id' => Input::get('location')
+                        'store_id' => $store_id
                     ];
-                    $db->insert('inventory_syrup', $fields);            
+                    $db->insert('inventory_syrup', $fields);
                 }
             }
-        
-    }
-   
 
-    
-    
-    
-    // usSuccess("Inventory Saved");
+        }
+
+
+        usSuccess("Syrup Inventory Saved");
+    }
 }
 ?>
 
@@ -116,17 +132,9 @@ if(!empty($_POST['syrinv'])){
 <div class="row row-cols-2 d-flex flex-lg-row flex-column justify-content-center mx-5-lg mx-0 mt-3">
     <div class="col col-12 col-md-8 col-lg-4 mx-auto text-center mb-5">    
         <form  action="" method="post">
-            <h4 class="text-center">Syrup Inventory</h4>
+            <h4 class="text-center"><?= ucwords($uname) ?> Syrup Inventory</h4>
                 
-            <div class="form-group">
-                <label for="" class="form-label">Shop Location</label>
-                <select name="location" class="form-select mb-1" id="" required>
-                    <option selected disabled value="">Where ya at?</option>
-                    <option value="1">East End</option>
-                    <option value="2">Mills</option>
-                    <option value="3">UCF</option>
-                </select>
-            </div>
+            
             <div class="form-group">
                 
                 
@@ -135,7 +143,7 @@ if(!empty($_POST['syrinv'])){
                 foreach($syr as $s) { ?>
                 <label for="syr" class="mt-3 fw-bold"><?= $s->product_name ?></label>
                 <div class="row row-cols-2">
-                    <div class="col"><input type="number" class="form-control mt-2" name="sinv[<?= $s->id ?>]" id="" value=""></div>
+                    <div class="col"><input type="number" class="form-control mt-2" name="sinv[<?= $s->id ?>]" id="" value="" step="0.01"></div>
                     <div class="col"><select class="form-control mt-2 text-center" name="val[<?= $s->id ?>]" id="">
                         <?php foreach($units as $v) { ?>
                             <option value="<?= $v->id ?>"><?= $v->unit_name ?></option>
@@ -152,21 +160,10 @@ if(!empty($_POST['syrinv'])){
     
     <div class="col col-12 col-md-8 col-lg-4 mx-auto text-center">
         <form  action="" method="post">
-            <h4 class="text-center">Syrup Par</h4>
-                
-            <div class="form-group">
-                <label for="" class="form-label">Shop Location</label>
-                <select name="location" class="form-select mb-1" id="" required>
-                    <option selected disabled value="">Set Syrups Par For...</option>
-                    <option value="1">East End</option>
-                    <option value="2">Mills</option>
-                    <option value="3">UCF</option>
-                </select>
-            </div>
-            <div class="form-group">
-                
-                
-                <?php 
+            <h4 class="text-center"><?= ucwords($uname) ?> Syrup Par</h4>
+           
+           <div class="form-group">
+            <?php 
                     $syr = getsyr(); 
                     foreach($syr as $s) { ?>
                     <label for="syr" class="mt-3 fw-bold"><?= $s->product_name ?></label>
@@ -194,5 +191,4 @@ if(!empty($_POST['syrinv'])){
 
 <div class="row mt-4 mb-4">
 <?php require_once $abs_us_root . $us_url_root . 'users/includes/html_footer.php'; ?>
-</div>
-
+</div> 

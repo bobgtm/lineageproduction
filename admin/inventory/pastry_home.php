@@ -2,6 +2,11 @@
 require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
+if(!(isset($user) && $user->isLoggedIn())){
+    echo "Please Login to view the page";
+    die();
+ }
+
 function getPastry() {
     global $db;
     
@@ -10,29 +15,59 @@ function getPastry() {
     return $res;
 }
 
+
+$uname = $user->data()->fname . " " .  $user->data()->lname;
+$user_ids = $db->query("SELECT id FROM users")->results();
+$store_id = "";
+$uid = $user->data()->id;
+
+if($uid ==9) {
+    $store_id = 1;
+}
+if($uid == 5) {
+    $store_id = 2;
+}
+if($uid == 10) {
+    $store_id = 3;
+}
+// dump($db->errorString());
 if(!empty($_POST['pastryInv'])){
     
    $pastryVal = Input::get('pastryI');
-   
-   
+  
+   $active = getPastry();
+
    $fields2 = [
         'entry_date' => date('Y-m-d H:i:s'),
-        'store_id' => Input::get('location')
+        'store_id' => $store_id 
     ];
-
+            
     $db->insert('inventory_pastry_entry', $fields2);
     $dbID = $db->lastId();    
     
 
     foreach($pastryVal as $t => $v){
+        // I want to use this to go through the database, check for the most recent entry... delete it, 
+        // Then replace it with a new entry that edits the number for the number that needs to be changed. 
+        // So far this query just checks for the recent inventory number. 
+        $invCheck = $db->query("SELECT ip.*, ie.* FROM inventory_pastry as ip
+        LEFT JOIN inventory_pastry_entry as ie
+        ON ie.id=ip.entry_id
+        WHERE ip.store_id = ?
+        AND ip.entry_id = ?
+        ORDER BY ie.entry_date DESC", [$store_id, $dbID])->results();
+    
             $fields = [
                 'product_id' => $t,
                 'entry_id' => $dbID,
-                'store_id' => Input::get('location'),
+                'store_id' => $store_id,
                 'stock' => $v
             ];
-            $db->insert('inventory_pastry', $fields);            
+            
+            $db->insert('inventory_pastry', $fields);
+        
         }
+        echo usSuccess("🥐 Waste saved");
 }
 
 ?>
@@ -41,20 +76,9 @@ if(!empty($_POST['pastryInv'])){
 <div class="row row-cols-2 d-flex flex-lg-row flex-column justify-content-center mx-5-lg mx-0 mt-3">
     <div class="col col-12 col-md-8 col-lg-4 mx-auto text-center mb-3">    
         <form  action="" method="post">
-            <h4 class="text-center">Pastry Waste Form</h4>
+            <h4 class="text-center"><?= ucwords($uname) ?> Pastry Waste Form</h4>
                 
             <div class="form-group">
-                <label for="" class="form-label">Shop Location</label>
-                <select name="location" class="form-select mb-1" id="" required>
-                    <option selected disabled value="">Where ya at?</option>
-                    <option value="1">East End</option>
-                    <option value="2">Mills</option>
-                    <option value="3">UCF</option>
-                </select>
-            </div>
-            <div class="form-group">
-                
-                
             <?php 
                 $pastry = getPastry(); 
                 foreach($pastry as $p) { ?>

@@ -60,19 +60,13 @@ function parseUnit($value){
             echo "Gal.";
             break;
         case '2':
-            echo "L";
+            echo "Toddy";
             break;
         case '3':
-            echo "Qt.";
-            break;
-        case '4':
-            echo "C.";
-            break;
-        case '5':
-            echo "Oz.";
+            echo "Ctr.";
             break;
         default:
-            echo "no unit supplied";
+            echo "no unit given";
             break;
     }
 }
@@ -210,7 +204,7 @@ function cleanDate($val) {
    });
 
    $(document).ready(function() {
-      var nums = [1, 2, 3]
+      var nums = [1, 2, 3, 4]
       htmlContent = "style=display: none;"
       nums.forEach(num => {
          $("#sh" + num).on("click", function(){

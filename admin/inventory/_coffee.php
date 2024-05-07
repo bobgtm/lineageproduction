@@ -61,7 +61,7 @@ if($to == "") {
             <button id="show1" class="btn btn-primary me-2">East End</button>
             <button id="show2" class="btn btn-primary me-2">Mills</button>
             <button id="show3" class="btn btn-primary me-2">UCF</button>
-        </div>
+            </div>
     </div>
 </div>
 <?php foreach($shop as $s) { ?>
