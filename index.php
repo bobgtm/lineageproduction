@@ -18,7 +18,6 @@ if(isset($user) && $user->isLoggedIn()){
                     Redirect::to($us_url_root . "admin/home.php") ?>
                 <?php } else{ ?>
 					<a class="btn btn-primary mt-5" href="users/login.php" role="button"><?=lang("SIGNIN_TEXT");?> &raquo;</a>
-					
 				<?php }?>
 			</p>
 			<br>
