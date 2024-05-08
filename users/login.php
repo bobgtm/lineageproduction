@@ -101,58 +101,60 @@ if (empty($dest = sanitizedDest('dest'))) {
   width:100% !important;
 }
 </style>
+
+
 <div class="container p-2 h-100 alternate-background">
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <b><?= lang("SIGNIN_TITLE", ""); ?></b>
+                    <a href="<?= $us_url_root ?>" aria-label="Close" class="close btn-close" style="top: 1rem!important;"></a>
 
-  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <b><?=lang("SIGNIN_TITLE","");?></b>
-          <a href="<?=$us_url_root?>" aria-label="Close" class="close btn-close" style="top: 1rem!important;"></a>
+                </div>
+                <div class="modal-body p-4 py-5 p-md-5">
+                    <?php includeHook($hooks, 'body'); ?>
+                    <form name="login" id="login-form" class="form-signin" action="" method="post">
+                        <?= tokenHere(); ?>
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="username"><?= lang("SIGNIN_UORE") ?></label>
+                            <input type="username" id="username" name="username" class="form-control form-control-lg" required autocomplete="username" />
+                        </div>
 
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="password"><?= lang("SIGNIN_PASS") ?></label>
+                            <div class="input-group">
+                                <input type="password" id="password" name="password" class="form-control form-control-lg" />
+                                <span class="input-group-addon input-group-text see-pw" id="togglePassword">
+                                    <i class="fa fa-eye" id="togglePasswordIcon"></i>
+                                </span>
+                            </div>
+
+
+                        </div>
+
+                        <?php includeHook($hooks, 'form'); ?>
+                        <input type="hidden" name="redirect" value="<?= Input::get('redirect') ?>" />
+                        <button class="submit form-control btn btn-primary rounded submit px-3" id="next_button" type="submit"><i class="fa fa-sign-in"></i> <?= lang("SIGNIN_BUTTONTEXT", ""); ?></button>
+                    </form>
+                    <div class="row">
+                        <div class="col-12 text-center"><br>
+                            <a class="" href='<?= $us_url_root ?>users/forgot_password.php'><i class="fa fa-wrench"></i> <?= lang("SIGNIN_FORGOTPASS", ""); ?></a>
+                            <br>
+                        </div>
+                        <?php if ($settings->registration == 1) { ?>
+                            <div class="col-12 text-center"><br>
+                                <!-- <a class="" href='<?= $us_url_root ?>users/join.php'><i class="fa fa-plus-square"></i> <?= lang("SIGNUP_TEXT", ""); ?></a><br><br> -->
+                            </div><?php } ?>
+                        <?php includeHook($hooks, 'bottom'); ?>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="modal-body p-4 py-5 p-md-5">
-          <?php includeHook($hooks,'body'); ?>
-          <form name="login" id="login-form" class="form-signin" action="" method="post">
-            <?=tokenHere();?>
-            <div class="form-outline mb-4">
-              <label class="form-label" for="username"><?=lang("SIGNIN_UORE")?></label>
-              <input type="username" id="username" name="username" class="form-control form-control-lg" required autocomplete="username" />
-
-            </div>
-
-            <div class="form-outline mb-4">
-              <label class="form-label" for="password"><?=lang("SIGNIN_PASS")?></label>
-              <div class="input-group">
-                <input type="password" id="password" name="password" class="form-control form-control-lg" />
-                <span class="input-group-addon input-group-text see-pw" id="togglePassword">
-                  <i class="fa fa-eye" id="togglePasswordIcon" ></i>
-                </span>
-              </div>
-
-
-            </div>
-
-            <?php includeHook($hooks,'form');?>
-            <input type="hidden" name="redirect" value="<?=Input::get('redirect')?>" />
-            <button class="submit form-control btn btn-primary rounded submit px-3" id="next_button" type="submit"><i class="fa fa-sign-in"></i> <?=lang("SIGNIN_BUTTONTEXT","");?></button>
-          </form>
-          <div class="row">
-            <div class="col-12 text-center"><br>
-              <a class="" href='<?=$us_url_root?>users/forgot_password.php'><i class="fa fa-wrench"></i> <?=lang("SIGNIN_FORGOTPASS","");?></a>
-              <br>
-            </div>
-            <?php if($settings->registration==1) {?>
-              <div class="col-12 text-center"><br>
-                <!-- <a class="" href='<?=$us_url_root?>users/join.php'><i class="fa fa-plus-square"></i> <?=lang("SIGNUP_TEXT","");?></a><br><br> -->
-              </div><?php } ?>
-              <?php   includeHook($hooks,'bottom');?>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
+
+
 
   <script>
   $(document).ready(function(){

@@ -1,0 +1,47 @@
+[29-Sep-2023 21:34:02 America/New_York] PHP Fatal error:  Uncaught TypeError: in_array(): Argument #2 ($haystack) must be of type array, string given in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php:182
+Stack trace:
+#0 /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php(182): in_array(0, '')
+#1 /home/lineageteamspice/public_html/users/admin.php(257): include('/home/lineagete...')
+#2 {main}
+  thrown in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php on line 182
+[29-Sep-2023 21:34:09 America/New_York] PHP Fatal error:  Uncaught TypeError: in_array(): Argument #2 ($haystack) must be of type array, string given in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php:182
+Stack trace:
+#0 /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php(182): in_array(0, '')
+#1 /home/lineageteamspice/public_html/users/admin.php(257): include('/home/lineagete...')
+#2 {main}
+  thrown in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php on line 182
+[29-Sep-2023 21:34:11 America/New_York] PHP Fatal error:  Uncaught TypeError: in_array(): Argument #2 ($haystack) must be of type array, string given in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php:182
+Stack trace:
+#0 /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php(182): in_array(0, '')
+#1 /home/lineageteamspice/public_html/users/admin.php(257): include('/home/lineagete...')
+#2 {main}
+  thrown in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php on line 182
+[29-Sep-2023 21:34:19 America/New_York] PHP Fatal error:  Uncaught TypeError: in_array(): Argument #2 ($haystack) must be of type array, string given in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php:182
+Stack trace:
+#0 /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php(182): in_array(0, '')
+#1 /home/lineageteamspice/public_html/users/admin.php(257): include('/home/lineagete...')
+#2 {main}
+  thrown in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php on line 182
+[29-Sep-2023 21:34:53 America/New_York] PHP Warning:  foreach() argument must be of type array|object, string given in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php on line 430
+[29-Sep-2023 21:34:55 America/New_York] PHP Fatal error:  Uncaught TypeError: in_array(): Argument #2 ($haystack) must be of type array, string given in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php:182
+Stack trace:
+#0 /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php(182): in_array(0, '')
+#1 /home/lineageteamspice/public_html/users/admin.php(257): include('/home/lineagete...')
+#2 {main}
+  thrown in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php on line 182
+[29-Sep-2023 21:35:03 America/New_York] PHP Fatal error:  Uncaught TypeError: in_array(): Argument #2 ($haystack) must be of type array, string given in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php:182
+Stack trace:
+#0 /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php(182): in_array(0, '')
+#1 /home/lineageteamspice/public_html/users/admin.php(257): include('/home/lineagete...')
+#2 {main}
+  thrown in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php on line 182
+[29-Sep-2023 21:35:04 America/New_York] PHP Warning:  foreach() argument must be of type array|object, string given in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php on line 430
+[29-Sep-2023 21:35:40 America/New_York] PHP Warning:  foreach() argument must be of type array|object, string given in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php on line 430
+[29-Sep-2023 21:35:48 America/New_York] PHP Fatal error:  Uncaught TypeError: in_array(): Argument #2 ($haystack) must be of type array, string given in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php:182
+Stack trace:
+#0 /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php(182): in_array(0, '')
+#1 /home/lineageteamspice/public_html/users/admin.php(257): include('/home/lineagete...')
+#2 {main}
+  thrown in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php on line 182
+[29-Sep-2023 21:35:50 America/New_York] PHP Warning:  foreach() argument must be of type array|object, string given in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php on line 430
+[29-Sep-2023 21:36:26 America/New_York] PHP Warning:  foreach() argument must be of type array|object, string given in /home/lineageteamspice/public_html/users/views/_admin_menu_edit.php on line 430
