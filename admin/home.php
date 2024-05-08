@@ -1,14 +1,12 @@
 <?php 
 require_once '../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
-?>
-<!-- <style>
-    .btn {
-        background-color: yellow;
-        border-color: yellow
-    }
-</style> -->
 
+if(!(isset($user) && $user->isLoggedIn())){
+    usError("Please Login to view this page");
+    Redirect::to("../");
+ }
+?>
 <div class="row mt-4">
     <div class="d-flex flex-column flex-lg-row justify-content-md-center col-xg-3 col-md-12 col-sm-12 mb-2">
         <?php if($user->data()->id == 9 || $user->data()-> id == 1) { ?>

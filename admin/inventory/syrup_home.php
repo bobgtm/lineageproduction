@@ -32,12 +32,10 @@ if($uid == 5) {
 if($uid == 10) {
     $store_id = 3;
 }
-if($uid == 13) {
-    $store_id = 4;
-}
+
 // Grabs Par Information from form
 if(!empty($_POST['syrpar'])){
-    // echo "This one is submitted";
+    
     
     $fields = [
      'store_id' => $store_id
@@ -97,21 +95,20 @@ if(!empty($_POST['syrpar'])){
     }
 }
 
-if(!empty($_POST['syrinv'])){
-    
-   $syrups = Input::get('sinv');
-   $syrups2 = [];
-   foreach($syrups as $k => $v) {
-     for ($i=0; $i < count($syrups) ; $i++) { 
-            $syrups2[$k] = number_format((float)$v,2,'.','');
-     }
-   }
-   $vals = Input::get('val');
-    foreach($syrups as $k => $v){
-        // echo "Syrup: " . $k . " = Qty: " . $v."<br>";
-        if($v != "") {
-            foreach($vals as $t => $u){
-                if ($k == $t){
+if (!empty($_POST['syrinv'])) {
+
+    $syrups = Input::get('sinv');
+    $syrups2 = [];
+    foreach ($syrups as $k => $v) {
+        for ($i = 0; $i < count($syrups); $i++) {
+            $syrups2[$k] = number_format((float) $v, 2, '.', '');
+        }
+    }
+    $vals = Input::get('val');
+    foreach ($syrups as $k => $v) {
+        if ($v != "") {
+            foreach ($vals as $t => $u) {
+                if ($k == $t) {
                     $fields = [
                         'syrup_id' => $k,
                         'quantity' => $v,
@@ -119,17 +116,15 @@ if(!empty($_POST['syrinv'])){
                         'entry_date' => date('Y-m-d H:i:s'),
                         'store_id' => $store_id
                     ];
-                    $db->insert('inventory_syrup', $fields);            
+                    $db->insert('inventory_syrup', $fields);
                 }
             }
-        }
-    }
-   
 
-    
-    
-    
-    usSuccess("Syrup Inventory Saved");
+        }
+
+
+        usSuccess("Syrup Inventory Saved");
+    }
 }
 ?>
 
@@ -196,5 +191,4 @@ if(!empty($_POST['syrinv'])){
 
 <div class="row mt-4 mb-4">
 <?php require_once $abs_us_root . $us_url_root . 'users/includes/html_footer.php'; ?>
-</div>
-
+</div> 

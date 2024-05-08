@@ -10,7 +10,7 @@ if(!(isset($user) && $user->isLoggedIn())){
 function getCB() {
     global $db;
     
-    $res = $db->query("SELECT * FROM products WHERE product_type = 2 ORDER BY id DESC")->results();
+    $res = $db->query("SELECT * FROM products WHERE product_type = 2 AND active = 1 ORDER BY id ASC")->results();
     
     return $res;
 }

@@ -26,9 +26,7 @@ if($uid == 5) {
 if($uid == 10) {
     $store_id = 3;
 }
-if($uid == 13) {
-    $store_id = 4;
-}
+
 
 // $fields = [];
 if(!empty($_POST)){
@@ -40,13 +38,6 @@ if(!empty($_POST)){
         if($inv != "") {
             $invCheck = $db->query("SELECT * FROM inventory_coffee WHERE store_id = ? and coffee_id = ? ORDER BY entry_date DESC LIMIT 1", [$store_id, $id])->results();
             
-            // foreach($invCheck as $i) {
-            //     if($inv == $i->stock) {
-            //         usMessage("A count of {$inv} was already recorded for this product");
-            //         break 2;
-            //     }
-            // }
-
             $fields = [ 
                 'entry_date' => date('Y-m-d H:i:s'),
                 'store_id' => $store_id,

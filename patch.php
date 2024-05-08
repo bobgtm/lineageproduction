@@ -2,121 +2,36 @@
 require_once 'users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
+if(!(isset($user) && $user->isLoggedIn())){
+    echo "Please Login to view the page";
+    die();
+ }
+
+ $user_id = $user->data()->id;
+if($user_id != 1){
+    usError("You don't belong on this page");
+    Redirect::to("admin/home.php");
+}
+
+
 echo "Running Patch...";
-// Create ICT Products Table
-$countIctProductTable = $db->query("SHOW TABLES LIKE 'ict_products'")->count();
-
-if($countIctProductTable == 0) {
-    $db->query("CREATE TABLE `ict_products` (
-        `id` int(11) NOT NULL,
-        `product_name` varchar(255) DEFAULT NULL,
-        `abbreviation` int(11) DEFAULT NULL,
-        `unit_type` varchar(255) DEFAULT NULL
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
-    $db->query("ALTER TABLE `ict_products` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);");
+// Remove OhHeyCafe from shops table
+$count_cafe = $db->query("SELECT * FROM `shops` WHERE name = 'Oh Hey Cafe'")->count();
+echo $count_cafe . "</br>";
+if($count_cafe > 0){
+    $db->query("DELETE FROM
+     `shops` WHERE name = 'Oh Hey Cafe'");
+    $db->errorString();
+    echo "Successfully removed Oh Hey Cafe from shops table</br>";
 }
 
-// Add Products to ict_products
-$count = $db->query("SELECT * FROM `ict_products`")->count();
-if($count <= 0){
-    $db->query("INSERT INTO `ict_products` (`product_name`, `abbreviation`, `unit_type`) VALUES
-      ('Oolong', NULL, NULL),
-      ('Jasmine Green', NULL, NULL),
-      ('Yunnan Black', NULL, NULL),
-      ('Matcha', NULL, NULL),
-      ('Hibiscus', NULL, NULL),
-      ('Rooibos', NULL, NULL),
-      ('Fetco Filters', NULL, NULL),
-      ('PINK Cozy Latte Cups', NULL, NULL),
-      ('Choice 12 oz. Clear PET Plastic Cold Cup', NULL, NULL),
-      ('Choice 16 oz. Clear PET Plastic Cold Cup', NULL, NULL),
-      ('Choice 9, 12, 16, 20, 24 oz clear flat lid', NULL, NULL),
-      ('Choice 4 oz. White Poly Paper Hot Cup', NULL, NULL),
-      ('Choice 4 oz. White Hot Paper Cup Travel Lid', NULL, NULL),
-      ('8 oz, Hot Paper Cup', NULL, NULL),
-      ('12 oz. Hot paper Cup', NULL, NULL),
-      ('8 oz. Hot lid', NULL, NULL),
-      ('12 oz. Hot lid', NULL, NULL),
-      ('Pink Cozy Lids', NULL, NULL),
-      ('Black Jumbo Straws, Wrapped', NULL, NULL),
-      ('Homie bottles', NULL, NULL),
-      ('Homie lids', NULL, NULL),
-      ('Chocolate powder (or capp.)', NULL, NULL),
-      ('Sugar In The Raw Packets - 500/Case', NULL, NULL),
-      ('Stevia In The Raw Packets', NULL, NULL),
-      ('Large, Trash black bags', NULL, NULL),
-      ('Small, trash black/white bags', NULL, NULL),
-      ('Napkins', NULL, NULL),
-      ('Brown Paper Bags', NULL, NULL),
-      ('8-32 oz. Molded Fiber 4-Cup Carrier', NULL, NULL),
-      ('7 1/2\" Woodgrain Coffee Stirrers', NULL, NULL),
-      ('Pastry Bags', NULL, NULL),
-      ('Urnex 20 oz. Cafiza Espresso Machine Cleaning Powder', NULL, NULL),
-      ('Urnex Grindz Coffee / Espresso Grinder Cleaner Granules', NULL, NULL),
-      ('Urnex 1 ltr. Rinza Milk Frother Cleaner', NULL, NULL),
-      ('Dish Sponge', NULL, NULL),
-      ('Scouring Pads', NULL, NULL),
-      ('Chix Competive Wet Wipe', NULL, NULL);
-    ");    
+// remove oh_hey_cafe from users table
+$count_cafe_users = $db->query("SELECT * FROM `users` WHERE username = 'oh_hey_cafe'")->count();
+echo $count_cafe_users . "</br>";
+if($count_cafe_users > 0){
+    $db->query("DELETE FROM `shops` WHERE username = 'oh_hey_cafe'")->count();
+    $db->errorString();
+    echo "Successfully removed Oh Hey Cafe from users table</br>";
 }
-
-// $db->query("ALTER TABLE `ict_products`
-// ADD COLUMN abbreviation INT AFTER product_name,
-// ADD COLUMN unit_type VARCHAR(255) AFTER abbreviation;
-// ");
-dump($db->errorString());
-// Add ICT Inventory Table for inventory entries
-$countInventoryTable = $db->query("SHOW TABLES LIKE 'ict_inventory_entry'")->count();
-if($countInventoryTable == 0) {
-    $db->query("CREATE TABLE ict_inventory_entry
-    (id int,
-    entry_date datetime,
-    product_id int,
-    qty int,
-    unit_id int,
-    notes text
-    )");    
-    $db->query("ALTER TABLE `ict_inventory_entry` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);");
-}
-dump($db->errorString());
-$countIctEntryTable = $db->query("SHOW TABLES LIKE 'ict_inventory_entry'")->count();
-if ($countIctEntryTable == 0) {
-    $db->query("CREATE TABLE `lineage`.`ict_inventory_entry` 
-    (`id` INT(11) NOT NULL AUTO_INCREMENT, 
-    `entry_date` DATE NOT NULL,
-    `product_id` INT(11) NOT NULL, 
-    `qty` INT(11) NOT NULL,
-    `unit_id` INT(11) NOT NULL,
-    `notes` TEXT NOT NULL,
-    PRIMARY KEY (`id`)) ENGINE = InnoDB;");
-}
-dump($db->errorString());
-$countIctParTable = $db->query("SHOW TABLES LIKE 'ict_product_par'")->count();
-if($countIctParTable == 0){
-    $db->query("CREATE TABLE `lineage`.`ict_product_par`
-    (`id` INT(11) NOT NULL AUTO_INCREMENT,
-    `product_id` INT(11) NOT NULL, 
-    `quantity` INT(11) NOT NULL,
-    `unit_id` INT(11) NOT NULL,
-    PRIMARY KEY (`id`)) ENGINE = InnoDB;");
-}
-dump($db->errorString());
-
-$countUnitTypes = $db->query("SELECT * FROM unit_types")->count();
-
-if($countUnitTypes == 3) {
-    $db->query("INSERT INTO `unit_types` (`unit_name`) VALUES 
-    ('Box'),
-    ('Pack'),
-    ('Sleeves'),
-    ('Bag'),
-    ('Roll'),
-    ('Can'),
-    ('Liter'),
-    ('Lb(s).')
-    ;");
-}
-
-
 
 echo "done";
