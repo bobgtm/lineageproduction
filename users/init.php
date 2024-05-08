@@ -31,11 +31,11 @@ $GLOBALS['config'] = array(
 'db'           => 'lineage',
 ),
 'remember'        => array(
-  'cookie_name'   => 'cFjpnqPRjEcV95czmMtk',
+  'cookie_name'   => '8LU0b5iVvOxd6NAhf',
   'cookie_expiry' => 604800  //One week, feel free to make it longer
 ),
 'session' => array(
-  'session_name' => 'UCX1LA5P1gPD3vLHEzB8',
+  'session_name' => 'Cshp4tQxqoLqQEw7dsg',
   'token_name' => 'token',
 )
 );
