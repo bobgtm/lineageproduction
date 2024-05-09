@@ -1,5 +1,5 @@
 <?php 
-require_once 'users/init.php';
+require_once '../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
 if(!(isset($user) && $user->isLoggedIn())){
@@ -7,7 +7,7 @@ if(!(isset($user) && $user->isLoggedIn())){
     die();
  }
 
- $user_id = $user->data()->id;
+$user_id = $user->data()->id;
 if($user_id != 1){
     usError("You don't belong on this page");
     Redirect::to("admin/home.php");
