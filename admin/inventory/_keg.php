@@ -61,29 +61,29 @@ if($to == "") {
     <div class="card flex-grow-1 mx-2 my-2"  id="tab<?= $s->id?>">
         <div class="card-header"><h3 id="shopName<?= $s->id?>"  class=""><?= $s->name ?></h3></div>
         <div class="card-body">
-        <table class="table table-light table-sm"> 
-            <thead>
-                <tr>
-                    <th scope="col">Date</th>
-                    <th scope="col" class="">CB Black</th>
-                    <th scope="col" class="">CB White</th>
-                    <th scope="col" class="">CB Vegan</th>
-                </tr>
-            </thead>
-
-            <tbody class="table-striped mb-3 ">
-                <?php foreach($cb_stock as $q => $r) { ?>
-                    <?php if ($s->id == $r->store_id) { ?>
-                    <tr class="">
-                        <td class="" scope="" ><?= cleanDate($r->entry_date) ?></td>
-                        <td class=""><?= $r->cbb_stock?></td>
-                        <td class=""><?= $r->cbw_stock?></td>
-                        <td class=""><?= $r->cbv_stock?></td>
+            <table class="table table-light table-sm"> 
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col" class="">CB Black</th>
+                        <th scope="col" class="">CB White</th>
+                        <th scope="col" class="">CB Vegan</th>
                     </tr>
-                <?php } ?>
-                <?php } ?>
-            </tbody>
-        </table>
+                </thead>
+
+                <tbody class="table-striped mb-3 ">
+                    <?php foreach($cb_stock as $q => $r) { ?>
+                        <?php if ($s->id == $r->store_id) { ?>
+                        <tr class="">
+                            <td class="" scope="" ><?= cleanDate($r->entry_date) ?></td>
+                            <td class=""><?= $r->cbb_stock?></td>
+                            <td class=""><?= $r->cbw_stock?></td>
+                            <td class=""><?= $r->cbv_stock?></td>
+                        </tr>
+                    <?php } ?>
+                    <?php } ?>
+                </tbody>
+            </table>
         </div>
     </div>
 <?php } ?>
@@ -108,26 +108,25 @@ if($to == "") {
             <table class="table table-sm text-center">
                 <thead class="text-centered">
                     <tr>
-                    <?php foreach ($par as $p) { ?>
-                        
-                        <?php if($s->id == $p->store_id && ($p->product_id >= 4 && $p->product_id <=6)) { ?>
-                            <th span="col"><?= $p->product_name ?></th>
-                        <?php } ?>
+                        <?php foreach ($par as $p) { ?>
+                            <?php if($s->id == $p->store_id && ($p->product_id >= 4 && $p->product_id <=6)) { ?>
+                                <th span="col"><?= $p->product_name ?></th>
+                            <?php } ?>
                         <?php } ?>
                     </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <?php foreach ($par as $p) { ?>
-                        
+                </thead>
+                <tbody>
+                    <tr>
+                    <?php foreach ($par as $p) { ?>
+                    
                         <?php if($s->id == $p->store_id && ($p->product_id >= 4 && $p->product_id <=6)) {?>
                             <td><?= $p->par ?></td>
                         <?php } ?>
-                        <?php } ?>
-                        </tr>
-                    </tbody>    
-                </table>
-            </div>
+                    <?php } ?>
+                    </tr>
+                </tbody>    
+            </table>
+        </div>
     </div>
 <?php } ?>
 </div>

@@ -108,37 +108,36 @@ function cleanDate($val) {
                     <th scope="col">Product</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Latest Inventory</th>
-                    
                 </tr>
             </thead>
 
             <tbody class="table-striped mb-3 ">
                 <?php if($s->id == 1){ ?>
                     <?php foreach($ee_inv as $y){ ?>
-                <tr>
-                    <td scope="col" class=""><?=$y->product_name?></td>
-                    <td scope="col"><?= $y->quantity == "" ? "0 " : $y->quantity . " " ?><?= parseUnit($y->unit_id)?></td>
-                    <td scope="col"><?= cleanDate($y->entry_date)?></td>   
-                </tr>
-                <?php } ?>
+                        <tr>
+                            <td scope="col" class=""><?=$y->product_name?></td>
+                            <td scope="col"><?= $y->quantity == "" ? "0 " : $y->quantity . " " ?><?= parseUnit($y->unit_id)?></td>
+                            <td scope="col"><?= cleanDate($y->entry_date)?></td>   
+                        </tr>
+                    <?php } ?>
                 <?php } ?>
                 <?php if($s->id == 2){ ?>
                     <?php foreach($mills_inv as $y){ ?>
-                <tr>
-                    <td scope="col" class=""><?=$y->product_name?></td>
-                    <td scope="col"><?= $y->quantity == "" ? "0 " : $y->quantity . " " ?><?= parseUnit($y->unit_id)?></td>
-                    <td scope="col"><?= cleanDate($y->entry_date)?></td>   
-                </tr>
-                <?php } ?>
+                        <tr>
+                            <td scope="col" class=""><?=$y->product_name?></td>
+                            <td scope="col"><?= $y->quantity == "" ? "0 " : $y->quantity . " " ?><?= parseUnit($y->unit_id)?></td>
+                            <td scope="col"><?= cleanDate($y->entry_date)?></td>   
+                        </tr>
+                    <?php } ?>
                 <?php } ?>
                 <?php if($s->id == 3){ ?>
                     <?php foreach($ucf_inv as $y){ ?>
-                <tr>
-                    <td scope="col" class=""><?=$y->product_name?></td>
-                    <td scope="col"><?= $y->quantity == "" ? "0 " : $y->quantity . " " ?><?= parseUnit($y->unit_id)?></td>
-                    <td scope="col"><?= cleanDate($y->entry_date)?></td>   
-                </tr>
-                <?php } ?>
+                        <tr>
+                            <td scope="col" class=""><?=$y->product_name?></td>
+                            <td scope="col"><?= $y->quantity == "" ? "0 " : $y->quantity . " " ?><?= parseUnit($y->unit_id)?></td>
+                            <td scope="col"><?= cleanDate($y->entry_date)?></td>   
+                        </tr>
+                    <?php } ?>
                 <?php } ?>
             </tbody>
         </table>
@@ -169,19 +168,19 @@ function cleanDate($val) {
                         <th>Product</th>
                         <th>Par Amount</th>
                     </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($store_par as $p){ ?>
-                        <tr>
-                            <?php if($s->id == $p->store_id){ ?>
-                                <td scope="col" class=""><?=$p->product_name?></td>
-                                <td scope="col"><?=$p->par . " " ?><?= parseUnit($p->unit_id)?></td>
-                            <?php } ?>
-                        </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($store_par as $p){ ?>
+                    <tr>
+                        <?php if($s->id == $p->store_id){ ?>
+                            <td scope="col" class=""><?=$p->product_name?></td>
+                            <td scope="col"><?=$p->par . " " ?><?= parseUnit($p->unit_id)?></td>
                         <?php } ?>
-                    </tbody>    
-                </table>
-            </div>
+                    </tr>
+                    <?php } ?>
+                </tbody>    
+            </table>
+        </div>
     </div>
 <?php } ?>
 </div>
