@@ -1,10 +1,22 @@
 <?php
 require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
+
+$user_id = $user->data()->id;
+$store_id = "";
+if($user_id == 9) {
+    $store_id = 1;
+} elseif($user_id == 5) {
+    $store_id = 2;
+} elseif($user_id == 10) {
+    $store_id = 3;
+}
+
+$uname = $user->data()->fname . " " .  $user->data()->lname;
+
 $shop = $db->query("SELECT * FROM shops")->results();
 
 $coffCount = $db->query("SELECT * FROM products WHERE product_type = 1 AND active = 1")->count();
-
 
 $coffee_stock = $db->query("WITH RankedEntries AS (
     SELECT
@@ -51,48 +63,93 @@ if($to == "") {
 }
 ?>
 
-
-
-<div class="row my-3">
-    <div class="text-center">
-        <h4 class="mb-2 me-2">View/Hide Inventory:</h4>  
-        <div class="d-flex justify-content-center align-items-center mt-1">   
-            <button id="show1" class="btn btn-primary me-2">East End</button>
-            <button id="show2" class="btn btn-primary me-2">Mills</button>
-            <button id="show3" class="btn btn-primary me-2">UCF</button>
+ 
+<?php 
+    // View for Production Users and Admin (user id - 3)
+    if($user_id == 3 || $user_id == 1) { ?>
+        <div class="row my-3">
+            <div class="text-center">
+                <h4 class="mb-2 me-2">View/Hide Inventory:</h4>  
+                <div class="d-flex justify-content-center align-items-center mt-1">   
+                    <button id="show1" class="btn btn-primary me-2">East End</button>
+                    <button id="show2" class="btn btn-primary me-2">Mills</button>
+                    <button id="show3" class="btn btn-primary me-2">UCF</button>
+                </div>
+            </div>
+        </div>
+    <?php 
+    // Need to show production inventory entries for each store
+    foreach($shop as $s) { ?>
+        <div class="card mb-3" id="tab<?= $s->id?>">
+            <div id="" class="card-header">
+                <h3 id="shopName<?$s->id?>"><?=$s->name ?></h3>
+            </div>
+            <div class="card-body">
+                <table class="table" >
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Entry Date</th>
+                            <th>Retail Bags</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($coffee_stock as $c) { 
+                            if($s->id == $c->store_id) { ?>
+                                <tr>    
+                                    <td><?= $c->product_name?> </td>
+                                    <td><?= cleanDate($c->entry_date) ?> </td>
+                                    <td><?= $c->stock ?></td>
+                                </tr>
+                            <?php } ?>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <?php } ?>
+<?php } 
+    // Views for specific shop users (Mills, East End, UCF)
+    else { ?>
+    <div class="row my-4">
+        <div class="text-center">
+            <h4><?= $uname ?> Inventory</h4>
         </div>
     </div>
-</div>
-<?php foreach($shop as $s) { ?>
-
-    <div class="card mb-3" id="tab<?= $s->id?>">
-        <div id="" class="card-header">
-            <h3 id="shopName<?$s->id?>"><?=$s->name ?></h3>
-        </div>
-        <div class="card-body">
-            <table class="table" >
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Entry Date</th>
-                        <th>Retail Bags</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach($coffee_stock as $c) { 
-                        if($s->id == $c->store_id) { ?>
-                    <tr>    
-                        <td><?= $c->product_name?> </td>
-                        <td><?= cleanDate($c->entry_date) ?> </td>
-                        <td><?= $c->stock ?></td>
-                    </tr>
-                    <?php } ?>
-                    <?php } ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <?php foreach($shop as $s) { 
+        if($s->id == $store_id) { ?>
+            <div class="card mb-3" id="tab<?= $s->id?>">
+                <div id="" class="card-header">
+                    <h3 id="shopName<?$s->id?>"><?=$s->name ?></h3>
+                </div>
+                <div class="card-body">
+                    <table class="table" >
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Entry Date</th>
+                                <th>Retail Bags</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach($coffee_stock as $c) { 
+                                if($s->id == $c->store_id) { ?>
+                                    <tr>    
+                                        <td><?= $c->product_name?> </td>
+                                        <td><?= cleanDate($c->entry_date) ?> </td>
+                                        <td><?= $c->stock ?></td>
+                                    </tr>
+                                <?php } ?>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <?php } ?>
+    <?php } ?>
 <?php } ?>
+
+
 <div class="row mt-4 mb-4">
     <?php require_once $abs_us_root.$us_url_root."views/menu_foot.php" ?>
 </div>
