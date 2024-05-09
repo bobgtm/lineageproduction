@@ -57,11 +57,10 @@ if($to == "") {
     <div class="text-center">
         <h4 class="mb-2 me-2">View/Hide Inventory:</h4>  
         <div class="d-flex justify-content-center align-items-center mt-1">   
-        
             <button id="show1" class="btn btn-primary me-2">East End</button>
             <button id="show2" class="btn btn-primary me-2">Mills</button>
             <button id="show3" class="btn btn-primary me-2">UCF</button>
-            </div>
+        </div>
     </div>
 </div>
 <?php foreach($shop as $s) { ?>
@@ -91,7 +90,6 @@ if($to == "") {
                     <?php } ?>
                 </tbody>
             </table>
-
         </div>
     </div>
 <?php } ?>
@@ -112,5 +110,4 @@ if($to == "") {
          });
       });
    });
-
 </script>
