@@ -2,9 +2,6 @@
 require_once '../../users/init.php';
 require_once $abs_us_root.$us_url_root.'users/includes/template/prep.php';
 
-// $shop = $db->query("SELECT * FROM shops")->results();
-
-
 // ! Probably set up the query so that a date can be selected, otherwise the default date should be shown.
 // $ictCount = $db->query("SELECT iie.*, ip.* FROM ict_inventory_entry AS iie
 // LEFT JOIN ict_products AS ip
